@@ -463,6 +463,10 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
+  guns:
+  - {fileID: 11400000, guid: 0a6d3c9a8f232974ba74913ae858f30b, type: 2}
+  - {fileID: 11400000, guid: b1a29fdca2e08484a8a4c89842072835, type: 2}
+  - {fileID: 11400000, guid: 0d8d59a8235e63c4b8e6969588e97689, type: 2}
 --- !u!1 &939047075
 GameObject:
   m_ObjectHideFlags: 0
