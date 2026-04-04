@@ -463,6 +463,12 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
+  sprintSpeedMultiplier: 2
+  staminaCostPerSecond: 50
+  maxStamina: 100
+  staminaRecoverDelay: 2
+  staminaRecoverSpeed: 20
+  staminaSlider: {fileID: 0}
 --- !u!1 &939047075
 GameObject:
   m_ObjectHideFlags: 0
