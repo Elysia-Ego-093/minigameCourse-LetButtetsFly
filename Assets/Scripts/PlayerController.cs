@@ -3,29 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NewBehaviourScript : MonoBehaviour 
+public class PlayerController : MonoBehaviour 
 {
     private Rigidbody2D rb;
-    public float moveSpeed = 8f, jumpForce = 12f;
+
+    [Header("玩家ID")]
+    public int playerID = 1;
+
+    [Header("移动设置")]
+    public float moveSpeed = 8f;
+    private float moveInput;
+
+    [Header("跳跃设置")]
+    public float jumpForce = 12f;
     public int maxJumpCount = 2;
     private int jumpCountRemain;
-    public Transform groundCheckPoint;
-    public LayerMask groundLayer;
-    private float moveInput;
-    private bool isGrounded;
     private bool isJumping;
 
+    [Header("地面检测")]
+    public Transform groundCheckPoint;
+    public LayerMask groundLayer;
+    private bool isGrounded;
+
+    [Header("加速设置")]
     public float sprintSpeedMultiplier = 2f;
     public float staminaCostPerSecond = 50f;
     public float maxStamina = 100f;
-    private float currentStamina;
+    public float currentStamina;
     public float staminaRecoverDelay = 2f;
     public float staminaRecoverSpeed = 20f;
     private float recoverWaitTimer;
     private bool isSprinting;
     public Slider staminaSlider;
 
+    [Header("受击设置")]
     private bool isKnockback = false;
+
+    [Header("血量设置")]
+    public float maxBlood = 1000f;
+    public float blood;
 
     //-----------------------------------------------------
     void Start()
@@ -34,6 +50,7 @@ public class NewBehaviourScript : MonoBehaviour
         jumpCountRemain = maxJumpCount;
         currentStamina=maxStamina;
         recoverWaitTimer=staminaRecoverDelay;
+        blood = maxBlood;
     }
     //-----------------------------------------------------
     void Update()
@@ -42,8 +59,7 @@ public class NewBehaviourScript : MonoBehaviour
         move();
         jump();
         UpdateStamina();
-        UpdateStaminaUI();
-        if (Input.GetKeyDown(KeyCode.U)) Attacked(0, new Vector2(15f, 10f));//测试用例，用U键模拟受击
+        if (Input.GetKeyDown(KeyCode.U)) Attacked(50, new Vector2(10f, 5f));//测试用例，用U键模拟受击
     }
 
     //-----------------------------------------------------
@@ -84,13 +100,6 @@ public class NewBehaviourScript : MonoBehaviour
         }
     }
 
-    //-----------------------------------------------------
-    private void UpdateStaminaUI(){
-        if(staminaSlider!=null){
-            staminaSlider.maxValue = maxStamina;
-            staminaSlider.value = currentStamina;
-        }
-    }
 
     //跳跃-----------------------------------------------------
     private void jump()
@@ -136,10 +145,29 @@ public class NewBehaviourScript : MonoBehaviour
     }
 
     //受击函数，供外部引用--------------------------------------------------------
-    public void Attacked(int atk,Vector2 atkForce)
+    public void Attacked(float atk,Vector2 atkForce)
     {
+        blood -= atk;
+        if (blood <= 0)
+        {
+            Die();
+            return;
+        }
         isKnockback = true;
         rb.velocity = atkForce;
         jumpCountRemain = maxJumpCount;
     }
+
+    //回血，供外部引用-----------------------------------------------------
+    public void addBlood(float amout)
+    {
+        blood = Mathf.Min(blood + amout, maxBlood);
+    }
+
+    //玩家死亡处理-----------------------------------------------
+    private void Die()
+    {
+        gameObject.SetActive(false);
+    }
+    
 }
