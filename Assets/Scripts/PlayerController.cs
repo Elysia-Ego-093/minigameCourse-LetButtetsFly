@@ -1,52 +1,68 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;//新增
+using UnityEngine.UI;
 
-public class NewBehaviourScript : MonoBehaviour 
+public class PlayerController : MonoBehaviour 
 {
     private Rigidbody2D rb;
-    public float moveSpeed = 8f, jumpForce = 12f;
+
+    [Header("玩家ID")]
+    public int playerID = 1;
+
+    [Header("移动设置")]
+    public float moveSpeed = 8f;
+    private float moveInput;
+
+    [Header("跳跃设置")]
+    public float jumpForce = 12f;
     public int maxJumpCount = 2;
     private int jumpCountRemain;
-    public Transform groundCheckPoint;
-    public LayerMask groundLayer;
-    private float moveInput;
-    private bool isGrounded;
     private bool isJumping;
 
-    //新增-----------------------------------------------
+    [Header("地面检测")]
+    public Transform groundCheckPoint;
+    public LayerMask groundLayer;
+    private bool isGrounded;
+
+    [Header("加速设置")]
     public float sprintSpeedMultiplier = 2f;
     public float staminaCostPerSecond = 50f;
     public float maxStamina = 100f;
-    private float currentStamina;
+    public float currentStamina;
     public float staminaRecoverDelay = 2f;
     public float staminaRecoverSpeed = 20f;
     private float recoverWaitTimer;
     private bool isSprinting;
     public Slider staminaSlider;
-    //------------------------------------------------
 
+    [Header("受击设置")]
+    private bool isKnockback = false;
+
+    [Header("血量设置")]
+    public float maxBlood = 1000f;
+    public float blood;
+
+    //-----------------------------------------------------
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         jumpCountRemain = maxJumpCount;
-        //新增-------------------------------------
         currentStamina=maxStamina;
         recoverWaitTimer=staminaRecoverDelay;
-        //-----------------------------------------------
+        blood = maxBlood;
     }
-
+    //-----------------------------------------------------
     void Update()
     {   
-        SprintInput(); //新增
+        SprintInput();
         move();
         jump();
-        UpdateStamina();//新增
-        UpdateStaminaUI();//新增
+        UpdateStamina();
+        if (Input.GetKeyDown(KeyCode.U)) Attacked(50, new Vector2(10f, 5f));//测试用例，用U键模拟受击
     }
 
-    //新增----------------------------------------------
+    //-----------------------------------------------------
     private void SprintInput(){
         moveInput = Input.GetAxisRaw("Horizontal");
         
@@ -60,15 +76,16 @@ public class NewBehaviourScript : MonoBehaviour
         }
     }
 
-    //-----------------------------------------------------
+    //左右移动-----------------------------------------------------
     private void move()
     {
+        if (isKnockback) return;
         moveInput = Input.GetAxisRaw("Horizontal");
-        float finalSpeed = isSprinting ? moveSpeed * sprintSpeedMultiplier : moveSpeed;//修改
-        rb.velocity = new Vector2(moveInput * finalSpeed, rb.velocity.y);//修改
+        float finalSpeed = isSprinting ? moveSpeed * sprintSpeedMultiplier : moveSpeed;
+        rb.velocity = new Vector2(moveInput * finalSpeed, rb.velocity.y);
     }
 
-//新增--------------------------------------------------------------
+    //-----------------------------------------------------
     private void UpdateStamina(){
         if(isSprinting){
             currentStamina-=staminaCostPerSecond*Time.deltaTime;
@@ -82,15 +99,9 @@ public class NewBehaviourScript : MonoBehaviour
             }
         }
     }
-    
-    private void UpdateStaminaUI(){
-        if(staminaSlider!=null){
-            staminaSlider.maxValue = maxStamina;
-            staminaSlider.value = currentStamina;
-        }
-    }
-//--------------------------------------------------------------------
 
+
+    //跳跃-----------------------------------------------------
     private void jump()
     {
         if (Input.GetKey(KeyCode.S) && Input.GetButtonDown("Jump"))
@@ -98,18 +109,25 @@ public class NewBehaviourScript : MonoBehaviour
             StartCoroutine(DisablePlatformCollision());
             return;
         }
-        bool wasGrounded = isGrounded;
-        isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, 0.1f, groundLayer);
-        if (isGrounded && !wasGrounded) jumpCountRemain = maxJumpCount;
+        isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, 0.005f, groundLayer);
+        if (isGrounded && rb.velocity.y <= 0) 
+        { 
+            jumpCountRemain = maxJumpCount;
+            isKnockback = false;
+        } 
         if (Input.GetButtonDown("Jump") && jumpCountRemain > 0)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             jumpCountRemain--;
             isJumping = true;
+            isKnockback = false;
         }
         if (Input.GetButtonUp("Jump")) isJumping = false;
         if (!isJumping) rb.velocity += new Vector2(0, -9.81f * Time.deltaTime);
+        rb.velocity += new Vector2(0, -9.81f * Time.deltaTime);
     }
+
+    //实现跳下平台-----------------------------------------------------
     System.Collections.IEnumerator DisablePlatformCollision()
     {
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, 1f);
@@ -125,4 +143,31 @@ public class NewBehaviourScript : MonoBehaviour
             if (e != null) Physics2D.IgnoreCollision(GetComponent<Collider2D>(), col, false);
         }
     }
+
+    //受击函数，供外部引用--------------------------------------------------------
+    public void Attacked(float atk,Vector2 atkForce)
+    {
+        blood -= atk;
+        if (blood <= 0)
+        {
+            Die();
+            return;
+        }
+        isKnockback = true;
+        rb.velocity = atkForce;
+        jumpCountRemain = maxJumpCount;
+    }
+
+    //回血，供外部引用-----------------------------------------------------
+    public void addBlood(float amout)
+    {
+        blood = Mathf.Min(blood + amout, maxBlood);
+    }
+
+    //玩家死亡处理-----------------------------------------------
+    private void Die()
+    {
+        gameObject.SetActive(false);
+    }
+    
 }
