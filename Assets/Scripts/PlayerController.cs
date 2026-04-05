@@ -34,7 +34,6 @@ public class PlayerController : MonoBehaviour
     public float staminaRecoverSpeed = 20f;
     private float recoverWaitTimer;
     private bool isSprinting;
-    public Slider staminaSlider;
 
     [Header("受击设置")]
     private bool isKnockback = false;
