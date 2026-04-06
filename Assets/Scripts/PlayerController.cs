@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour
     private GunData currentGun;                         // 当前使用的枪械数据
     private float lastShootTime = 0f;                   // 上次发射时间
     private float lastMoveDirection = 1f;               // 最后移动方向（用于子弹方向）
+    private int shootController = 0;
 
     //-----------------------------------------------------
     void Start()
@@ -76,8 +77,21 @@ public class PlayerController : MonoBehaviour
         UpdateStamina();
         SwitchGun();
         Shoot();
-        if (Input.GetKeyDown(KeyCode.U)) Attacked(50, new Vector2(10f, 5f));//测试用例，用U键模拟受击
+        if (Input.GetKeyDown(KeyCode.U)) testbullet();//测试用例，用U键模拟敌方射击子弹
     }
+
+    //测试用例，用U键模拟敌方射击子弹-------------------------------------------
+    private void testbullet()
+    {
+        Vector2 spawnPos = (Vector2)transform.position + lastMoveDirection * new Vector2(10f, 0f);
+        GameObject newBullet = Instantiate(currentGun.bulletPrefab, spawnPos, Quaternion.identity);
+        Bullet bulletScript = newBullet.GetComponent<Bullet>();
+        if (bulletScript != null)
+        {
+            bulletScript.SetStatus(currentGun.bulletSpeed, -lastMoveDirection, currentGun.bulletATK, currentGun.force_x, currentGun.force_y);
+        }
+    }
+    
     // 切换枪械-----------------------------------------------------
     private void SwitchGun()
     {
@@ -97,15 +111,16 @@ public class PlayerController : MonoBehaviour
         float fireInterval = 1f / currentGun.fireRate;
         if (Time.time - lastShootTime < fireInterval)
             return;
-        if (Input.GetKeyDown(KeyCode.J))
+        if (Input.GetKey(KeyCode.J))
         {
             lastShootTime = Time.time;
-            Vector2 spawnPos = (Vector2)transform.position + lastMoveDirection * new Vector2(0.6f, 0f);
+            shootController = (shootController + 1) % 2;
+            Vector2 spawnPos = (Vector2)transform.position + lastMoveDirection * new Vector2(1f + 0.15f * shootController, 0f);
             GameObject newBullet = Instantiate(currentGun.bulletPrefab, spawnPos, Quaternion.identity);
             Bullet bulletScript = newBullet.GetComponent<Bullet>();
             if (bulletScript != null)
             {
-                bulletScript.SetSpeed(currentGun.bulletSpeed, lastMoveDirection);
+                bulletScript.SetStatus(currentGun.bulletSpeed, lastMoveDirection, currentGun.bulletATK, currentGun.force_x, currentGun.force_y);
             }
         }
     }
@@ -161,8 +176,7 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(DisablePlatformCollision());
             return;
         }
-        isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, 0.005f, groundLayer);
-        if (isGrounded && rb.velocity.y <= 0) 
+        if (rb.velocity.y == 0)
         { 
             jumpCountRemain = maxJumpCount;
             isKnockback = false;
