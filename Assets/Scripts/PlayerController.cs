@@ -34,7 +34,6 @@ public class PlayerController : MonoBehaviour
     public float staminaRecoverSpeed = 20f;
     private float recoverWaitTimer;
     private bool isSprinting;
-    public Slider staminaSlider;
 
     [Header("受击设置")]
     private bool isKnockback = false;
@@ -42,6 +41,13 @@ public class PlayerController : MonoBehaviour
     [Header("血量设置")]
     public float maxBlood = 1000f;
     public float blood;
+
+    [Header("枪械系统")]
+    public List<GunData> guns = new List<GunData>();   // 枪械列表（在 Inspector 中拖入）
+    private int currentGunIndex = 0;
+    private GunData currentGun;                         // 当前使用的枪械数据
+    private float lastShootTime = 0f;                   // 上次发射时间
+    private float lastMoveDirection = 1f;               // 最后移动方向（用于子弹方向）
 
     //-----------------------------------------------------
     void Start()
@@ -51,6 +57,15 @@ public class PlayerController : MonoBehaviour
         currentStamina=maxStamina;
         recoverWaitTimer=staminaRecoverDelay;
         blood = maxBlood;
+        if (guns.Count > 0)
+        {
+            currentGunIndex = 0;
+            currentGun = guns[currentGunIndex];
+        }
+        else
+        {
+            Debug.LogError("未设置任何枪械！请在 Inspector 中为 guns 列表添加枪械数据。");
+        }
     }
     //-----------------------------------------------------
     void Update()
@@ -59,7 +74,40 @@ public class PlayerController : MonoBehaviour
         move();
         jump();
         UpdateStamina();
+        SwitchGun();
+        Shoot();
         if (Input.GetKeyDown(KeyCode.U)) Attacked(50, new Vector2(10f, 5f));//测试用例，用U键模拟受击
+    }
+    // 切换枪械-----------------------------------------------------
+    private void SwitchGun()
+    {
+        if (Input.GetKeyDown(KeyCode.R) && guns.Count > 0)
+        {
+            currentGunIndex = (currentGunIndex + 1) % guns.Count;
+            currentGun = guns[currentGunIndex];
+            Debug.Log("切换至：" + currentGun.gunName);
+        }
+    }
+
+    // 射击---------------------------------------------------------------
+    private void Shoot()
+    {
+        if (currentGun == null) return;
+        // 射速冷却检查
+        float fireInterval = 1f / currentGun.fireRate;
+        if (Time.time - lastShootTime < fireInterval)
+            return;
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            lastShootTime = Time.time;
+            Vector2 spawnPos = (Vector2)transform.position + lastMoveDirection * new Vector2(0.6f, 0f);
+            GameObject newBullet = Instantiate(currentGun.bulletPrefab, spawnPos, Quaternion.identity);
+            Bullet bulletScript = newBullet.GetComponent<Bullet>();
+            if (bulletScript != null)
+            {
+                bulletScript.SetSpeed(currentGun.bulletSpeed, lastMoveDirection);
+            }
+        }
     }
 
     //-----------------------------------------------------
@@ -83,6 +131,10 @@ public class PlayerController : MonoBehaviour
         moveInput = Input.GetAxisRaw("Horizontal");
         float finalSpeed = isSprinting ? moveSpeed * sprintSpeedMultiplier : moveSpeed;
         rb.velocity = new Vector2(moveInput * finalSpeed, rb.velocity.y);
+        if (moveInput != 0)
+        {
+            lastMoveDirection = Mathf.Sign(moveInput);
+        }
     }
 
     //-----------------------------------------------------
