@@ -16,6 +16,6 @@ MonoBehaviour:
   gunName: Pistol
   fireRate: 5
   bulletSpeed: 10
-  bulletATK: 200
-  force_x: 10
-  force_y: 5
+  bulletATK: 100
+  force_x: 5
+  force_y: 10

@@ -77,18 +77,24 @@ public class PlayerController : MonoBehaviour
         UpdateStamina();
         SwitchGun();
         Shoot();
-        if (Input.GetKeyDown(KeyCode.U)) testbullet();//测试用例，用U键模拟敌方射击子弹
+        if (Input.GetKey(KeyCode.U)) testbullet();//测试用例，用U键模拟敌方射击子弹
     }
 
     //测试用例，用U键模拟敌方射击子弹-------------------------------------------
     private void testbullet()
     {
-        Vector2 spawnPos = (Vector2)transform.position + lastMoveDirection * new Vector2(10f, 0f);
+        if (currentGun == null) return;
+        // 射速冷却检查
+        float fireInterval = 1f / currentGun.fireRate;
+        if (Time.time - lastShootTime < fireInterval)
+            return;
+        lastShootTime = Time.time;
+        Vector2 spawnPos = new Vector2(10f + 0.15f * shootController, -3.65f);
         GameObject newBullet = Instantiate(currentGun.bulletPrefab, spawnPos, Quaternion.identity);
         Bullet bulletScript = newBullet.GetComponent<Bullet>();
         if (bulletScript != null)
         {
-            bulletScript.SetStatus(currentGun.bulletSpeed, -lastMoveDirection, currentGun.bulletATK, currentGun.force_x, currentGun.force_y);
+            bulletScript.SetStatus(currentGun.bulletSpeed, -1, currentGun.bulletATK, currentGun.force_x, currentGun.force_y);
         }
     }
     
@@ -114,8 +120,8 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.J))
         {
             lastShootTime = Time.time;
-            shootController = (shootController + 1) % 2;
-            Vector2 spawnPos = (Vector2)transform.position + lastMoveDirection * new Vector2(1f + 0.15f * shootController, 0f);
+            //shootController = (shootController + 1) % 2;
+            Vector2 spawnPos = (Vector2)transform.position + lastMoveDirection * new Vector2(1f /*+ 0.15f * shootController*/, 0f);
             GameObject newBullet = Instantiate(currentGun.bulletPrefab, spawnPos, Quaternion.identity);
             Bullet bulletScript = newBullet.GetComponent<Bullet>();
             if (bulletScript != null)
