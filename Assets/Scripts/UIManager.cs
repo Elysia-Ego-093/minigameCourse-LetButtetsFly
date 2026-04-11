@@ -6,16 +6,16 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("玩家")]
+    [Header("ç©å®¶")]
     public PlayerController player;
 
-    [Header("血条")]
+    [Header("è¡æ¡")]
     public Slider bloodBar;
 
-    [Header("体力条")]
+    [Header("ä½åæ¡")]
     public Slider staminaBar;
 
-    [Header("子弹显示")]
+    [Header("å­å¼¹æ¾ç¤º")]
     public TMP_Text ammoText;  
 
     void Start()
@@ -58,14 +58,14 @@ public class UIManager : MonoBehaviour
         
         if (needAmmo)
         {
-            ammoText.text = $"□□: {currentAmmo} / {maxAmmo}";
+            ammoText.text = $"â¡â¡: {currentAmmo} / {maxAmmo}";
             
-            // 子弹不足时改变颜色
+            // å­å¼¹ä¸è¶³æ¶æ¹åé¢è²
             if (currentAmmo == 0)
             {
                 ammoText.color = Color.red;
             }
-            else if (currentAmmo <= maxAmmo * 0.2f) // 剩余20%以下变黄
+            else if (currentAmmo <= maxAmmo * 0.2f) // å©ä½20%ä»¥ä¸åé»
             {
                 ammoText.color = Color.yellow;
             }
@@ -76,8 +76,8 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            // 无限弹药模式
-            ammoText.text = $"子弹: ∞";
+            // æ éå¼¹è¯æ¨¡å¼
+            ammoText.text = $"å­å¼¹: â";
             ammoText.color = Color.cyan;
         }
     }
