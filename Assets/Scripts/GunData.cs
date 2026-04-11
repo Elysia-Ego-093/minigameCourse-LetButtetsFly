@@ -23,4 +23,9 @@ public class GunData : ScriptableObject
     [Header("子弹击退力度")]
     public float force_x = 10f;
     public float force_y = 5f;
+
+    [Header("当前子弹数量")]
+    public int nowAmmo = -1; // -1表示没有初始化
+    public bool needAmmo = true; // 是否需要子弹
+    public int maxAmmo = 100; // 最大子弹数量
 }
