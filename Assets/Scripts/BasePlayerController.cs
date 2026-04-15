@@ -5,6 +5,13 @@ using System.Collections.Generic;
 public abstract class BasePlayerController : MonoBehaviour
 {
     protected Rigidbody2D rb;
+    protected PlayerStatus playerStatus;
+
+    // 公开的读取属性
+    public PlayerStatus PlayerStatus => playerStatus;
+
+
+
 
     [Header("移动设置")]
     public float moveSpeed = 8f;
@@ -38,9 +45,10 @@ public abstract class BasePlayerController : MonoBehaviour
     protected float knockbackDuration = 0.3f;
     protected float knockbackTimer = 0f;
 
-    [Header("血量设置")]
-    public float maxBlood = 1000f;
-    public float blood;
+    //[Header("血量设置")]
+    //public float maxBlood = 1000f;
+    //public float blood;
+    //血量控制移动到PlayerStatus
 
 
     // 抽象方法 - 子类必须实现自己的输入逻辑
@@ -60,7 +68,13 @@ public abstract class BasePlayerController : MonoBehaviour
         jumpCountRemain = maxJumpCount;
         currentStamina = maxStamina;
         recoverWaitTimer = staminaRecoverDelay;
-        blood = maxBlood;
+        // 新增：获取PlayerStatus组件
+        playerStatus = GetComponent<PlayerStatus>();
+        if (playerStatus == null)
+        {
+            Debug.LogError("玩家物体缺少PlayerStatus组件");
+        }
+        //blood = maxBlood;
     }
 
     protected virtual void Update()
@@ -177,12 +191,15 @@ public abstract class BasePlayerController : MonoBehaviour
     }
     public virtual void Attacked(float atk, Vector2 atkForce)
     {
-        blood -= atk;
-        if (blood <= 0)
+        if (playerStatus == null) return;
+        
+        playerStatus.TakeDamage(atk); // 调用PlayerStatus的扣血（优先扣护盾）
+        if (playerStatus.currentHp <= 0)
         {
             Die();
             return;
         }
+        
         isKnockback = true;
         knockbackTimer = knockbackDuration;
         rb.velocity = atkForce;
@@ -191,9 +208,10 @@ public abstract class BasePlayerController : MonoBehaviour
 
     public virtual void addBlood(float amount)
     {
-        blood = Mathf.Min(blood + amount, maxBlood);
+        if (playerStatus == null) return;
+        playerStatus.HealthRecovery(amount); 
+      
     }
-
     protected virtual void Die()
     {
         gameObject.SetActive(false);
