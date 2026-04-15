@@ -19,6 +19,6 @@ MonoBehaviour:
   bulletATK: 50
   force_x: 10
   force_y: 5
-  nowAmmo: 40
+  nowAmmo: 24
   needAmmo: 1
   maxAmmo: 40

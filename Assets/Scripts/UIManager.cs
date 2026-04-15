@@ -31,13 +31,13 @@ public class UIManager : MonoBehaviour
     }
 
     private void UpdateBlood()
-    {
-        if (player != null && bloodBar != null)
-        {
-            bloodBar.maxValue = player.maxBlood;
-            bloodBar.value = player.blood;
-        }
-    }
+{
+    if (player == null || bloodBar == null || player.PlayerStatus == null)
+        return;
+
+    bloodBar.maxValue = player.PlayerStatus.maxHp;
+    bloodBar.value = player.PlayerStatus.currentHp;
+}
 
     private void UpdateStamina()
     {
