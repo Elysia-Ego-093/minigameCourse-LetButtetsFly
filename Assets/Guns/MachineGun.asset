@@ -16,9 +16,9 @@ MonoBehaviour:
   gunName: Machine Gun
   fireRate: 50
   bulletSpeed: 30
-  bulletATK: 50
+  bulletATK: 10
   force_x: 10
   force_y: 5
-  nowAmmo: 24
+  nowAmmo: 32
   needAmmo: 1
   maxAmmo: 40
