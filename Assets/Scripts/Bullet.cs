@@ -38,5 +38,17 @@ public class Bullet : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+
+        else if (collision.CompareTag("Obstacle"))
+        {
+            // 找到掩体的InteractiveStuff组件（CoverBox是其子类）
+            InteractiveStuff cover = collision.GetComponent<InteractiveStuff>();
+            if (cover != null)
+            {
+                // 调用掩体扣血方法，子弹攻击力作为伤害值
+                cover.TakeDamage(ATK);
+            }
+            Destroy(gameObject); // 击中掩体后销毁子弹
+        }
     }
 }
