@@ -18,7 +18,7 @@ public class GunData : ScriptableObject
     public float bulletSpeed = 10f;
 
     [Header("子弹伤害")]
-    public float bulletATK = 200f;
+    public float bulletATK = 50f;
 
     [Header("子弹击退力度")]
     public float force_x = 10f;

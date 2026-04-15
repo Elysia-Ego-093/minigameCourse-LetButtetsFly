@@ -5,11 +5,23 @@ using System.Collections.Generic;
 public abstract class BasePlayerController : MonoBehaviour
 {
     protected Rigidbody2D rb;
+    protected BoxCollider2D PlayerCollider;
+    protected Transform PlayerTransform;
+
+    [Header("体型设置")]
+    public float basicWidth = 1f;
+    public float basicHeight = 1f;
+    public float bigWidth = 1.5f;
+    public float bigHeight = 1.5f;
+    public float smallWidth = 0.5f;
+    public float smallHeight = 0.5f;
+    protected float sizeBuffTimer;
+    public float crouchHeightPercent = 0.5f;
 
     [Header("移动设置")]
-    public float moveSpeed = 8f;
+    public float basicMoveSpeed = 8f;
+    protected float MoveSpeed;
     protected float moveInput;
-
     protected float lastMoveDirection = 1f;
 
     [Header("跳跃设置")]
@@ -52,11 +64,16 @@ public abstract class BasePlayerController : MonoBehaviour
     protected abstract bool GetTestInput();
     protected abstract bool GetJumpHoldInput();    
     protected abstract bool GetDownInput();        
-    protected abstract bool GetReloadInput();   
+    protected abstract bool GetReloadInput();
+    protected abstract bool GetDownHoldInput();
+    protected abstract bool GetDownFinishInput();
 
     protected virtual void Start()
     {
+        PlayerTransform = GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
+        PlayerCollider = GetComponent<BoxCollider2D>();
+        MoveSpeed = basicMoveSpeed;
         jumpCountRemain = maxJumpCount;
         currentStamina = maxStamina;
         recoverWaitTimer = staminaRecoverDelay;
@@ -67,9 +84,11 @@ public abstract class BasePlayerController : MonoBehaviour
     {
         HandleSprint();
         HandleMove();
+        HandleDown();
         HandleJump();
         UpdateStamina();
         UpdateKnockback();
+        UpdateBuff();
     }
 
     // 移动相关
@@ -77,7 +96,7 @@ public abstract class BasePlayerController : MonoBehaviour
     {
         if (isKnockback) return;
         moveInput = GetHorizontalInput();
-        float finalSpeed = isSprinting ? moveSpeed * sprintSpeedMultiplier : moveSpeed;
+        float finalSpeed = isSprinting ? MoveSpeed * sprintSpeedMultiplier : MoveSpeed;
         rb.velocity = new Vector2(moveInput * finalSpeed, rb.velocity.y);
         
         if (moveInput != 0)
@@ -98,6 +117,23 @@ public abstract class BasePlayerController : MonoBehaviour
         else
         {
             isSprinting = false;
+        }
+    }
+
+    //下蹲相关
+    protected virtual void HandleDown()
+    {
+        if (rb.velocity.y == 0 && GetDownInput())
+        {
+            Debug.Log("Down");
+            PlayerCollider.size = new Vector2(1f, crouchHeightPercent);
+            PlayerCollider.offset = new Vector2(0, -(1f - crouchHeightPercent) / 2f);
+        }
+        if (GetDownFinishInput() || Mathf.Abs(rb.velocity.y) > 0.5f)
+        {
+            Debug.Log("UP");
+            PlayerCollider.size = new Vector2(1f, 1f);
+            PlayerCollider.offset = Vector2.zero;
         }
     }
 
@@ -146,6 +182,13 @@ public abstract class BasePlayerController : MonoBehaviour
         }
     }
 
+    //Buff相关
+    protected virtual void UpdateBuff()
+    {
+        if (sizeBuffTimer > 0) sizeBuffTimer -= Time.deltaTime;
+        else PlayerTransform.localScale = new Vector3(basicWidth, basicHeight, 1f);
+    }
+
     // 跳下平台
     protected virtual IEnumerator DisablePlatformCollision()
     {
@@ -155,7 +198,7 @@ public abstract class BasePlayerController : MonoBehaviour
             PlatformEffector2D e = col.GetComponent<PlatformEffector2D>();
             if (e != null) Physics2D.IgnoreCollision(GetComponent<Collider2D>(), col, true);
         }
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.5f);
         foreach (var col in hitColliders)
         {
             PlatformEffector2D e = col.GetComponent<PlatformEffector2D>();
@@ -163,7 +206,7 @@ public abstract class BasePlayerController : MonoBehaviour
         }
     }
 
-    // 公共方法
+    // 受击处理
     protected virtual void UpdateKnockback()
     {
         if (isKnockback)
@@ -175,6 +218,8 @@ public abstract class BasePlayerController : MonoBehaviour
             }
         }
     }
+
+    //受击
     public virtual void Attacked(float atk, Vector2 atkForce)
     {
         blood -= atk;
@@ -189,11 +234,20 @@ public abstract class BasePlayerController : MonoBehaviour
         jumpCountRemain = maxJumpCount;
     }
 
+    //加血
     public virtual void addBlood(float amount)
     {
         blood = Mathf.Min(blood + amount, maxBlood);
     }
 
+    //变大/变小Buff
+    public virtual void changeSize(float percent,float buffTime)
+    {
+        sizeBuffTimer = buffTime;
+        PlayerTransform.localScale = new Vector3(PlayerTransform.localScale.x * percent, PlayerTransform.localScale.y * percent, 1f);
+    }
+
+    //死亡处理
     protected virtual void Die()
     {
         gameObject.SetActive(false);

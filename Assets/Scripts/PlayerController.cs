@@ -67,8 +67,9 @@ public class PlayerController : BasePlayerController
     protected override bool GetShootInput() => Input.GetKey(shootKey);
     protected override bool GetSwitchGunInput() => Input.GetKeyDown(switchGunKey);
     protected override bool GetTestInput() => Input.GetKeyDown(testKey);
-
     protected override bool GetReloadInput() => Input.GetKeyDown(reloadKey);
+    protected override bool GetDownHoldInput() => Input.GetKeyDown(downKey);
+    protected override bool GetDownFinishInput() => Input.GetKeyUp(downKey);
 
     private void HandleSwitchGun()
     {

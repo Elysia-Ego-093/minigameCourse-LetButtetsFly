@@ -6,16 +6,16 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("ç©å®¶")]
+    [Header("玩家")]
     public PlayerController player;
 
-    [Header("è¡æ¡")]
+    [Header("血条")]
     public Slider bloodBar;
 
-    [Header("ä½åæ¡")]
+    [Header("体力条")]
     public Slider staminaBar;
 
-    [Header("å­å¼¹æ¾ç¤º")]
+    [Header("子弹")]
     public TMP_Text ammoText;  
 
     void Start()
