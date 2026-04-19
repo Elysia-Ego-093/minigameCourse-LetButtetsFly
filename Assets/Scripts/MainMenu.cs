@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -18,8 +17,8 @@ public class MainMenu : MonoBehaviour
 
     public void StartGame()
     {
-        // "MainGame" Ó¦Ìæ»»ÎªÄãÓÎÏ·Ö÷³¡¾°µÄÃû×Ö
-        SceneManager.LoadScene("MainGame");
+        // ä½¿ç”¨å­˜åœ¨çš„Battleground_1åœºæ™¯
+        SceneManager.LoadScene("Battleground_1");
     }
     public void TestGame()
     {
@@ -28,9 +27,9 @@ public class MainMenu : MonoBehaviour
 
     public void ExitGame()
     {
-        // ÍË³öÓÎÏ·
+        // é€€å‡ºæ¸¸æˆ
         Application.Quit();
-        // ÔÚUnity±à¼­Æ÷ÖĞ£¬ÕâĞĞ´úÂë²»»áÉúĞ§£¬µ«»áÔÚ×îÖÕ¹¹½¨µÄÓÎÏ·ÖĞÉúĞ§
-        Debug.Log("ÓÎÏ·ÒÑÍË³ö£¡");
+        // åœ¨Unityç¼–è¾‘å™¨ä¸­ï¼Œæ­¤ä»£ç ä¸ä¼šç”Ÿæ•ˆï¼Œä»…åœ¨æ„å»ºåçš„æ¸¸æˆä¸­æœ‰æ•ˆ
+        Debug.Log("æ¸¸æˆå·²é€€å‡º");
     }
 }
