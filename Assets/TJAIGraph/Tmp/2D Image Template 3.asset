@@ -1,0 +1,235 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3518305fa00670c4799b099953f21dc2, type: 3}
+  m_Name: 2D Image Template 3
+  m_EditorClassIdentifier: 
+  serializedNodes: []
+  nodes:
+  - rid: 6551849488838295579
+  - rid: 6551849488838295580
+  - rid: 6551849488838295581
+  nodeNames:
+    rid: 6551849488838295582
+  edges:
+  - GUID: 0c56d989-5ccc-43e3-bb98-4fd2d30b724e
+    owner: {fileID: 11400000}
+    inputNodeGUID: 9decb045-ff76-4c70-a232-728a60a61838
+    outputNodeGUID: 84fe49ef-dc13-4dc5-8413-c2374f0be7b7
+    inputFieldName: prompt
+    outputFieldName: output
+    inputPortIdentifier: 
+    outputPortIdentifier: 
+  - GUID: 27ff476f-01e9-4c7b-8097-c6345ac1630b
+    owner: {fileID: 11400000}
+    inputNodeGUID: 7ca97f76-7464-43df-b959-e02cc13f4d85
+    outputNodeGUID: 9decb045-ff76-4c70-a232-728a60a61838
+    inputFieldName: m_Sprite
+    outputFieldName: m_OutputTexture
+    inputPortIdentifier: 
+    outputPortIdentifier: 
+  groups: []
+  stackNodes: []
+  pinnedElements: []
+  exposedParameters: []
+  serializedParameterList: []
+  stickyNotes:
+  - position:
+      serializedVersion: 2
+      x: 200
+      y: 50
+      width: 150
+      height: 100
+    title: "\u6DF7\u5143\u6587\u751F\u56FE"
+    content: "\u8F93\u5165\u56FE\u7247\u63CF\u8FF0Prompt\u751F\u6210\u56FE\u7247\u3002\n"
+  - position:
+      serializedVersion: 2
+      x: 900
+      y: 0
+      width: 300
+      height: 100
+    title: "\u8282\u70B9\u4FE1\u606F"
+    content: "\u8FD0\u884CSpriteRendererNode\uFF0C\u5BF9\u5E94\u7684Sprite\u5C06\u88AB\u66FF\u6362\u3002"
+  nodeInspectorReference: {fileID: 0}
+  description: 
+  position: {x: 0, y: 0, z: 0}
+  scale: {x: 1, y: 1, z: 1}
+  settings:
+    widthScale: 1
+    heightScale: 1
+    depthScale: 1
+    width: 512
+    height: 512
+    depth: 512
+    potSize: 512
+    sizeMode: 1
+    dimension: 2
+    outputChannels: 1
+    outputPrecision: 3
+    editFlags: 128
+    doubleBuffered: 0
+    wrapMode: 0
+    filterMode: 0
+    refreshMode: 2
+    period: 0
+  _outputTextures: []
+  history:
+    graph: {fileID: 11400000}
+    assetsCache:
+      rid: 6551849488838295583
+    orderedNodes:
+    - rid: 6551849488838295580
+  defaultNodeInheritanceMode: -2
+  resourceFolder: 
+  references:
+    version: 2
+    RefIds:
+    - rid: 6551849488838295579
+      type: {class: StringNode, ns: , asm: Tuanjie.AIGraph.Runtime}
+      data:
+        nodeCustomName: String
+        GUID: 84fe49ef-dc13-4dc5-8413-c2374f0be7b7
+        computeOrder: 0
+        status: 0
+        position:
+          serializedVersion: 2
+          x: 200
+          y: 150
+          width: 100
+          height: 100
+        expanded: 0
+        inCollapsedGroup: 0
+        debug: 0
+        nodeLock: 0
+        isUpdate: 0
+        isPinned: 0
+        inputString: 
+        output: 
+        textFiledValue: 
+        isShowString: 1
+    - rid: 6551849488838295580
+      type: {class: HyImageGeneratingNode, ns: UnityEngine.AIGraph, asm: Tuanjie.AIGraph.Runtime}
+      data:
+        nodeCustomName: ImageGenerating(Hunyuan)
+        GUID: 9decb045-ff76-4c70-a232-728a60a61838
+        computeOrder: 1
+        status: 0
+        position:
+          serializedVersion: 2
+          x: 550
+          y: 150
+          width: 100
+          height: 100
+        expanded: 0
+        inCollapsedGroup: 0
+        debug: 0
+        nodeLock: 0
+        isUpdate: 0
+        isPinned: 0
+        settings:
+          widthScale: 1
+          heightScale: 1
+          depthScale: 1
+          width: 512
+          height: 512
+          depth: 1
+          potSize: 0
+          sizeMode: -2
+          dimension: -2
+          outputChannels: -2
+          outputPrecision: -2
+          editFlags: -257
+          doubleBuffered: 0
+          wrapMode: -2
+          filterMode: -2
+          refreshMode: 0
+          period: 0
+        hasSettings: 0
+        hasPreview: 0
+        hasSave: 1
+        saveHistory: 1
+        allowHistory: 1
+        taskID: 
+        assetPath: 
+        taskCostTime: 2
+        taskCostToken: 20
+        m_OutputTexture: {fileID: 0}
+        outputImageUrl: 
+        prompt: 
+        image: {fileID: 0}
+        revise: 1
+        seed: 7758
+        ignoreStyleForIrag: 0
+        revisedPrompt: 
+        size: 1024x1024
+        style: 
+    - rid: 6551849488838295581
+      type: {class: SpriteRendererNode, ns: UnityEngine.AIGraph, asm: Tuanjie.AIGraph.Runtime}
+      data:
+        nodeCustomName: SpriteRendererNode
+        GUID: 7ca97f76-7464-43df-b959-e02cc13f4d85
+        computeOrder: 2
+        status: 0
+        position:
+          serializedVersion: 2
+          x: 900
+          y: 100
+          width: 100
+          height: 100
+        expanded: 0
+        inCollapsedGroup: 0
+        debug: 0
+        nodeLock: 0
+        isUpdate: 0
+        isPinned: 0
+        settings:
+          widthScale: 1
+          heightScale: 1
+          depthScale: 1
+          width: 512
+          height: 512
+          depth: 1
+          potSize: 0
+          sizeMode: -2
+          dimension: -2
+          outputChannels: -2
+          outputPrecision: -2
+          editFlags: -257
+          doubleBuffered: 0
+          wrapMode: -2
+          filterMode: -2
+          refreshMode: 0
+          period: 0
+        hasSettings: 0
+        hasPreview: 0
+        hasSave: 0
+        m_Renderer: {fileID: 0}
+        m_Sprite: {fileID: 0}
+        m_GO: {fileID: 0}
+    - rid: 6551849488838295582
+      type: {class: NodeName, ns: GraphProcessor, asm: com.alelievr.NodeGraphProcessor.Runtime}
+      data:
+        NameList:
+        - String
+        - ImageGenerating(Hunyuan)
+        - SpriteRendererNode
+    - rid: 6551849488838295583
+      type: {class: NodeAssetsCache, ns: UnityEngine.AIGraph, asm: Tuanjie.AIGraph.Runtime}
+      data:
+        m_Keys:
+        - rid: 6551849488838295580
+        m_Values:
+        - rid: 6551849488838295584
+    - rid: 6551849488838295584
+      type: {class: NodeHistory, ns: UnityEngine.AIGraph, asm: Tuanjie.AIGraph.Runtime}
+      data:
+        expanded: 1
+        m_IDWithPreview: []
