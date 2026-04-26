@@ -6,16 +6,16 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("ç©å®¶")]
+    [Header("Player")]
     public PlayerController player;
 
-    [Header("è¡æ¡")]
+    [Header("Health Bar")]
     public Slider bloodBar;
 
-    [Header("ä½åæ¡")]
+    [Header("Stamina Bar")]
     public Slider staminaBar;
 
-    [Header("å­å¼¹æ¾ç¤º")]
+    [Header("Ammo Display")]
     public TMP_Text ammoText;  
 
     void Start()
@@ -58,14 +58,14 @@ public class UIManager : MonoBehaviour
         
         if (needAmmo)
         {
-            ammoText.text = $"â¡â¡: {currentAmmo} / {maxAmmo}";
+            ammoText.text = $"bullet: {currentAmmo} / {maxAmmo}";
             
-            // å­å¼¹ä¸è¶³æ¶æ¹åé¢è²
+            // Change text color when ammo is low
             if (currentAmmo == 0)
             {
                 ammoText.color = Color.red;
             }
-            else if (currentAmmo <= maxAmmo * 0.2f) // å©ä½20%ä»¥ä¸åé»
+            else if (currentAmmo <= maxAmmo * 0.2f) // Yellow when ammo is below 20%
             {
                 ammoText.color = Color.yellow;
             }
@@ -76,8 +76,8 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            // æ éå¼¹è¯æ¨¡å¼
-            ammoText.text = $"å­å¼¹: â";
+            // Unlimited ammo mode
+            ammoText.text = "Ammo: Infinity";
             ammoText.color = Color.cyan;
         }
     }
