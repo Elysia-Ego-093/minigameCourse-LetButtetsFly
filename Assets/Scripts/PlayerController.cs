@@ -15,41 +15,17 @@ public class PlayerController : BasePlayerController
     public KeyCode testBulletKey = KeyCode.U;
     public KeyCode testSizeKey = KeyCode.T;
     public KeyCode downKey = KeyCode.S;
-
     public KeyCode reloadKey = KeyCode.Q;
-
-    
-    // ===== 弹药系统 =====
-    protected override void Start()
-    {
-        base.Start();
-        if (guns.Count > 0)
-        {
-            currentGunIndex = 0;
-            currentGun = guns[currentGunIndex];
-            // 初始化子弹数量为满弹匣
-            currentGun.nowAmmo = currentGun.maxAmmo;
-            Debug.Log($"初始化武器: {currentGun.gunName}, 子弹: {currentGun.nowAmmo}/{currentGun.maxAmmo}");
-            for(int i = 0; i < guns.Count; i++)
-            {
-                guns[i].nowAmmo = guns[i].maxAmmo;
-                Debug.Log($"初始化武器: {guns[i].gunName}, 子弹: {guns[i].nowAmmo}/{guns[i].maxAmmo}");
-            }
-        }
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-    }
 
     protected override float GetHorizontalInput()
     {
         float input = 0;
-        if (Input.GetKey(leftKey)) input = -1;
-        if (Input.GetKey(rightKey)) input = 1;
+        if (GetLeftInput() && !GetRightInput()) input = -1;
+        if (!GetLeftInput() && GetRightInput()) input = 1;
         return input;
     }
+    protected override bool GetLeftInput() => Input.GetKey(leftKey);
+    protected override bool GetRightInput() => Input.GetKey(rightKey);
     protected override bool GetJumpInput() => Input.GetKeyDown(jumpKey);
     protected override bool GetJumpHoldInput() => Input.GetKey(jumpKey);
     protected override bool GetDownInput() => Input.GetKey(downKey);

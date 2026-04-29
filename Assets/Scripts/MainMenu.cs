@@ -18,7 +18,7 @@ public class MainMenu : MonoBehaviour
 
     public void StartGame()
     {
-        // "MainGame" 应替换为你游戏主场景的名字
+        // Replace "MainGame" with your actual main scene name.
         SceneManager.LoadScene("MainGame");
     }
     public void TestGame()
@@ -28,9 +28,9 @@ public class MainMenu : MonoBehaviour
 
     public void ExitGame()
     {
-        // 退出游戏
+        // Quit the game.
         Application.Quit();
-        // 在Unity编辑器中，这行代码不会生效，但会在最终构建的游戏中生效
-        Debug.Log("游戏已退出！");
+        // In the Unity Editor, this call does not close play mode; it works in a built game.
+        Debug.Log("Game is exiting.");
     }
 }

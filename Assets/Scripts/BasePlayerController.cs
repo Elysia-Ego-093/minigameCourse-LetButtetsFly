@@ -60,9 +60,23 @@ public abstract class BasePlayerController : MonoBehaviour
     protected GunData currentGun;
     protected float lastShootTime = 0f;
     protected int shootController = 0;
+    protected bool trySwitchGun = false;//切换枪械预输入
+
+    [Header("武器跟随")]
+    public Transform weaponPivot;           // 角色的武器挂载点
+    //public GameObject weaponPrefab;         // 手枪预制体
+    protected GameObject currentWeaponObject; // 当前生成的武器实例
+    protected Transform muzzleTransform;       // 武器的枪口位置
+
+    [Header("射击反馈")]
+    protected bool isRecoiling = false;          // 是否正在播放后坐力动画       
+    protected Vector3 weaponOriginalLocalPos;
+    protected Quaternion weaponOriginalLocalRot;
 
     // 抽象方法 - 子类必须实现自己的输入逻辑
     protected abstract float GetHorizontalInput();
+    protected abstract bool GetLeftInput();
+    protected abstract bool GetRightInput();
     protected abstract bool GetJumpInput();
     protected abstract bool GetSprintInput();
     protected abstract bool GetShootInput();
@@ -88,6 +102,25 @@ public abstract class BasePlayerController : MonoBehaviour
         {
             Debug.LogError("玩家物体缺少PlayerStatus组件");
         }
+        if (guns.Count > 0)
+        {
+            currentGunIndex = 0;
+            currentGun = guns[currentGunIndex];
+            // 初始化子弹数量为满弹匣
+            currentGun.nowAmmo = currentGun.maxAmmo;
+            Debug.Log($"初始化武器: {currentGun.gunName}, 子弹: {currentGun.nowAmmo}/{currentGun.maxAmmo}");
+            for (int i = 0; i < guns.Count; i++)
+            {
+                guns[i].nowAmmo = guns[i].maxAmmo;
+                Debug.Log($"初始化武器: {guns[i].gunName}, 子弹: {guns[i].nowAmmo}/{guns[i].maxAmmo}");
+            }
+        }
+
+        if (guns.Count > 0)
+        {
+            currentGun = guns[0];
+            UpdateWeaponModel(currentGun);
+        }
     }
 
     protected virtual void Update()
@@ -102,10 +135,62 @@ public abstract class BasePlayerController : MonoBehaviour
         HandleSwitchGun();
         HandleShoot();
         HandleReload();
-
+        UpdateHorizontal();
         if (GetTestBulletInput()) TestBullet();
         if (GetTestSizeInput()) TestSize();
     }
+
+    protected virtual void UpdateHorizontal()
+    {
+        if (GetHorizontalInput() > 0)
+        {
+            lastMoveDirection = 1f;
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+
+        if (GetHorizontalInput() < 0)
+        {
+            lastMoveDirection = -1f;
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
+        if (GetHorizontalInput() == 0)
+        {
+            transform.localScale = new Vector3(lastMoveDirection, 1, 1);
+        }
+    }
+
+
+    protected virtual void UpdateWeaponModel(GunData gun)
+    {
+        // 销毁旧模型
+        if (currentWeaponObject != null)
+            Destroy(currentWeaponObject);
+
+        if (gun.weaponModelPrefab != null && weaponPivot != null)
+        {
+            currentWeaponObject = Instantiate(gun.weaponModelPrefab, weaponPivot);
+            // 应用该武器独有的局部偏移和旋转
+            currentWeaponObject.transform.localPosition = gun.weaponLocalOffset;
+            currentWeaponObject.transform.localRotation = Quaternion.Euler(0, 0, gun.weaponLocalRotationZ);
+
+            // 记录原始局部坐标（用于后坐力）
+            weaponOriginalLocalPos = currentWeaponObject.transform.localPosition;
+            weaponOriginalLocalRot = currentWeaponObject.transform.localRotation;
+
+            // 查找枪口
+            muzzleTransform = currentWeaponObject.transform.Find("Muzzle");
+            if (muzzleTransform == null)
+                Debug.LogWarning($"武器 {gun.gunName} 缺少 Muzzle 子物体");
+        }
+        else
+        {
+            Debug.LogError($"武器 {gun.gunName} 缺少 weaponModelPrefab 或 weaponPivot 未设置");
+            currentWeaponObject = null;
+            muzzleTransform = null;
+        }
+    }
+
+
     protected virtual void TestSize()
     {
         changeSize(1.5f, 5f);
@@ -113,7 +198,7 @@ public abstract class BasePlayerController : MonoBehaviour
 
     protected virtual void TestBullet()
     {
-        Vector2 spawnPos = (Vector2)transform.position + lastMoveDirection * new Vector2(10f, 0.3f);
+        Vector2 spawnPos = (Vector2)transform.position + lastMoveDirection * new Vector2(10f, 0f);
         GameObject newBullet = Instantiate(currentGun.bulletPrefab, spawnPos, Quaternion.identity);
         Bullet bulletScript = newBullet.GetComponent<Bullet>();
         if (bulletScript != null)
@@ -241,15 +326,26 @@ public abstract class BasePlayerController : MonoBehaviour
     {
         if (GetSwitchGunInput() && guns.Count > 0)
         {
-            currentGunIndex = (currentGunIndex + 1) % guns.Count;
-            currentGun = guns[currentGunIndex];
-            Debug.Log("玩家1切换至：" + currentGun.gunName);
-            if (currentGun.nowAmmo == -1)
-            {
-                currentGun.nowAmmo = currentGun.maxAmmo;
-            }
-            Debug.Log($"切换至：{currentGun.gunName}, 子弹: {currentGun.nowAmmo}/{currentGun.maxAmmo}");
+            trySwitchGun = true;
         }
+        if (trySwitchGun && !isRecoiling)
+        {
+            SwitchGun();
+        }
+    }
+    private void SwitchGun()
+    {
+        currentGunIndex = (currentGunIndex + 1) % guns.Count;
+        currentGun = guns[currentGunIndex];
+        Debug.Log("切换至:" + currentGun.gunName);
+
+        UpdateWeaponModel(currentGun);
+
+        // 处理弹药逻辑（原有）
+        if (currentGun.nowAmmo == -1)
+            currentGun.nowAmmo = currentGun.maxAmmo;
+        Debug.Log($"子弹: {currentGun.nowAmmo}/{currentGun.maxAmmo}");
+        trySwitchGun = false;
     }
 
     protected virtual void HandleShoot()
@@ -273,14 +369,82 @@ public abstract class BasePlayerController : MonoBehaviour
             {
                 currentGun.nowAmmo--; // 每次射击 -1 子弹
             }
-            Vector2 spawnPos = (Vector2)transform.position + lastMoveDirection * new Vector2(1f + 0.15f * shootController, 0f);
+            Vector2 spawnPos;
+            if (muzzleTransform != null)
+            {
+                spawnPos = muzzleTransform.position;      // 使用枪口位置
+            }
+            else
+            {
+                spawnPos = (Vector2)transform.position + new Vector2(1f, 0f); // 备用方案
+            }
+            spawnPos.x = Mathf.Abs(spawnPos.x - transform.position.x) * lastMoveDirection + transform.position.x;
             GameObject newBullet = Instantiate(currentGun.bulletPrefab, spawnPos, Quaternion.identity);
             Bullet bulletScript = newBullet.GetComponent<Bullet>();
             if (bulletScript != null)
             {
                 bulletScript.SetStatus(currentGun.bulletSpeed, lastMoveDirection, currentGun.bulletATK, currentGun.force_x, currentGun.force_y);
             }
+            if (!isRecoiling) StartCoroutine(WeaponRecoilCoroutine());
         }
+
+    }
+
+    protected virtual IEnumerator WeaponRecoilCoroutine()
+    {
+        if (currentWeaponObject == null || currentGun == null)
+        {
+            isRecoiling = false;
+            yield break;
+        }
+
+        isRecoiling = true;
+
+        // 获取当前武器的后坐力参数
+        float recoilDist = currentGun.recoilDistance;
+        float recoilRot = currentGun.recoilRotation;
+        float peakDur = currentGun.recoilPeakDuration;
+        float returnDur = currentGun.recoilReturnDuration;
+        float holdDur = currentGun.recoilHoldDuration;
+
+        Vector3 startLocalPos = currentWeaponObject.transform.localPosition;
+        Quaternion startLocalRot = currentWeaponObject.transform.localRotation;
+        Vector3 targetLocalPos = startLocalPos + new Vector3(recoilDist, 0, 0);
+        Quaternion targetLocalRot = startLocalRot * Quaternion.Euler(0, 0, recoilRot);
+
+        // 快速达到峰值
+        float elapsed = 0f;
+        while (elapsed < peakDur)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / peakDur;
+            currentWeaponObject.transform.localPosition = Vector3.Lerp(startLocalPos, targetLocalPos, t);
+            currentWeaponObject.transform.localRotation = Quaternion.Lerp(startLocalRot, targetLocalRot, t);
+            yield return null;
+        }
+        currentWeaponObject.transform.localPosition = targetLocalPos;
+        currentWeaponObject.transform.localRotation = targetLocalRot;
+
+        // 峰值停留
+        if (holdDur > 0)
+            yield return new WaitForSeconds(holdDur);
+
+        // 恢复
+        elapsed = 0f;
+        while (elapsed < returnDur)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / returnDur;
+            currentWeaponObject.transform.localPosition = Vector3.Lerp(targetLocalPos, startLocalPos, t);
+            currentWeaponObject.transform.localRotation = Quaternion.Lerp(targetLocalRot, startLocalRot, t);
+            yield return null;
+        }
+
+        // 最终归位
+        currentWeaponObject.transform.localPosition = startLocalPos;
+        currentWeaponObject.transform.localRotation = startLocalRot;
+
+        isRecoiling = false;
     }
 
     protected virtual void HandleReload()

@@ -58,14 +58,14 @@ public class UIManager : MonoBehaviour
         
         if (needAmmo)
         {
-            ammoText.text = $"â¡â¡: {currentAmmo} / {maxAmmo}";
+            ammoText.text = $"bullet: {currentAmmo} / {maxAmmo}";
             
-            // å­å¼¹ä¸è¶³æ¶æ¹åé¢è²
+            // Change text color when ammo is low
             if (currentAmmo == 0)
             {
                 ammoText.color = Color.red;
             }
-            else if (currentAmmo <= maxAmmo * 0.2f) // å©ä½20%ä»¥ä¸åé»
+            else if (currentAmmo <= maxAmmo * 0.2f) // Yellow when ammo is below 20%
             {
                 ammoText.color = Color.yellow;
             }
@@ -76,8 +76,8 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            // æ éå¼¹è¯æ¨¡å¼
-            ammoText.text = $"å­å¼¹: â";
+            // Unlimited ammo mode
+            ammoText.text = "Ammo: Infinity";
             ammoText.color = Color.cyan;
         }
     }
