@@ -5,17 +5,17 @@ using UnityEngine.UI;
 
 public class PlayerController : BasePlayerController
 {
-    [Header("玩家1按键设置")]
-    public KeyCode leftKey = KeyCode.A;
-    public KeyCode rightKey = KeyCode.D;
-    public KeyCode jumpKey = KeyCode.Space;
-    public KeyCode sprintKey = KeyCode.K;
-    public KeyCode shootKey = KeyCode.J;
-    public KeyCode switchGunKey = KeyCode.R;
-    public KeyCode testBulletKey = KeyCode.U;
-    public KeyCode testSizeKey = KeyCode.T;
-    public KeyCode downKey = KeyCode.S;
-    public KeyCode reloadKey = KeyCode.Q;
+    [Header("玩家按键设置")]
+    public KeyCode leftKey;
+    public KeyCode rightKey;
+    public KeyCode jumpKey;
+    public KeyCode sprintKey;
+    public KeyCode shootKey;
+    public KeyCode switchGunKey;
+    public KeyCode testBulletKey;
+    public KeyCode testSizeKey;
+    public KeyCode downKey;
+    public KeyCode reloadKey;
 
     protected override float GetHorizontalInput()
     {

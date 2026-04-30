@@ -35,8 +35,8 @@ public abstract class BasePlayerController : MonoBehaviour
     protected bool isJumping;
 
     [Header("地面检测")]
-    public Transform groundCheckPoint;
-    public LayerMask groundLayer;
+    //public Transform groundCheckPoint;
+    //public LayerMask groundLayer;
     protected bool isGrounded;
 
     [Header("加速设置")]
@@ -51,7 +51,7 @@ public abstract class BasePlayerController : MonoBehaviour
 
     [Header("受击设置")]
     protected bool isKnockback = false;
-    protected float knockbackDuration = 0.3f;
+    public float knockbackDuration = 0.2f;
     protected float knockbackTimer = 0f;
 
     [Header("枪械设置")]
