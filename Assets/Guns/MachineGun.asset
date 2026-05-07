@@ -14,12 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 6328424122493784882, guid: d331c17738fd8444db9a1b055936ec9e, type: 3}
   gunName: Machine Gun
-  fireRate: 50
+  fireRate: 25
   bulletSpeed: 30
-  bulletATK: 200
+  bulletATK: 5
   force_x: 10
-  force_y: 5
-  maxBulletCount: 12
-  nowBullet: -1
+  force_y: 7.5
   needAmmo: 1
-  maxAmmo: 40
+  maxAmmo: 60
+  BasicAmmoNum: 120
+  AmmoTime: 2
+  weaponModelPrefab: {fileID: 7936187617071748290, guid: 5da4e8c6ec583f34c86c679aa1ca2050, type: 3}
+  weaponLocalOffset: {x: -1.8, y: 1.2}
+  weaponLocalRotationZ: 0
+  recoilDistance: -0.1
+  recoilRotation: 15
+  recoilPeakDuration: 0.05
+  recoilReturnDuration: 0.1
+  recoilHoldDuration: 0.02
