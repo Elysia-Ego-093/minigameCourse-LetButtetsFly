@@ -6,18 +6,20 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("ç©å®¶")]
-    public PlayerController player;
+    [Header("玩家总数")]
+    public int PlayerCount;
 
-    [Header("è¡æ¡")]
-    public Slider bloodBar;
+    [Header("玩家")]
+    public List<PlayerController> players = new List<PlayerController>();
 
-    [Header("ä½åæ¡")]
-    public Slider staminaBar;
+    [Header("血条")]
+    public List<Slider> bloodBars = new List<Slider>();
 
-    [Header("å­å¼¹æ¾ç¤º")]
-    public TMP_Text ammoText;  
+    [Header("体力条")]
+    public List<Slider> staminaBars = new List<Slider>();
 
+    [Header("子弹")]
+    public List<TMP_Text> ammoTexts = new List<TMP_Text>();
     void Start()
     {
 
@@ -32,53 +34,65 @@ public class UIManager : MonoBehaviour
 
     private void UpdateBlood()
     {
-        if (player != null && bloodBar != null)
+        for(int i = 0; i < PlayerCount; i++)
         {
-            bloodBar.maxValue = player.maxBlood;
-            bloodBar.value = player.blood;
+            if (players[i] == null || bloodBars[i] == null || players[i].PlayerStatus == null)
+                return;
+
+            bloodBars[i].maxValue = players[i].PlayerStatus.maxHp;
+            bloodBars[i].value = players[i].PlayerStatus.currentHp;
         }
+        
     }
 
     private void UpdateStamina()
     {
-        if (player != null && staminaBar != null)
+        for (int i = 0; i < PlayerCount; i++)
         {
-            staminaBar.maxValue = player.maxStamina;
-            staminaBar.value = player.currentStamina;
+            if (players[i] != null && staminaBars[i] != null)
+            {
+                staminaBars[i].maxValue = players[i].maxStamina;
+                staminaBars[i].value = players[i].currentStamina;
+            }
         }
+            
     }
 
     private void UpdateAmmo()
     {
-        if (player == null || ammoText == null) return;
-        
-        int currentAmmo = player.GetCurrentAmmo();
-        int maxAmmo = player.GetMaxAmmo();
-        bool needAmmo = player.IsNeedAmmo();
-        
-        if (needAmmo)
+        for (int i = 0; i < PlayerCount; i++)
         {
-            ammoText.text = $"â¡â¡: {currentAmmo} / {maxAmmo}";
-            
-            // å­å¼¹ä¸è¶³æ¶æ¹åé¢è²
-            if (currentAmmo == 0)
+            if (players[i] == null || ammoTexts[i] == null) return;
+
+            int currentAmmo = players[i].GetCurrentAmmo();
+            int AmmoNum = players[i].GetAmmoNum();
+            int maxAmmo = players[i].GetMaxAmmo();
+            bool needAmmo = players[i].IsNeedAmmo();
+
+            if (needAmmo)
             {
-                ammoText.color = Color.red;
-            }
-            else if (currentAmmo <= maxAmmo * 0.2f) // å©ä½20%ä»¥ä¸åé»
-            {
-                ammoText.color = Color.yellow;
+                ammoTexts[i].text = $"bullet: {currentAmmo} / {AmmoNum}";
+
+                // Change text color when ammo is low
+                if (currentAmmo == 0)
+                {
+                    ammoTexts[i].color = Color.red;
+                }
+                else if (currentAmmo <= maxAmmo * 0.2f) // Yellow when ammo is below 20%
+                {
+                    ammoTexts[i].color = Color.yellow;
+                }
+                else
+                {
+                    ammoTexts[i].color = Color.white;
+                }
             }
             else
             {
-                ammoText.color = Color.white;
+                // Unlimited ammo mode
+                ammoTexts[i].text = "Ammo: Infinity";
+                ammoTexts[i].color = Color.cyan;
             }
-        }
-        else
-        {
-            // æ éå¼¹è¯æ¨¡å¼
-            ammoText.text = $"å­å¼¹: â";
-            ammoText.color = Color.cyan;
         }
     }
 }
