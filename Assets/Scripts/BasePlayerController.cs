@@ -1,21 +1,20 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
+using Unity.VisualScripting;
 
 public abstract class BasePlayerController : MonoBehaviour
 {
     protected Rigidbody2D rb;
     protected PlayerStatus playerStatus;
     protected BoxCollider2D PlayerCollider;
-    protected Transform PlayerTransform;
 
     [Header("体型设置")]
     public float basicWidth = 1f;
     public float basicHeight = 1f;
-    public float bigWidth = 1.5f;
-    public float bigHeight = 1.5f;
-    public float smallWidth = 0.5f;
-    public float smallHeight = 0.5f;
+    protected float currentWidth;
+    protected float currentHeight;
     protected float sizeBuffTimer;
     public float crouchHeightPercent = 0.5f;
     // 公开的读取属性
@@ -35,8 +34,6 @@ public abstract class BasePlayerController : MonoBehaviour
     protected bool isJumping;
 
     [Header("地面检测")]
-    //public Transform groundCheckPoint;
-    //public LayerMask groundLayer;
     protected bool isGrounded;
 
     [Header("加速设置")]
@@ -55,16 +52,19 @@ public abstract class BasePlayerController : MonoBehaviour
     protected float knockbackTimer = 0f;
 
     [Header("枪械设置")]
-    public List<GunData> guns = new List<GunData>();
+    public int maxGunCount;
+    public List<Gun> guns = new List<Gun>();
     protected int currentGunIndex = 0;
-    protected GunData currentGun;
+    protected Gun currentGun;
     protected float lastShootTime = 0f;
     protected int shootController = 0;
     protected bool trySwitchGun = false;//切换枪械预输入
+    protected float AmmoTimer = 0f;//换弹计时器
+    protected bool isReloadAmmo;
+    public GameObject dropGunPrefab;
 
     [Header("武器跟随")]
     public Transform weaponPivot;           // 角色的武器挂载点
-    //public GameObject weaponPrefab;         // 手枪预制体
     protected GameObject currentWeaponObject; // 当前生成的武器实例
     protected Transform muzzleTransform;       // 武器的枪口位置
 
@@ -72,6 +72,21 @@ public abstract class BasePlayerController : MonoBehaviour
     protected bool isRecoiling = false;          // 是否正在播放后坐力动画       
     protected Vector3 weaponOriginalLocalPos;
     protected Quaternion weaponOriginalLocalRot;
+
+    [Header("手榴弹设置")]
+    public GameObject grenadePrefab;
+    public float throwForce_x;
+    public float throwForce_y;
+    public float throwTime;
+    private float currentThrowTimer = 0;
+    public int GrenadeCount;
+
+    [Header("虚空设置")]
+    public float VoidHeight = -5f;
+    public float VoidDamage = 200f;
+    public float respawnTime = 5f;
+    protected bool isInVoid = false;
+    protected float respawnTimer = 0f;
 
     // 抽象方法 - 子类必须实现自己的输入逻辑
     protected abstract float GetHorizontalInput();
@@ -81,16 +96,15 @@ public abstract class BasePlayerController : MonoBehaviour
     protected abstract bool GetSprintInput();
     protected abstract bool GetShootInput();
     protected abstract bool GetSwitchGunInput();
-    protected abstract bool GetTestBulletInput();
     protected abstract bool GetJumpHoldInput();    
     protected abstract bool GetDownInput();        
     protected abstract bool GetReloadInput();   
     protected abstract bool GetDownFinishInput();
-    protected abstract bool GetTestSizeInput();
+    protected abstract bool GetThrowGrenadeInput();
+    protected abstract bool GetDropGunInput();
 
     protected virtual void Start()
     {
-        PlayerTransform = GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
         PlayerCollider = GetComponent<BoxCollider2D>();
         MoveSpeed = basicMoveSpeed;
@@ -107,12 +121,12 @@ public abstract class BasePlayerController : MonoBehaviour
             currentGunIndex = 0;
             currentGun = guns[currentGunIndex];
             // 初始化子弹数量为满弹匣
-            currentGun.nowAmmo = currentGun.maxAmmo;
-            Debug.Log($"初始化武器: {currentGun.gunName}, 子弹: {currentGun.nowAmmo}/{currentGun.maxAmmo}");
+            currentGun.nowAmmo = currentGun.data.maxAmmo;
+            Debug.Log($"初始化武器: {currentGun.data.gunName}, 子弹: {currentGun.nowAmmo}/{currentGun.data.maxAmmo}");
             for (int i = 0; i < guns.Count; i++)
             {
-                guns[i].nowAmmo = guns[i].maxAmmo;
-                Debug.Log($"初始化武器: {guns[i].gunName}, 子弹: {guns[i].nowAmmo}/{guns[i].maxAmmo}");
+                guns[i].nowAmmo = guns[i].data.maxAmmo;
+                Debug.Log($"初始化武器: {guns[i].data.gunName}, 子弹: {guns[i].nowAmmo}/{guns[i].data.maxAmmo}");
             }
         }
 
@@ -125,6 +139,18 @@ public abstract class BasePlayerController : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (isInVoid)
+        {
+            respawnTimer -= Time.deltaTime;
+            if (respawnTimer <= 0)
+            {
+                isInVoid = false;
+                transform.position = new Vector2(5.28f, 2.94f);
+                rb.gravityScale = 1.0f;
+            }
+            return;
+        }
+        CheckVoid();
         HandleSprint();
         HandleMove();
         HandleDown();
@@ -132,12 +158,12 @@ public abstract class BasePlayerController : MonoBehaviour
         UpdateStamina();
         UpdateKnockback();
         UpdateBuff();
+        HandleDropGun();
         HandleSwitchGun();
         HandleShoot();
+        HandleGrenade();
         HandleReload();
         UpdateHorizontal();
-        if (GetTestBulletInput()) TestBullet();
-        if (GetTestSizeInput()) TestSize();
     }
 
     protected virtual void UpdateHorizontal()
@@ -145,33 +171,33 @@ public abstract class BasePlayerController : MonoBehaviour
         if (GetHorizontalInput() > 0)
         {
             lastMoveDirection = 1f;
-            transform.localScale = new Vector3(1, 1, 1);
+            transform.localScale = new Vector3(currentWidth, currentHeight, 1);
         }
 
         if (GetHorizontalInput() < 0)
         {
             lastMoveDirection = -1f;
-            transform.localScale = new Vector3(-1, 1, 1);
+            transform.localScale = new Vector3(-1 * currentWidth, currentHeight, 1);
         }
         if (GetHorizontalInput() == 0)
         {
-            transform.localScale = new Vector3(lastMoveDirection, 1, 1);
+            transform.localScale = new Vector3(currentWidth * lastMoveDirection, currentHeight, 1);
         }
     }
 
 
-    protected virtual void UpdateWeaponModel(GunData gun)
+    protected virtual void UpdateWeaponModel(Gun gun)
     {
         // 销毁旧模型
         if (currentWeaponObject != null)
             Destroy(currentWeaponObject);
 
-        if (gun.weaponModelPrefab != null && weaponPivot != null)
+        if (gun.data.weaponModelPrefab != null && weaponPivot != null)
         {
-            currentWeaponObject = Instantiate(gun.weaponModelPrefab, weaponPivot);
+            currentWeaponObject = Instantiate(gun.data.weaponModelPrefab, weaponPivot);
             // 应用该武器独有的局部偏移和旋转
-            currentWeaponObject.transform.localPosition = gun.weaponLocalOffset;
-            currentWeaponObject.transform.localRotation = Quaternion.Euler(0, 0, gun.weaponLocalRotationZ);
+            currentWeaponObject.transform.localPosition = gun.data.weaponLocalOffset;
+            currentWeaponObject.transform.localRotation = Quaternion.Euler(0, 0, gun.data.weaponLocalRotationZ);
 
             // 记录原始局部坐标（用于后坐力）
             weaponOriginalLocalPos = currentWeaponObject.transform.localPosition;
@@ -180,30 +206,13 @@ public abstract class BasePlayerController : MonoBehaviour
             // 查找枪口
             muzzleTransform = currentWeaponObject.transform.Find("Muzzle");
             if (muzzleTransform == null)
-                Debug.LogWarning($"武器 {gun.gunName} 缺少 Muzzle 子物体");
+                Debug.LogWarning($"武器 {gun.data.gunName} 缺少 Muzzle 子物体");
         }
         else
         {
-            Debug.LogError($"武器 {gun.gunName} 缺少 weaponModelPrefab 或 weaponPivot 未设置");
+            Debug.LogError($"武器 {gun.data.gunName} 缺少 weaponModelPrefab 或 weaponPivot 未设置");
             currentWeaponObject = null;
             muzzleTransform = null;
-        }
-    }
-
-
-    protected virtual void TestSize()
-    {
-        changeSize(1.5f, 5f);
-    }
-
-    protected virtual void TestBullet()
-    {
-        Vector2 spawnPos = (Vector2)transform.position + lastMoveDirection * new Vector2(10f, 0f);
-        GameObject newBullet = Instantiate(currentGun.bulletPrefab, spawnPos, Quaternion.identity);
-        Bullet bulletScript = newBullet.GetComponent<Bullet>();
-        if (bulletScript != null)
-        {
-            bulletScript.SetStatus(currentGun.bulletSpeed, -lastMoveDirection, currentGun.bulletATK, currentGun.force_x, currentGun.force_y);
         }
     }
 
@@ -212,6 +221,7 @@ public abstract class BasePlayerController : MonoBehaviour
     {
         if (isKnockback) return;
         moveInput = GetHorizontalInput();
+        if (moveInput == 0 && rb.velocity.y != 0) return;
         float finalSpeed = isSprinting ? MoveSpeed * sprintSpeedMultiplier : MoveSpeed;
         rb.velocity = new Vector2(moveInput * finalSpeed, rb.velocity.y);
         
@@ -219,6 +229,7 @@ public abstract class BasePlayerController : MonoBehaviour
         {
             lastMoveDirection = Mathf.Sign(moveInput);
         }
+        weaponPivot.transform.position = (Vector2)transform.position + new Vector2(transform.localScale.x / 2, -1 * transform.localScale.y / 2);
     }
 
     // 冲刺相关
@@ -269,7 +280,7 @@ public abstract class BasePlayerController : MonoBehaviour
         
         if (GetJumpInput() && jumpCountRemain > 0 && !isKnockback) 
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            rb.velocity = new Vector2(moveInput == 0 ? 0 : rb.velocity.x, jumpForce);
             jumpCountRemain--;
             isJumping = true;
         }
@@ -302,7 +313,13 @@ public abstract class BasePlayerController : MonoBehaviour
     protected virtual void UpdateBuff()
     {
         if (sizeBuffTimer > 0) sizeBuffTimer -= Time.deltaTime;
-        else PlayerTransform.localScale = new Vector3(basicWidth, basicHeight, 1f);
+        else
+        {
+            currentWidth = basicWidth;
+            currentHeight = basicHeight;
+            transform.localScale = new Vector3(basicWidth * lastMoveDirection, basicHeight, 1f);
+        }
+        
     }
 
     // 跳下平台
@@ -337,35 +354,45 @@ public abstract class BasePlayerController : MonoBehaviour
     {
         currentGunIndex = (currentGunIndex + 1) % guns.Count;
         currentGun = guns[currentGunIndex];
-        Debug.Log("切换至:" + currentGun.gunName);
+        Debug.Log("切换至:" + currentGun.data.gunName);
 
         UpdateWeaponModel(currentGun);
 
         // 处理弹药逻辑（原有）
         if (currentGun.nowAmmo == -1)
-            currentGun.nowAmmo = currentGun.maxAmmo;
-        Debug.Log($"子弹: {currentGun.nowAmmo}/{currentGun.maxAmmo}");
+            currentGun.nowAmmo = currentGun.data.maxAmmo;
+        Debug.Log($"子弹: {currentGun.nowAmmo}/{currentGun.data.maxAmmo}");
         trySwitchGun = false;
     }
 
     protected virtual void HandleShoot()
     {
         if (currentGun == null) return;
-
-        if (currentGun.needAmmo && currentGun.nowAmmo <= 0)
+        if (currentGun.nowAmmo == 0 && currentGun.AmmoNum == 0) return;
+        if (!isReloadAmmo && currentGun.data.needAmmo && currentGun.nowAmmo <= 0)
         {
-            // 子弹耗尽，无法射击
+            isReloadAmmo = true;
+            AmmoTimer = currentGun.data.AmmoTime;
+        }
+        if (isReloadAmmo)
+        {
+            AmmoTimer -= Time.deltaTime;
+            if (AmmoTimer <= 0)
+            {
+                isReloadAmmo = false;
+                currentGun.reloadAmmo();
+            }
             return;
         }
 
-        float fireInterval = 1f / currentGun.fireRate;
+        float fireInterval = 1f / currentGun.data.fireRate;
         if (Time.time - lastShootTime < fireInterval) return;
 
         if (GetShootInput())
         {
             lastShootTime = Time.time;
             shootController = (shootController + 1) % 2;
-            if (currentGun.needAmmo)
+            if (currentGun.data.needAmmo)
             {
                 currentGun.nowAmmo--; // 每次射击 -1 子弹
             }
@@ -379,11 +406,11 @@ public abstract class BasePlayerController : MonoBehaviour
                 spawnPos = (Vector2)transform.position + new Vector2(1f, 0f); // 备用方案
             }
             spawnPos.x = Mathf.Abs(spawnPos.x - transform.position.x) * lastMoveDirection + transform.position.x;
-            GameObject newBullet = Instantiate(currentGun.bulletPrefab, spawnPos, Quaternion.identity);
+            GameObject newBullet = Instantiate(currentGun.data.bulletPrefab, spawnPos, Quaternion.identity);
             Bullet bulletScript = newBullet.GetComponent<Bullet>();
             if (bulletScript != null)
             {
-                bulletScript.SetStatus(currentGun.bulletSpeed, lastMoveDirection, currentGun.bulletATK, currentGun.force_x, currentGun.force_y);
+                bulletScript.SetStatus(currentGun.data.bulletSpeed, lastMoveDirection, currentGun.data.bulletATK, currentGun.data.force_x, currentGun.data.force_y);
             }
             if (!isRecoiling) StartCoroutine(WeaponRecoilCoroutine());
         }
@@ -401,11 +428,11 @@ public abstract class BasePlayerController : MonoBehaviour
         isRecoiling = true;
 
         // 获取当前武器的后坐力参数
-        float recoilDist = currentGun.recoilDistance;
-        float recoilRot = currentGun.recoilRotation;
-        float peakDur = currentGun.recoilPeakDuration;
-        float returnDur = currentGun.recoilReturnDuration;
-        float holdDur = currentGun.recoilHoldDuration;
+        float recoilDist = currentGun.data.recoilDistance;
+        float recoilRot = currentGun.data.recoilRotation;
+        float peakDur = currentGun.data.recoilPeakDuration;
+        float returnDur = currentGun.data.recoilReturnDuration;
+        float holdDur = currentGun.data.recoilHoldDuration;
 
         Vector3 startLocalPos = currentWeaponObject.transform.localPosition;
         Quaternion startLocalRot = currentWeaponObject.transform.localRotation;
@@ -447,14 +474,35 @@ public abstract class BasePlayerController : MonoBehaviour
         isRecoiling = false;
     }
 
+    //投掷手榴弹
+    protected virtual void HandleGrenade()
+    {
+        if (currentThrowTimer > 0)
+        {
+            currentThrowTimer -= Time.deltaTime;
+            return;
+        }
+        if (GetThrowGrenadeInput() && GrenadeCount > 0)
+        {
+            GrenadeCount--;
+            currentThrowTimer = throwTime;
+            Vector2 spawn = (Vector2)transform.position + new Vector2(transform.localScale.x / 2, transform.localScale.y / 2);
+            GameObject newGrenade = Instantiate(grenadePrefab, spawn, Quaternion.identity);
+            Grenade grenadeScript = newGrenade.GetComponent<Grenade>();
+            if (grenadeScript != null)
+            {
+                grenadeScript.setStatus(new Vector2(throwForce_x * lastMoveDirection, throwForce_y) + rb.velocity);
+            }
+        }
+    }
     protected virtual void HandleReload()
     {
-        if (currentGun == null || !currentGun.needAmmo) return;
+        if (currentGun == null || !currentGun.data.needAmmo || currentGun.AmmoNum == 0) return;
 
-        if (GetReloadInput())
+        if (GetReloadInput() && !isReloadAmmo)
         {
-            currentGun.nowAmmo = currentGun.maxAmmo;
-            Debug.Log($"重新装填: {currentGun.gunName}, 子弹: {currentGun.nowAmmo}/{currentGun.maxAmmo}");
+            isReloadAmmo = true;
+            AmmoTimer = currentGun.data.AmmoTime * (1.0f - 1.0f * currentGun.nowAmmo / currentGun.data.maxAmmo);
         }
     }
 
@@ -465,25 +513,30 @@ public abstract class BasePlayerController : MonoBehaviour
         return currentGun.nowAmmo;
     }
 
+    public int GetAmmoNum()
+    {
+        if (currentGun == null) return 0;
+        return currentGun.AmmoNum;
+    }
     public int GetMaxAmmo()
     {
         if (currentGun == null) return 0;
-        return currentGun.maxAmmo;
+        return currentGun.data.maxAmmo;
     }
 
     public string GetCurrentGunName()
     {
         if (currentGun == null) return "无枪械";
-        return currentGun.gunName;
+        return currentGun.data.gunName;
     }
 
     public bool IsNeedAmmo()
     {
         if (currentGun == null) return false;
-        return currentGun.needAmmo;
+        return currentGun.data.needAmmo;
     }
 
-    // 受击处理
+    // 击退处理
     protected virtual void UpdateKnockback()
     {
         if (isKnockback)
@@ -524,9 +577,58 @@ public abstract class BasePlayerController : MonoBehaviour
     public virtual void changeSize(float percent,float buffTime)
     {
         sizeBuffTimer = buffTime;
-        PlayerTransform.localScale = new Vector3(basicWidth * percent, basicHeight * percent, 1f);
+        currentWidth = basicWidth * percent;
+        currentHeight = basicHeight * percent;
+        transform.localScale = new Vector3(currentWidth * lastMoveDirection, currentHeight, 1f);
     }
 
+    //丢弃枪械处理
+    protected virtual void HandleDropGun()
+    {
+        if (GetDropGunInput() && currentGun.data.gunName != "Pistol")
+        {
+            GameObject newDropGun = Instantiate(dropGunPrefab, transform.position, Quaternion.identity);
+            SpriteRenderer picture = newDropGun.GetComponent<SpriteRenderer>();
+            SpriteRenderer picture0 = currentWeaponObject.GetComponent<SpriteRenderer>();
+            if (picture != null && picture0 != null)
+            {
+                picture.sprite = picture0.sprite;
+            }
+            DropGun newGun = newDropGun.GetComponent<DropGun>();
+            if (newGun != null)
+            {
+                newGun.setStatus(new Vector2(-1 * lastMoveDirection * 2.0f, 2.0f));
+            }
+            guns.RemoveAt(currentGunIndex);
+            trySwitchGun = true;
+        }
+    }
+
+    public void addGun(Gun gun)
+    {
+        if (guns.Count < maxGunCount) guns.Add(gun);
+    }
+    
+    public void addAmmo(int num)
+    {
+        currentGun.AmmoNum += num * currentGun.data.maxAmmo;
+    }
+    public void addGrenade(int num)
+    {
+        GrenadeCount += num;
+    }
+    //掉下虚空处理
+    protected virtual void CheckVoid()
+    {
+        if (!isInVoid && transform.position.y < VoidHeight)
+        {
+            isInVoid = true;
+            respawnTimer = respawnTime;
+            Attacked(VoidDamage, Vector2.zero);
+            transform.position = new Vector2(10000, 10000);
+            rb.gravityScale = 0;
+        }
+    }
     //死亡处理
     protected virtual void Die()
     {
@@ -534,4 +636,5 @@ public abstract class BasePlayerController : MonoBehaviour
     }
 
     public float GetLastMoveDirection() => lastMoveDirection;
+    public bool IsInVoid() { return isInVoid; }
 }

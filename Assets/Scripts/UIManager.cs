@@ -65,12 +65,13 @@ public class UIManager : MonoBehaviour
             if (players[i] == null || ammoTexts[i] == null) return;
 
             int currentAmmo = players[i].GetCurrentAmmo();
+            int AmmoNum = players[i].GetAmmoNum();
             int maxAmmo = players[i].GetMaxAmmo();
             bool needAmmo = players[i].IsNeedAmmo();
 
             if (needAmmo)
             {
-                ammoTexts[i].text = $"bullet: {currentAmmo} / {maxAmmo}";
+                ammoTexts[i].text = $"bullet: {currentAmmo} / {AmmoNum}";
 
                 // Change text color when ammo is low
                 if (currentAmmo == 0)
