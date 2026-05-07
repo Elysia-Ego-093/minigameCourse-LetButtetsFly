@@ -15,13 +15,14 @@ MonoBehaviour:
   bulletPrefab: {fileID: 6328424122493784882, guid: d331c17738fd8444db9a1b055936ec9e, type: 3}
   gunName: Machine Gun
   fireRate: 25
-  bulletSpeed: 20
-  bulletATK: 0
+  bulletSpeed: 30
+  bulletATK: 5
   force_x: 10
-  force_y: 5
-  nowAmmo: 60
+  force_y: 7.5
   needAmmo: 1
   maxAmmo: 60
+  BasicAmmoNum: 120
+  AmmoTime: 2
   weaponModelPrefab: {fileID: 7936187617071748290, guid: 5da4e8c6ec583f34c86c679aa1ca2050, type: 3}
   weaponLocalOffset: {x: -1.8, y: 1.2}
   weaponLocalRotationZ: 0

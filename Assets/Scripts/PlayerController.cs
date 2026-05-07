@@ -12,10 +12,10 @@ public class PlayerController : BasePlayerController
     public KeyCode sprintKey;
     public KeyCode shootKey;
     public KeyCode switchGunKey;
-    public KeyCode testBulletKey;
-    public KeyCode testSizeKey;
     public KeyCode downKey;
     public KeyCode reloadKey;
+    public KeyCode grenadeKey;
+    public KeyCode dropGunKey;
 
     protected override float GetHorizontalInput()
     {
@@ -32,9 +32,9 @@ public class PlayerController : BasePlayerController
     protected override bool GetSprintInput() => Input.GetKey(sprintKey);
     protected override bool GetShootInput() => Input.GetKey(shootKey);
     protected override bool GetSwitchGunInput() => Input.GetKeyDown(switchGunKey);
-    protected override bool GetTestBulletInput() => Input.GetKeyDown(testBulletKey);
     protected override bool GetReloadInput() => Input.GetKeyDown(reloadKey);
     protected override bool GetDownFinishInput() => Input.GetKeyUp(downKey);
-    protected override bool GetTestSizeInput() => Input.GetKeyDown(testSizeKey);
+    protected override bool GetThrowGrenadeInput() => Input.GetKey(grenadeKey);
+    protected override bool GetDropGunInput() => Input.GetKeyDown(dropGunKey);
 
 }

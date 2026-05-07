@@ -24,7 +24,7 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         // 自动销毁
-        if (transform.position.x > 12 || transform.position.x < -12)
+        if (transform.position.x > 100 || transform.position.x < -100|| transform.position.y < -10)
             Destroy(gameObject);
     }
     void OnTriggerEnter2D(Collider2D collision)
@@ -42,7 +42,7 @@ public class Bullet : MonoBehaviour
         else if (collision.CompareTag("Obstacle"))
         {
             // 找到掩体的InteractiveStuff组件（CoverBox是其子类）
-            InteractiveStuff cover = collision.GetComponent<InteractiveStuff>();
+            CoverBox cover = collision.GetComponent<CoverBox>();
             if (cover != null)
             {
                 // 调用掩体扣血方法，子弹攻击力作为伤害值

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewGun", menuName = "Gun Data")]
 public class GunData : ScriptableObject
 {
     [Header("子弹预制体")]
@@ -24,14 +23,17 @@ public class GunData : ScriptableObject
     public float force_x = 10f;
     public float force_y = 5f;
 
-    [Header("当前子弹数量")]
-    public int nowAmmo = -1; // -1表示没有初始化
+    [Header("弹量设置")]
     public bool needAmmo = true; // 是否需要子弹
-    public int maxAmmo = 100; // 最大子弹数量
+    public int maxAmmo = 100; // 弹夹最大装弹数量
+    public int BasicAmmoNum;
+    public int AmmoTime; //换弹时间
+
     [Header("枪械模型预制体")]
     public GameObject weaponModelPrefab;
     public Vector2 weaponLocalOffset = Vector2.zero;   // 相对于 weaponPivot 的局部位置偏移
     public float weaponLocalRotationZ = 0f;            // 相对于 weaponPivot 的局部旋转（仅Z轴）
+
     [Header("后坐力设置")]
     public float recoilDistance = -0.1f;      // 后退距离
     public float recoilRotation = 5f;          // 旋转角度
