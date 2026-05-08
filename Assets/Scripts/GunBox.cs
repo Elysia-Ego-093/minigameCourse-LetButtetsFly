@@ -10,12 +10,7 @@ public class GunBox : PickableItem
     protected override void Effect(PlayerController player)
     {
         if (player.guns.Count >= player.maxGunCount) return;
-        GameObject newGunPrefab = Instantiate(gunsPrefab[Random.Range(0, gunsPrefab.Count)]);
-        Gun newGun = newGunPrefab.GetComponent<Gun>();
-        if (newGun!=null)
-        {
-            player.addGun(newGun);
-        }
+        player.addGun(gunsPrefab[Random.Range(0, gunsPrefab.Count)]);
         Destroy(gameObject);
     }
 }
