@@ -180,7 +180,8 @@ MonoBehaviour:
   objectCollider2D: {fileID: -5422544345086364502}
   triggerCollider: {fileID: 6771585784439208493}
   gunsPrefab:
-  - {fileID: 6470856061524998394, guid: 575d1001fb67b3f47a09dd3d6f8d3949, type: 3}
+  - key: {fileID: 6470856061524998394, guid: 575d1001fb67b3f47a09dd3d6f8d3949, type: 3}
+    value: 100
 --- !u!61 &-5422544345086364502
 BoxCollider2D:
   m_ObjectHideFlags: 0

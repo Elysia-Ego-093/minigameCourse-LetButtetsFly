@@ -27,6 +27,7 @@ public abstract class BasePlayerController : MonoBehaviour
     public float basicMoveSpeed = 8f;
     protected float MoveSpeed;
     protected float moveInput;
+    protected bool useInertia = false;
 
     protected float lastMoveDirection = 1f;
 
@@ -244,9 +245,10 @@ public abstract class BasePlayerController : MonoBehaviour
     {
         if (isKnockback) return;
         moveInput = GetHorizontalInput();
-        if (moveInput == 0 && rb.velocity.y != 0) return;
+        if (moveInput == 0 && rb.velocity.y != 0 && useInertia) return;
         float finalSpeed = isSprinting ? MoveSpeed * sprintSpeedMultiplier : MoveSpeed;
         rb.velocity = new Vector2(moveInput * finalSpeed, rb.velocity.y);
+        useInertia = false;
         
         if (moveInput != 0)
         {
@@ -306,6 +308,7 @@ public abstract class BasePlayerController : MonoBehaviour
             rb.velocity = new Vector2(moveInput == 0 ? 0 : rb.velocity.x, jumpForce);
             jumpCountRemain--;
             isJumping = true;
+            useInertia = false;
         }
         
         if (!GetJumpHoldInput()) isJumping = false;
@@ -583,11 +586,14 @@ public abstract class BasePlayerController : MonoBehaviour
             Die();
             return;
         }
-        
-        isKnockback = true;
-        knockbackTimer = knockbackDuration;
-        rb.velocity = atkForce;
-        jumpCountRemain = maxJumpCount;
+        if (playerStatus.currentShield <= 0)
+        {
+            isKnockback = true;
+            knockbackTimer = knockbackDuration;
+            rb.velocity = atkForce;
+            jumpCountRemain = maxJumpCount;
+            useInertia = true;
+        }
     }
 
     //加血
