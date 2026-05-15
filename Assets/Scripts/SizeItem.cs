@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BigItem : PickableItem
+public class SizeItem : PickableItem
 {
-    [Header("变大倍率")]
+    [Header("大小倍率")]
     public float percent;
     [Header("Buff时间")]
     public float BuffTime;

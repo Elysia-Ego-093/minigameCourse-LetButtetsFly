@@ -27,14 +27,17 @@ public abstract class BasePlayerController : MonoBehaviour
     public float basicMoveSpeed = 8f;
     protected float MoveSpeed;
     protected float moveInput;
-
+    protected bool useInertia = false;
+    protected float speedBuffTimer;
     protected float lastMoveDirection = 1f;
 
     [Header("跳跃设置")]
-    public float jumpForce = 12f;
+    public float basicJumpForce = 12f;
+    protected float jumpForce;
     public int maxJumpCount = 2;
     protected int jumpCountRemain;
     protected bool isJumping;
+    protected float jumpBuffTimer;
 
     [Header("地面检测")]
     protected bool isGrounded;
@@ -121,6 +124,7 @@ public abstract class BasePlayerController : MonoBehaviour
         }
         Initial();
         MoveSpeed = basicMoveSpeed;
+        jumpForce = basicJumpForce;
         playerStatus.currentHp = playerStatus.maxHp;
         jumpCountRemain = maxJumpCount;
         currentStamina = maxStamina;
@@ -244,9 +248,10 @@ public abstract class BasePlayerController : MonoBehaviour
     {
         if (isKnockback) return;
         moveInput = GetHorizontalInput();
-        if (moveInput == 0 && rb.velocity.y != 0) return;
+        if (moveInput == 0 && rb.velocity.y != 0 && useInertia) return;
         float finalSpeed = isSprinting ? MoveSpeed * sprintSpeedMultiplier : MoveSpeed;
         rb.velocity = new Vector2(moveInput * finalSpeed, rb.velocity.y);
+        useInertia = false;
         
         if (moveInput != 0)
         {
@@ -306,6 +311,7 @@ public abstract class BasePlayerController : MonoBehaviour
             rb.velocity = new Vector2(moveInput == 0 ? 0 : rb.velocity.x, jumpForce);
             jumpCountRemain--;
             isJumping = true;
+            useInertia = false;
         }
         
         if (!GetJumpHoldInput()) isJumping = false;
@@ -342,7 +348,18 @@ public abstract class BasePlayerController : MonoBehaviour
             currentHeight = basicHeight;
             transform.localScale = new Vector3(basicWidth * lastMoveDirection, basicHeight, 1f);
         }
-        
+
+        if (speedBuffTimer > 0) speedBuffTimer -= Time.deltaTime;
+        else
+        {
+            MoveSpeed = basicMoveSpeed;
+        }
+
+        if (jumpBuffTimer > 0) jumpBuffTimer -= Time.deltaTime;
+        else
+        {
+            jumpForce = basicJumpForce;
+        }
     }
 
     // 跳下平台
@@ -583,11 +600,14 @@ public abstract class BasePlayerController : MonoBehaviour
             Die();
             return;
         }
-        
-        isKnockback = true;
-        knockbackTimer = knockbackDuration;
-        rb.velocity = atkForce;
-        jumpCountRemain = maxJumpCount;
+        if (playerStatus.currentShield <= 0)
+        {
+            isKnockback = true;
+            knockbackTimer = knockbackDuration;
+            rb.velocity = atkForce;
+            jumpCountRemain = maxJumpCount;
+            useInertia = true;
+        }
     }
 
     //加血
@@ -596,6 +616,12 @@ public abstract class BasePlayerController : MonoBehaviour
         if (playerStatus == null) return;
         playerStatus.HealthRecovery(amount);
     }
+    //加盾
+    public virtual void addShield(float amount)
+    {
+        if (playerStatus == null) return;
+        playerStatus.ShieldRecovery(amount);
+    }
     //变大/变小Buff
     public virtual void changeSize(float percent,float buffTime)
     {
@@ -603,6 +629,18 @@ public abstract class BasePlayerController : MonoBehaviour
         currentWidth = basicWidth * percent;
         currentHeight = basicHeight * percent;
         transform.localScale = new Vector3(currentWidth * lastMoveDirection, currentHeight, 1f);
+    }
+    //加速/减速Buff
+    public virtual void changeSpeed(float percent, float buffTime)
+    {
+        speedBuffTimer = buffTime;
+        MoveSpeed = basicMoveSpeed * percent;
+    }
+    //跳跃Buff
+    public virtual void changeJump(float percent, float buffTime)
+    {
+        jumpBuffTimer = buffTime;
+        jumpForce = basicJumpForce * percent;
     }
 
     //丢弃枪械处理
