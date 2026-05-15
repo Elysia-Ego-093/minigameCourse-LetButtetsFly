@@ -1258,7 +1258,7 @@ MonoBehaviour:
   basicHeight: 1
   crouchHeightPercent: 0.5
   basicMoveSpeed: 8
-  jumpForce: 12
+  basicJumpForce: 12
   maxJumpCount: 2
   sprintSpeedMultiplier: 2
   staminaCostPerSecond: 50
@@ -1551,6 +1551,14 @@ MonoBehaviour:
   - key: {fileID: 8551788226390165910, guid: 2fb4f572105491447ac7d371db9e5b51, type: 3}
     value: 10
   - key: {fileID: 8551788226390165910, guid: cb5aa9d824c3bbd4e8f41b957db6f676, type: 3}
+    value: 10
+  - key: {fileID: 8551788226390165910, guid: 93a11ecaad744fc4ca69c08ecac34967, type: 3}
+    value: 10
+  - key: {fileID: 8551788226390165910, guid: 2366167ab39a3274ead0b9285dd38b57, type: 3}
+    value: 10
+  - key: {fileID: 8551788226390165910, guid: f71ae9947408a72468685e4f37b95a5b, type: 3}
+    value: 10
+  - key: {fileID: 8551788226390165910, guid: e423865bd72593b42979bf2b21b2a41c, type: 3}
     value: 10
   spawnInterval: 2
   RandomTime: 0
@@ -3275,7 +3283,7 @@ MonoBehaviour:
   basicHeight: 1
   crouchHeightPercent: 0.5
   basicMoveSpeed: 8
-  jumpForce: 12
+  basicJumpForce: 12
   maxJumpCount: 2
   sprintSpeedMultiplier: 2
   staminaCostPerSecond: 50

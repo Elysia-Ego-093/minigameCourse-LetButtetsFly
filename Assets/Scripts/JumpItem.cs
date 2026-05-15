@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SmallItem : PickableItem
+public class JumpItem : PickableItem
 {
-    [Header("变小倍率")]
+    [Header("跳跃倍率")]
     public float percent;
     [Header("Buff时间")]
     public float BuffTime;
 
     protected override void Effect(PlayerController player)
     {
-        player.changeSize(percent, BuffTime);
+        player.changeJump(percent, BuffTime);
         Destroy(gameObject);
     }
 }

@@ -114,5 +114,13 @@ MonoBehaviour:
     value: 10
   - key: {fileID: 8551788226390165910, guid: cb5aa9d824c3bbd4e8f41b957db6f676, type: 3}
     value: 10
+  - key: {fileID: 8551788226390165910, guid: 2366167ab39a3274ead0b9285dd38b57, type: 3}
+    value: 10
+  - key: {fileID: 8551788226390165910, guid: f71ae9947408a72468685e4f37b95a5b, type: 3}
+    value: 10
+  - key: {fileID: 8551788226390165910, guid: e423865bd72593b42979bf2b21b2a41c, type: 3}
+    value: 10
+  - key: {fileID: 8551788226390165910, guid: 93a11ecaad744fc4ca69c08ecac34967, type: 3}
+    value: 10
   spawnInterval: 5
   RandomTime: 0

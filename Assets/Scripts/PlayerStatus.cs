@@ -27,7 +27,9 @@ public class PlayerStatus : MonoBehaviour
     }
 
     // 加血
-     public void HealthRecovery(float amount) { currentHp = Mathf.Min(currentHp+amount,maxHp); }
+    public void HealthRecovery(float amount) { currentHp = Mathf.Min(currentHp+amount,maxHp); }
+    //加盾
+    public void ShieldRecovery(float amount) { currentShield += amount; }
 
     // 获取武器
     public void GetWeapon(string weaponName)
