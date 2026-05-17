@@ -9,6 +9,9 @@ public class UIManager : MonoBehaviour
     [Header("玩家总数")]
     public int PlayerCount;
 
+    [Header("胜利分数")]
+    public int MaxScore;
+
     [Header("玩家")]
     public List<PlayerController> players = new List<PlayerController>();
 
@@ -20,9 +23,23 @@ public class UIManager : MonoBehaviour
 
     [Header("子弹")]
     public List<TMP_Text> ammoTexts = new List<TMP_Text>();
+
+    [Header("分数")]
+    public List<int> scores= new List<int>();
     void Start()
     {
+        IntInitialization();
+        Update();
+    }
 
+    void IntInitialization()
+    {
+        //PlayerCount = playCount;
+        //MaxScore = maxScore;
+        for (int i = 0; i < PlayerCount; i++)
+        {
+            scores.Add(0);
+        }
     }
 
     void Update()
@@ -68,10 +85,12 @@ public class UIManager : MonoBehaviour
             int AmmoNum = players[i].GetAmmoNum();
             int maxAmmo = players[i].GetMaxAmmo();
             bool needAmmo = players[i].IsNeedAmmo();
+            System.Console.WriteLine(AmmoNum + "\n");
+            System.Console.WriteLine(needAmmo + "\n");
 
-            if (needAmmo)
+            if (needAmmo != null)
             {
-                ammoTexts[i].text = $"bullet: {currentAmmo} / {AmmoNum}";
+                ammoTexts[i].text = $"{currentAmmo} / {AmmoNum}";
 
                 // Change text color when ammo is low
                 if (currentAmmo == 0)
