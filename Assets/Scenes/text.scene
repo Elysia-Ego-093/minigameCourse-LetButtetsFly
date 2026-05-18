@@ -421,6 +421,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: acb5a3d14ccf1d54ab2e3691553a4c99, type: 3}
+--- !u!1001 &145586068
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1114814937820424273, guid: a779ee4bf797ea94d9c6f932ccb02fa2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1114814937820424273, guid: a779ee4bf797ea94d9c6f932ccb02fa2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1114814937820424273, guid: a779ee4bf797ea94d9c6f932ccb02fa2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1114814937820424273, guid: a779ee4bf797ea94d9c6f932ccb02fa2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1114814937820424273, guid: a779ee4bf797ea94d9c6f932ccb02fa2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1114814937820424273, guid: a779ee4bf797ea94d9c6f932ccb02fa2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1114814937820424273, guid: a779ee4bf797ea94d9c6f932ccb02fa2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1114814937820424273, guid: a779ee4bf797ea94d9c6f932ccb02fa2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1114814937820424273, guid: a779ee4bf797ea94d9c6f932ccb02fa2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1114814937820424273, guid: a779ee4bf797ea94d9c6f932ccb02fa2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6285191327618206744, guid: a779ee4bf797ea94d9c6f932ccb02fa2, type: 3}
+      propertyPath: m_Name
+      value: GameData
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a779ee4bf797ea94d9c6f932ccb02fa2, type: 3}
 --- !u!1001 &154766292
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -848,6 +905,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2250ea75aafed34b86dc01a332a63d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
   basicWidth: 1
   basicHeight: 1
   crouchHeightPercent: 0.5
@@ -864,7 +922,6 @@ MonoBehaviour:
   maxGunCount: 3
   guns:
   - {fileID: -6158023087988191712, guid: e70a3169a0c6aa047aae521e3e62804b, type: 3}
-  - {fileID: -6158023087988191712, guid: 575d1001fb67b3f47a09dd3d6f8d3949, type: 3}
   dropGunPrefab: {fileID: 8123583258217390683, guid: 0e9de54ad97a3ca43bf8131cbc816495, type: 3}
   weaponPivot: {fileID: 203422569}
   grenadePrefab: {fileID: 6328424122493784882, guid: 6ca1262b00b02e848bdd63ff0cbee148, type: 3}
@@ -875,6 +932,8 @@ MonoBehaviour:
   VoidHeight: -5
   VoidDamage: 200
   respawnTime: 5
+  leftLowerCorner: {x: 0, y: 10}
+  RightUpperCorner: {x: 70, y: 20}
   leftKey: 97
   rightKey: 100
   jumpKey: 32
@@ -2375,6 +2434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2250ea75aafed34b86dc01a332a63d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 1
   basicWidth: 1
   basicHeight: 1
   crouchHeightPercent: 0.5
@@ -2391,7 +2451,6 @@ MonoBehaviour:
   maxGunCount: 3
   guns:
   - {fileID: -6158023087988191712, guid: e70a3169a0c6aa047aae521e3e62804b, type: 3}
-  - {fileID: -6158023087988191712, guid: 575d1001fb67b3f47a09dd3d6f8d3949, type: 3}
   dropGunPrefab: {fileID: 8123583258217390683, guid: 0e9de54ad97a3ca43bf8131cbc816495, type: 3}
   weaponPivot: {fileID: 1507939824}
   grenadePrefab: {fileID: 6328424122493784882, guid: 6ca1262b00b02e848bdd63ff0cbee148, type: 3}
@@ -2402,6 +2461,8 @@ MonoBehaviour:
   VoidHeight: -5
   VoidDamage: 200
   respawnTime: 5
+  leftLowerCorner: {x: 0, y: 10}
+  RightUpperCorner: {x: 70, y: 20}
   leftKey: 276
   rightKey: 275
   jumpKey: 273

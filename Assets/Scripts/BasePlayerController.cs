@@ -6,6 +6,9 @@ using Unity.VisualScripting;
 
 public abstract class BasePlayerController : MonoBehaviour
 {
+    [Header("玩家ID")]
+    public int id;
+
     protected Rigidbody2D rb;
     protected PlayerStatus playerStatus;
     protected BoxCollider2D PlayerCollider;
@@ -24,6 +27,7 @@ public abstract class BasePlayerController : MonoBehaviour
     public float basicMoveSpeed = 8f;
     protected float MoveSpeed;
     protected float moveInput;
+    protected bool useInertia = false;
 
     protected float lastMoveDirection = 1f;
 
@@ -88,6 +92,10 @@ public abstract class BasePlayerController : MonoBehaviour
     protected bool isInVoid = false;
     protected float respawnTimer = 0f;
 
+    [Header("重生范围")]
+    public Vector2 leftLowerCorner;
+    public Vector2 RightUpperCorner;
+
     // 抽象方法 - 子类必须实现自己的输入逻辑
     protected abstract float GetHorizontalInput();
     protected abstract bool GetLeftInput();
@@ -107,15 +115,17 @@ public abstract class BasePlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         PlayerCollider = GetComponent<BoxCollider2D>();
-        MoveSpeed = basicMoveSpeed;
-        jumpCountRemain = maxJumpCount;
-        currentStamina = maxStamina;
-        recoverWaitTimer = staminaRecoverDelay;
         playerStatus = GetComponent<PlayerStatus>();
         if (playerStatus == null)
         {
             Debug.LogError("玩家物体缺少PlayerStatus组件");
         }
+        Initial();
+        MoveSpeed = basicMoveSpeed;
+        playerStatus.currentHp = playerStatus.maxHp;
+        jumpCountRemain = maxJumpCount;
+        currentStamina = maxStamina;
+        recoverWaitTimer = staminaRecoverDelay;
         if (guns.Count > 0)
         {
             currentGunIndex = 0;
@@ -145,7 +155,9 @@ public abstract class BasePlayerController : MonoBehaviour
             if (respawnTimer <= 0)
             {
                 isInVoid = false;
-                transform.position = new Vector2(5.28f, 2.94f);
+                transform.position = new Vector2(
+                    UnityEngine.Random.Range(leftLowerCorner.x,RightUpperCorner.x),
+                    UnityEngine.Random.Range(leftLowerCorner.y,RightUpperCorner.y));
                 rb.gravityScale = 1.0f;
             }
             return;
@@ -166,6 +178,18 @@ public abstract class BasePlayerController : MonoBehaviour
         UpdateHorizontal();
     }
 
+    private void Initial()
+    {
+        if (GameData.Instance.players[id] == null)
+        {
+            return;
+        }
+        PlayerData p0 = GameData.Instance.players[id];
+        playerStatus.maxHp = p0.maxHp;
+        basicMoveSpeed = p0.moveSpeed;
+        addGun(p0.gun);
+    }
+    
     protected virtual void UpdateHorizontal()
     {
         if (GetHorizontalInput() > 0)
@@ -221,9 +245,10 @@ public abstract class BasePlayerController : MonoBehaviour
     {
         if (isKnockback) return;
         moveInput = GetHorizontalInput();
-        if (moveInput == 0 && rb.velocity.y != 0) return;
+        if (moveInput == 0 && rb.velocity.y != 0 && useInertia) return;
         float finalSpeed = isSprinting ? MoveSpeed * sprintSpeedMultiplier : MoveSpeed;
         rb.velocity = new Vector2(moveInput * finalSpeed, rb.velocity.y);
+        useInertia = false;
         
         if (moveInput != 0)
         {
@@ -283,6 +308,7 @@ public abstract class BasePlayerController : MonoBehaviour
             rb.velocity = new Vector2(moveInput == 0 ? 0 : rb.velocity.x, jumpForce);
             jumpCountRemain--;
             isJumping = true;
+            useInertia = false;
         }
         
         if (!GetJumpHoldInput()) isJumping = false;
@@ -560,11 +586,14 @@ public abstract class BasePlayerController : MonoBehaviour
             Die();
             return;
         }
-        
-        isKnockback = true;
-        knockbackTimer = knockbackDuration;
-        rb.velocity = atkForce;
-        jumpCountRemain = maxJumpCount;
+        if (playerStatus.currentShield <= 0)
+        {
+            isKnockback = true;
+            knockbackTimer = knockbackDuration;
+            rb.velocity = atkForce;
+            jumpCountRemain = maxJumpCount;
+            useInertia = true;
+        }
     }
 
     //加血
@@ -604,9 +633,11 @@ public abstract class BasePlayerController : MonoBehaviour
         }
     }
 
-    public void addGun(Gun gun)
+    public void addGun(GameObject gun)
     {
-        if (guns.Count < maxGunCount) guns.Add(gun);
+        GameObject newGunPrefab = Instantiate(gun);
+        Gun newGun = newGunPrefab.GetComponent<Gun>();
+        if (newGun != null && guns.Count < maxGunCount) guns.Add(newGun);
     }
     
     public void addAmmo(int num)
