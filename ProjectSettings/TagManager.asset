@@ -39,8 +39,11 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - PlayerMark
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: PlayerIndicator
+    uniqueID: 2720796885
     locked: 0

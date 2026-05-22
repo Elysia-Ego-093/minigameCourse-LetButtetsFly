@@ -87,7 +87,7 @@ public class Gun_UI : MonoBehaviour
             Gun.value = 0;
             return;
         }
-        Gun.maxValue = player.guns[index].data.AmmoTime;
+        Gun.maxValue = player.GetMaxAmmoTime();
         Gun.value = player.GetAmmoTime();
     }
 
