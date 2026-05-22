@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MachineGun
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 6328424122493784882, guid: d331c17738fd8444db9a1b055936ec9e, type: 3}
-  gunName: Machine Gun
+  gunName: MachineGun
   fireRate: 25
   bulletSpeed: 30
   bulletATK: 5
