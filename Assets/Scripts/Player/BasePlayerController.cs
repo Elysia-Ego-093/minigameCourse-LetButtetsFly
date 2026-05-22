@@ -63,6 +63,7 @@ public abstract class BasePlayerController : MonoBehaviour
     protected float AmmoTimer = 0f;//换弹计时器
     protected bool isReloadAmmo;
     public GameObject dropGunPrefab;
+    protected float reloadSpeed;
 
     [Header("武器跟随")]
     public Transform weaponPivot;           // 角色的武器挂载点
@@ -125,7 +126,10 @@ public abstract class BasePlayerController : MonoBehaviour
         }
         PlayerData p0 = GameData.Instance.players[id];
         playerStatus.maxHp = p0.maxHp;
+        maxStamina = p0.maxMp;
         basicMoveSpeed = p0.moveSpeed;
+        basicJumpForce = p0.jumpForce;
+        reloadSpeed = p0.reloadSpeed;
         addGun(p0.gun);
         Initial();
         playerStatus.currentHp = playerStatus.maxHp;
@@ -429,7 +433,7 @@ public abstract class BasePlayerController : MonoBehaviour
         if (!isReloadAmmo && currentGun.data.needAmmo && currentGun.nowAmmo <= 0)
         {
             isReloadAmmo = true;
-            AmmoTimer = currentGun.data.AmmoTime;
+            AmmoTimer = currentGun.data.AmmoTime * (1.0f - reloadSpeed);
         }
         if (isReloadAmmo)
         {
@@ -560,7 +564,7 @@ public abstract class BasePlayerController : MonoBehaviour
         if (GetReloadInput() && !isReloadAmmo)
         {
             isReloadAmmo = true;
-            AmmoTimer = currentGun.data.AmmoTime * (1.0f - 1.0f * currentGun.nowAmmo / currentGun.data.maxAmmo);
+            AmmoTimer = currentGun.data.AmmoTime * (1.0f - 1.0f * currentGun.nowAmmo / currentGun.data.maxAmmo) * (1.0f - reloadSpeed);
         }
     }
 
@@ -594,6 +598,7 @@ public abstract class BasePlayerController : MonoBehaviour
         return currentGun.data.needAmmo;
     }
     public float GetAmmoTime() { return AmmoTimer; }
+    public float GetMaxAmmoTime() { return currentGun.data.AmmoTime * (1.0f - reloadSpeed); }
     public Dictionary<string,float> GetBuffs() { return buffs; }
 
     // 击退处理

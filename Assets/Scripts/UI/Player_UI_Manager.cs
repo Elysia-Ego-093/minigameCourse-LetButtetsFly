@@ -1,11 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class Player_UI_Manager : MonoBehaviour
 {
     [Header("Íæ¼Ò")]
     public PlayerController player;
+
+    [Header("Í·Ïñ")]
+    public Image playerImage;
+    private readonly string playerImageFloderPath = "picture/Player";
 
     [Header("ÑªÌõ")]
     public Slider bloodBar;
@@ -21,7 +26,8 @@ public class Player_UI_Manager : MonoBehaviour
 
     void Start()
     {
-
+        Sprite newPlayerSprite = Resources.Load<Sprite>($"{playerImageFloderPath}/{GameData.Instance.players[player.id].PlayerName}");
+        playerImage.sprite = newPlayerSprite;
     }
 
     // Update is called once per frame
