@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerSelector : MonoBehaviour
 {
     [Header("角色列表")]
     public List<PlayerData> players = new List<PlayerData>();
+
+    [Header("UI显示列表")]
+    public List<PlayerData_UI> playerUIs = new List<PlayerData_UI>();
 
     public void SelectPlayer(int index)
     {
@@ -14,9 +18,33 @@ public class PlayerSelector : MonoBehaviour
         {
             if (GameData.Instance.players[i].maxHp == 0)
             {
-                GameData.Instance.players[i] = players[index];
+                playerUIs[i].GetPlayer(index);
+                GameData.Instance.players[i] = new PlayerData(players[index]);
                 return;
             }
         }
+    }
+    public void SelectPlayer_release()
+    {
+        for (int i = GameData.Instance.PlayerCount - 1; i >= 0; i--)
+        {
+            if (GameData.Instance.players[i].maxHp != 0)
+            {
+                GameData.Instance.players[i].ClearData();
+                playerUIs[i].ClearData();
+                return;
+            }
+        }
+    }
+    public void SelectPlayer_continue()
+    {
+        foreach (var player in GameData.Instance.players)
+        {
+            if (player.maxHp == 0)
+            {
+                return;
+            }
+        }
+        SceneManager.LoadScene("SelectMap");
     }
 }

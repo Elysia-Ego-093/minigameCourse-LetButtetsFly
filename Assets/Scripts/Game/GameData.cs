@@ -4,13 +4,31 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerData
 {
-    public float maxHp;
-    public float moveSpeed;
+    public string PlayerName;
+    [Range(0, 10000)] public float maxHp;
+    [Range(0, 200)] public float maxMp;
+    [Range(0, 20)] public float moveSpeed;
+    [Range(0, 20)] public float jumpForce;
+    [Range(0, 0.2f)] public float reloadSpeed;
     public GameObject gun;
-    public PlayerData(float maxHp, float moveSpeed,GameObject gun){
-        this.maxHp = maxHp;
-        this.moveSpeed = moveSpeed;
-        this.gun = gun;
+    public PlayerData(PlayerData player){
+        PlayerName = player.PlayerName;
+        maxHp = player.maxHp;
+        moveSpeed = player.moveSpeed;
+        jumpForce = player.jumpForce;
+        maxMp = player.maxMp;
+        reloadSpeed = player.reloadSpeed;
+        gun = player.gun;
+    }
+     public void ClearData()
+    {
+        PlayerName = "";
+        maxHp = 0f;
+        moveSpeed = 0f;
+        jumpForce = 0f;
+        maxMp = 0f;
+        reloadSpeed = 0f;
+        gun = null;
     }
 }
 public class GameData : MonoBehaviour
