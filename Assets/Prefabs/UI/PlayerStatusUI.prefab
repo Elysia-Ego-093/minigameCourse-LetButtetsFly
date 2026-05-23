@@ -396,6 +396,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  playerImage: {fileID: 0}
   bloodBar: {fileID: 2314759064366680356}
   staminaBar: {fileID: 961421521691169281}
   shieldBar: {fileID: 8714338316904126035}
@@ -2567,6 +2568,7 @@ GameObject:
   - component: {fileID: 7538367852189471625}
   - component: {fileID: 5330006246137759478}
   - component: {fileID: 8246962608169057040}
+  - component: {fileID: 4326697948971197602}
   m_Layer: 5
   m_HasEditorInfo: 1
   m_Name: Score
@@ -2692,6 +2694,21 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4326697948971197602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8477041073884476709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 355fdd9f7a5dddd4393eaedb0db3b153, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  score: {fileID: 8246962608169057040}
+  player1: {fileID: 6017552762257408773}
+  player2: {fileID: 821028543399107854}
 --- !u!1 &8726118036919736492
 GameObject:
   m_ObjectHideFlags: 0
@@ -2937,6 +2954,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  playerImage: {fileID: 0}
   bloodBar: {fileID: 698668050190714955}
   staminaBar: {fileID: 4391859180342465858}
   shieldBar: {fileID: 8714735473716317062}
