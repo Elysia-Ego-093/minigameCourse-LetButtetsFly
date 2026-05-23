@@ -34,9 +34,6 @@ public abstract class BasePlayerController : MonoBehaviour
     protected int jumpCountRemain;
     protected bool isJumping;
 
-    [Header("地面检测")]
-    protected bool isGrounded;
-
     [Header("加速设置")]
     public float sprintSpeedMultiplier = 2f;
     public float staminaCostPerSecond = 50f;
@@ -323,8 +320,8 @@ public abstract class BasePlayerController : MonoBehaviour
             StartCoroutine(DisablePlatformCollision());
             return;
         }
-        
-        if (rb.velocity.y == 0)
+
+        if (rb.velocity.y == 0 || (rb.velocity.y < 0 && CheckGround()))
         {
             jumpCountRemain = maxJumpCount;
         }
@@ -341,6 +338,18 @@ public abstract class BasePlayerController : MonoBehaviour
         
         if (!isJumping) rb.velocity += new Vector2(0, -9.81f * Time.deltaTime);
         rb.velocity += new Vector2(0, -9.81f * Time.deltaTime);
+    }
+
+    public bool CheckGround()
+    {
+        Vector2 checkPoint = new Vector2(transform.position.x, transform.position.y - transform.localScale.y / 2);
+        Collider2D[] cols = Physics2D.OverlapCircleAll(checkPoint, 0.05f);
+        foreach (var col in cols)
+        {
+            CoverBox coverBox = col.GetComponent<CoverBox>();
+            if (coverBox != null) return true;
+        }
+        return false;
     }
     // 耐力更新
     protected virtual void UpdateStamina()
