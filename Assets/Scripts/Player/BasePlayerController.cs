@@ -94,7 +94,11 @@ public abstract class BasePlayerController : MonoBehaviour
     public Vector2 leftLowerCorner;
     public Vector2 RightUpperCorner;
 
+    [Header("暂停状态")]
+    public bool isPause = false;
+
     protected Dictionary<string, float> buffs = new Dictionary<string, float>();
+    protected int DeathCount = 0;
 
     // 抽象方法 - 子类必须实现自己的输入逻辑
     protected abstract float GetHorizontalInput();
@@ -157,6 +161,7 @@ public abstract class BasePlayerController : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (isPause) return;
         if (isInVoid)
         {
             respawnTimer -= Time.deltaTime;
@@ -164,9 +169,16 @@ public abstract class BasePlayerController : MonoBehaviour
             {
                 isInVoid = false;
                 transform.position = new Vector2(
-                    UnityEngine.Random.Range(leftLowerCorner.x,RightUpperCorner.x),
-                    UnityEngine.Random.Range(leftLowerCorner.y,RightUpperCorner.y));
+                    Random.Range(leftLowerCorner.x,RightUpperCorner.x),
+                    Random.Range(leftLowerCorner.y,RightUpperCorner.y));
                 rb.gravityScale = 1.0f;
+                if (PlayerStatus.currentHp <= 0)
+                {
+                    while (currentGunIndex != 0) SwitchGun();
+                    while (guns.Count > 1) guns.RemoveAt(1);
+                    addGun(GameData.Instance.players[id].gun);
+                    playerStatus.currentHp = playerStatus.maxHp;
+                }
             }
             return;
         }
@@ -183,7 +195,7 @@ public abstract class BasePlayerController : MonoBehaviour
         HandleShoot();
         HandleGrenade();
         HandleReload();
-        
+
         UpdateHorizontal();
     }
 
@@ -600,6 +612,7 @@ public abstract class BasePlayerController : MonoBehaviour
     public float GetAmmoTime() { return AmmoTimer; }
     public float GetMaxAmmoTime() { return currentGun.data.AmmoTime * (1.0f - reloadSpeed); }
     public Dictionary<string,float> GetBuffs() { return buffs; }
+    public int GetDeathCount() { return DeathCount; }
 
     // 击退处理
     protected virtual void UpdateKnockback()
@@ -729,16 +742,24 @@ public abstract class BasePlayerController : MonoBehaviour
         {
             isInVoid = true;
             respawnTimer = respawnTime;
-            Initial();
             Attacked(VoidDamage, Vector2.zero);
             transform.position = new Vector2(10000, 10000);
+            rb.velocity = Vector2.zero;
             rb.gravityScale = 0;
+            Initial();
         }
     }
     //死亡处理
     protected virtual void Die()
     {
-        gameObject.SetActive(false);
+        DeathCount++;
+        isInVoid = true;
+        respawnTimer = respawnTime;
+        transform.position = new Vector2(10000, 10000);
+        rb.velocity = Vector2.zero;
+        rb.gravityScale = 0;
+        isRecoiling = false;
+        Initial();
     }
 
     public float GetLastMoveDirection() => lastMoveDirection;

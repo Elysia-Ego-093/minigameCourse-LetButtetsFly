@@ -20,7 +20,7 @@ public class PlayerData
         reloadSpeed = player.reloadSpeed;
         gun = player.gun;
     }
-     public void ClearData()
+    public void ClearData()
     {
         PlayerName = "";
         maxHp = 0f;
@@ -39,9 +39,8 @@ public class GameData : MonoBehaviour
     public int PlayerCount;
     public List<PlayerData> players = new List<PlayerData>();
 
-    private void Awake()
+    private void Start()
     {
-        for (int i = 0; i < PlayerCount; i++) players.Add(null);
         if (Instance == null)
         {
             Instance = this;
@@ -50,6 +49,14 @@ public class GameData : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+        for (int i = 0; i < PlayerCount; i++) players.Add(null);
+    }
+    public void ClearPlayerData()
+    {
+        foreach(var player in players)
+        {
+            player.ClearData();
         }
     }
 }
