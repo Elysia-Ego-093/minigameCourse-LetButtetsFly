@@ -11,6 +11,15 @@ public class PlayerSelector : MonoBehaviour
     [Header("UIœ‘ æ¡–±Ì")]
     public List<PlayerData_UI> playerUIs = new List<PlayerData_UI>();
 
+    private void Update()
+    {
+        for(int i = 0; i < GameData.Instance.players.Count; i++)
+        {
+            if (GameData.Instance.players[i].maxHp == 0) playerUIs[i].gameObject.SetActive(false);
+            else playerUIs[i].gameObject.SetActive(true);
+        }
+    }
+
     public void SelectPlayer(int index)
     {
         if (index >= players.Count || players[index] == null) return;
