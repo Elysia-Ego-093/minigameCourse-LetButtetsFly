@@ -39,8 +39,29 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - PlayerMark
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BackGround
+    uniqueID: 1321874091
+    locked: 0
+  - name: Platform
+    uniqueID: 2524159645
+    locked: 0
+  - name: CoverBox
+    uniqueID: 989403979
+    locked: 0
+  - name: PickableItem
+    uniqueID: 3035334841
+    locked: 0
+  - name: Player
+    uniqueID: 2978139553
+    locked: 0
+  - name: Weapon
+    uniqueID: 1823650681
+    locked: 0
+  - name: PlayerIndicator
+    uniqueID: 2720796885
     locked: 0
