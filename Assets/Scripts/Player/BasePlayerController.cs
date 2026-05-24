@@ -13,8 +13,8 @@ public abstract class BasePlayerController : MonoBehaviour
     protected BoxCollider2D PlayerCollider;
 
     [Header("体型设置")]
-    public float basicWidth = 1f;
-    public float basicHeight = 1f;
+    public float basicWidth = -0.5f;
+    public float basicHeight = 0.5f;
     protected float currentWidth;
     protected float currentHeight;
     public float crouchHeightPercent = 0.5f;
@@ -95,6 +95,9 @@ public abstract class BasePlayerController : MonoBehaviour
     [Header("暂停状态")]
     public bool isPause = false;
 
+    [Header("动画管理")]
+    protected Animator animator;
+
     protected Dictionary<string, float> buffs = new Dictionary<string, float>();
     protected int DeathCount = 0;
 
@@ -118,6 +121,7 @@ public abstract class BasePlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         PlayerCollider = GetComponent<BoxCollider2D>();
         playerStatus = GetComponent<PlayerStatus>();
+        animator = GetComponent<Animator>();
         if (playerStatus == null)
         {
             Debug.LogError("玩家物体缺少PlayerStatus组件");
@@ -212,6 +216,9 @@ public abstract class BasePlayerController : MonoBehaviour
         recoverWaitTimer = staminaRecoverDelay;
         AmmoTimer = 0f;
         isReloadAmmo = false;
+        animator.SetBool("isRun", false);
+        animator.SetBool("isDown", false);
+        animator.SetBool("isOver", false);
     }
     
     protected virtual void UpdateHorizontal()
@@ -219,17 +226,17 @@ public abstract class BasePlayerController : MonoBehaviour
         if (GetHorizontalInput() > 0)
         {
             lastMoveDirection = 1f;
-            transform.localScale = new Vector3(currentWidth, currentHeight, 1);
+            transform.localScale = new Vector3(-1 * currentWidth, currentHeight, -0.5f);
         }
 
         if (GetHorizontalInput() < 0)
         {
             lastMoveDirection = -1f;
-            transform.localScale = new Vector3(-1 * currentWidth, currentHeight, 1);
+            transform.localScale = new Vector3( currentWidth, currentHeight, -0.5f);
         }
         if (GetHorizontalInput() == 0)
         {
-            transform.localScale = new Vector3(currentWidth * lastMoveDirection, currentHeight, 1);
+            transform.localScale = new Vector3(currentWidth * lastMoveDirection, currentHeight, -0.5f);
         }
     }
 
@@ -267,16 +274,19 @@ public abstract class BasePlayerController : MonoBehaviour
     // 移动相关
     protected virtual void HandleMove()
     {
+        //animator.SetBool("isRun", false);
         if (isKnockback) return;
         moveInput = GetHorizontalInput();
         if (moveInput == 0 && rb.velocity.y != 0 && useInertia) return;
         float finalSpeed = isSprinting ? MoveSpeed * sprintSpeedMultiplier : MoveSpeed;
         rb.velocity = new Vector2(moveInput * finalSpeed, rb.velocity.y);
         useInertia = false;
-        
+        //animator.SetBool("isRun", true);
+
         if (moveInput != 0)
         {
             lastMoveDirection = Mathf.Sign(moveInput);
+            //animator.SetBool("isRun", true);
         }
         weaponPivot.transform.position = (Vector2)transform.position + new Vector2(transform.localScale.x / 2, -1 * transform.localScale.y / 2);
     }
@@ -304,13 +314,15 @@ public abstract class BasePlayerController : MonoBehaviour
             Debug.Log("玩家蹲下");
             PlayerCollider.size = new Vector2(1f, crouchHeightPercent);
             PlayerCollider.offset = new Vector2(0, -(1f - crouchHeightPercent) / 2f);
+            animator.SetBool("isDown", true);
         }
         if (GetDownFinishInput() || Mathf.Abs(rb.velocity.y) > 1f)
         {
             //Debug.Log("玩家站起");
             PlayerCollider.size = new Vector2(1f, 1f);
             PlayerCollider.offset = Vector2.zero;
-    }
+            animator.SetBool("isDown", false);
+        }
     }
 
     // 跳跃相关
@@ -684,7 +696,7 @@ public abstract class BasePlayerController : MonoBehaviour
         }
         currentWidth = basicWidth * percent;
         currentHeight = basicHeight * percent;
-        transform.localScale = new Vector3(currentWidth * lastMoveDirection, currentHeight, 1f);
+        transform.localScale = new Vector3(currentWidth * lastMoveDirection, currentHeight, -0.5f);
     }
     //加速/减速Buff
     public virtual void changeSpeed(float percent, float buffTime)

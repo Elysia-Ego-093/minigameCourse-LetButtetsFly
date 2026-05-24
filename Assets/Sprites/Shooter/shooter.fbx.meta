@@ -34,7 +34,279 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 18
+      name: down
+      takeName: down
+      internalID: 5826557733320977955
+      firstFrame: 0
+      lastFrame: 23
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      intervals: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+      additiveType: 0
+      basePoseType: 0
+      additiveSelectedAnimation: {instanceID: 0}
+      additiveSelectedAnimationFrameIndex: 0
+    - serializedVersion: 18
+      name: up
+      takeName: up
+      internalID: -5116407738340798132
+      firstFrame: 0
+      lastFrame: 23
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      intervals: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+      additiveType: 0
+      basePoseType: 0
+      additiveSelectedAnimation: {instanceID: 0}
+      additiveSelectedAnimationFrameIndex: 0
+    - serializedVersion: 18
+      name: Idel
+      takeName: Idel
+      internalID: -2797134668357508131
+      firstFrame: 0
+      lastFrame: 23
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      intervals: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+      additiveType: 0
+      basePoseType: 0
+      additiveSelectedAnimation: {instanceID: 0}
+      additiveSelectedAnimationFrameIndex: 0
+    - serializedVersion: 18
+      name: run
+      takeName: run
+      internalID: 6200578666267062213
+      firstFrame: 0
+      lastFrame: 23
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      intervals: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+      additiveType: 0
+      basePoseType: 0
+      additiveSelectedAnimation: {instanceID: 0}
+      additiveSelectedAnimationFrameIndex: 0
+    - serializedVersion: 18
+      name: "\u9AA8\u67B6|down"
+      takeName: "\u9AA8\u67B6|down"
+      internalID: 1412612184718552597
+      firstFrame: 0
+      lastFrame: 23
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      intervals: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+      additiveType: 0
+      basePoseType: 0
+      additiveSelectedAnimation: {instanceID: 0}
+      additiveSelectedAnimationFrameIndex: 0
+    - serializedVersion: 18
+      name: "\u9AA8\u67B6|Idel"
+      takeName: "\u9AA8\u67B6|Idel"
+      internalID: -2678261324744051243
+      firstFrame: 0
+      lastFrame: 23
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      intervals: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+      additiveType: 0
+      basePoseType: 0
+      additiveSelectedAnimation: {instanceID: 0}
+      additiveSelectedAnimationFrameIndex: 0
+    - serializedVersion: 18
+      name: "\u9AA8\u67B6|run"
+      takeName: "\u9AA8\u67B6|run"
+      internalID: -8374349244699662902
+      firstFrame: 0
+      lastFrame: 23
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      intervals: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+      additiveType: 0
+      basePoseType: 0
+      additiveSelectedAnimation: {instanceID: 0}
+      additiveSelectedAnimationFrameIndex: 0
+    - serializedVersion: 18
+      name: "\u9AA8\u67B6|up"
+      takeName: "\u9AA8\u67B6|up"
+      internalID: -2042488493506615757
+      firstFrame: 0
+      lastFrame: 23
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      intervals: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+      additiveType: 0
+      basePoseType: 0
+      additiveSelectedAnimation: {instanceID: 0}
+      additiveSelectedAnimationFrameIndex: 0
     isReadable: 0
     tuanjieGIEnable: 0
     tuanjieGIGenSDFFactor: 1
@@ -92,7 +364,59 @@ ModelImporter:
       ignoreSimpleMesh: 0
       transformScaleState: 0
       isPossibleOverflow: 0
-    virtualGeometryPlatformSettings: []
+    virtualGeometryPlatformSettings:
+    - serializedVersion: 0
+      overridden: 0
+      ignorePlatformSupport: 0
+      buildTarget: DefaultVirtualGeometryPlatform
+      positionPrecision: -2147483648
+      normalPrecision: -2147483648
+      tangentPrecision: -2147483648
+      detailedTriangleCount: 0
+      detailedVertexCount: 0
+      rootPageSize: 0
+      streamablePageSize: 0
+      reserveTrianglePercent: 100
+      reserveDetailLevel: 0
+    - serializedVersion: 0
+      overridden: 0
+      ignorePlatformSupport: 0
+      buildTarget: Standalone
+      positionPrecision: -2147483648
+      normalPrecision: -2147483648
+      tangentPrecision: -2147483648
+      detailedTriangleCount: 0
+      detailedVertexCount: 0
+      rootPageSize: 0
+      streamablePageSize: 0
+      reserveTrianglePercent: 100
+      reserveDetailLevel: 0
+    - serializedVersion: 0
+      overridden: 0
+      ignorePlatformSupport: 0
+      buildTarget: iPhone
+      positionPrecision: -2147483648
+      normalPrecision: -2147483648
+      tangentPrecision: -2147483648
+      detailedTriangleCount: 0
+      detailedVertexCount: 0
+      rootPageSize: 0
+      streamablePageSize: 0
+      reserveTrianglePercent: 100
+      reserveDetailLevel: 0
+    - serializedVersion: 0
+      overridden: 0
+      ignorePlatformSupport: 0
+      buildTarget: Android
+      positionPrecision: -2147483648
+      normalPrecision: -2147483648
+      tangentPrecision: -2147483648
+      detailedTriangleCount: 0
+      detailedVertexCount: 0
+      rootPageSize: 0
+      streamablePageSize: 0
+      reserveTrianglePercent: 100
+      reserveDetailLevel: 0
     selectedVGMeshes:
     - index: 0
       meshName: Body

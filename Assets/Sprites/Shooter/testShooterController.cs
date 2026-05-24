@@ -9,6 +9,9 @@ public class testShooterController : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+        animator.SetBool("isRun", false);
+        animator.SetBool("isDown", false);
+        animator.SetBool("isOver", false);
     }
 
     // Update is called once per frame
@@ -16,19 +19,19 @@ public class testShooterController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            animator.SetBool("IsRun",true);
+            animator.SetBool("isRun",true);
         }
         if (Input.GetKeyUp(KeyCode.A))
         {
-            animator.SetBool("IsRun", false);
+            animator.SetBool("isRun", false);
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
-            animator.SetBool("IsDown", true);
+            animator.SetBool("isDown", true);
         }
         if (Input.GetKeyUp(KeyCode.S))
         {
-            animator.SetBool("IsRun", false);
+            animator.SetBool("isDown", false);
         }
     }
 }
