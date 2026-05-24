@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public abstract class BasePlayerController : MonoBehaviour
 {
@@ -346,8 +347,8 @@ public abstract class BasePlayerController : MonoBehaviour
         Collider2D[] cols = Physics2D.OverlapCircleAll(checkPoint, 0.05f);
         foreach (var col in cols)
         {
-            CoverBox coverBox = col.GetComponent<CoverBox>();
-            if (coverBox != null) return true;
+            Collider2D item = col.GetComponent<Collider2D>();
+            if (item != null && item != PlayerCollider) return true;
         }
         return false;
     }
