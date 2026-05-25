@@ -319,8 +319,8 @@ public abstract class BasePlayerController : MonoBehaviour
         if (rb.velocity.y == 0 && GetDownInput())
         {
             Debug.Log("玩家蹲下");
-            PlayerCollider.size = new Vector2(1f, crouchHeightPercent);
-            PlayerCollider.offset = new Vector2(0, -(1f - crouchHeightPercent) / 2f);
+            PlayerCollider.size = new Vector2(3.310463f, 2.009513f);
+            PlayerCollider.offset = new Vector2(0.861187f, 0.9999697f);
             animator.SetBool("isDown", true);
         }
         if (GetDownFinishInput() || Mathf.Abs(rb.velocity.y) > 1f)
