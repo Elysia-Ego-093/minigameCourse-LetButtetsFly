@@ -17,7 +17,7 @@ public abstract class BasePlayerController : MonoBehaviour
     public float basicHeight = 0.5f;
     protected float currentWidth;
     protected float currentHeight;
-    public float crouchHeightPercent = 0.5f;
+    public float crouchHeightPercent = 1f;
     // 公开的读取属性
     public PlayerStatus PlayerStatus => playerStatus;
 
@@ -230,17 +230,23 @@ public abstract class BasePlayerController : MonoBehaviour
         if (GetHorizontalInput() > 0)
         {
             lastMoveDirection = 1f;
-            transform.localScale = new Vector3(-1 * currentWidth, currentHeight, -0.5f);
+            transform.localScale = new Vector3(currentWidth, currentHeight, -0.5f);
+            animator.SetBool("isRun", true);
+            weaponPivot.localScale = new Vector3(1, 1, 1);
         }
 
         if (GetHorizontalInput() < 0)
         {
             lastMoveDirection = -1f;
-            transform.localScale = new Vector3( currentWidth, currentHeight, -0.5f);
+            transform.localScale = new Vector3(-1 * currentWidth, currentHeight, -0.5f);
+            animator.SetBool("isRun", true);
+            weaponPivot.localScale = new Vector3(-1, 1, 1);
         }
         if (GetHorizontalInput() == 0)
         {
             transform.localScale = new Vector3(currentWidth * lastMoveDirection, currentHeight, -0.5f);
+            animator.SetBool("isRun", false);
+            weaponPivot.localScale = new Vector3(lastMoveDirection, 1, 1);
         }
     }
 
@@ -320,8 +326,8 @@ public abstract class BasePlayerController : MonoBehaviour
         if (GetDownFinishInput() || Mathf.Abs(rb.velocity.y) > 1f)
         {
             //Debug.Log("玩家站起");
-            PlayerCollider.size = new Vector2(1f, 1f);
-            PlayerCollider.offset = Vector2.zero;
+            PlayerCollider.size = new Vector2(1.588089f, 3.036894f);
+            PlayerCollider.offset =new Vector2(0, 1.51366f);
             animator.SetBool("isDown", false);
         }
     }
