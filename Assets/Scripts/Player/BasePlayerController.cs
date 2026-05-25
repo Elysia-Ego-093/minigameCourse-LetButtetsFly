@@ -1,7 +1,7 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine;
 
 public abstract class BasePlayerController : MonoBehaviour
 {
@@ -98,6 +98,9 @@ public abstract class BasePlayerController : MonoBehaviour
     [Header("动画管理")]
     protected Animator animator;
 
+    [Header("材质管理")]
+    protected Renderer[] rendererArray;
+
     protected Dictionary<string, float> buffs = new Dictionary<string, float>();
     protected int DeathCount = 0;
 
@@ -137,6 +140,7 @@ public abstract class BasePlayerController : MonoBehaviour
         basicJumpForce = p0.jumpForce;
         reloadSpeed = p0.reloadSpeed;
         addGun(p0.gun);
+        changeMaterialTexture(p0.textureHead, p0.textureBody, p0.textureHand);
         Initial();
         playerStatus.currentHp = playerStatus.maxHp;
         if (guns.Count > 0)
@@ -782,6 +786,20 @@ public abstract class BasePlayerController : MonoBehaviour
         rb.gravityScale = 0;
         isRecoiling = false;
         Initial();
+    }
+    //材质贴图更换
+    void changeMaterialTexture(Texture textureHead,Texture textureBody,Texture textureHand)
+    {
+        rendererArray=transform.GetComponentsInChildren<Renderer>(true);
+        Texture[] textures= {textureBody,textureHead,textureHand,textureHand};
+        for (int i = 0; i < rendererArray.Length; i++)
+        {
+            rendererArray[i].material.mainTexture=textures[i];
+            //rendererArray[i].material.SetTexture("_MainTex", textures[i]);
+            //rendererArray[i].material.SetTexture("_Emission", textures[i]);
+            Debug.Log("rendererName:"+rendererArray[i].name);
+            Debug.Log("textureName:" + textures[i].name);
+        }
     }
 
     public float GetLastMoveDirection() => lastMoveDirection;
