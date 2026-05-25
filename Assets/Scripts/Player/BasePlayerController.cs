@@ -310,7 +310,7 @@ public abstract class BasePlayerController : MonoBehaviour
             //Debug.Log("玩家站起");
             PlayerCollider.size = new Vector2(1f, 1f);
             PlayerCollider.offset = Vector2.zero;
-    }
+        }
     }
 
     // 跳跃相关
