@@ -278,21 +278,18 @@ public abstract class BasePlayerController : MonoBehaviour
     // 移动相关
     protected virtual void HandleMove()
     {
-        //animator.SetBool("isRun", false);
         if (isKnockback) return;
         moveInput = GetHorizontalInput();
         if (moveInput == 0 && rb.velocity.y != 0 && useInertia) return;
         float finalSpeed = isSprinting ? MoveSpeed * sprintSpeedMultiplier : MoveSpeed;
         rb.velocity = new Vector2(moveInput * finalSpeed, rb.velocity.y);
         useInertia = false;
-        //animator.SetBool("isRun", true);
-
+        
         if (moveInput != 0)
         {
             lastMoveDirection = Mathf.Sign(moveInput);
-            //animator.SetBool("isRun", true);
         }
-        weaponPivot.transform.position = (Vector2)transform.position + new Vector2(transform.localScale.x / 2, -1 * transform.localScale.y / 2);
+        //weaponPivot.transform.position = (Vector2)transform.position + new Vector2(transform.localScale.x / 2, -1 * transform.localScale.y / 2);
     }
 
     // 冲刺相关

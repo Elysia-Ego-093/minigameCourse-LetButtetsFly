@@ -966,9 +966,9 @@ MonoBehaviour:
     jumpForce: 11.8
     reloadSpeed: 0.067
     gun: {fileID: 6470856061524998394, guid: 575d1001fb67b3f47a09dd3d6f8d3949, type: 3}
-    textureHead: {fileID: 2800000, guid: f5249a030fa824d429a42ca2a930310a, type: 3}
-    textureBody: {fileID: 2800000, guid: 602a8cb34dc826d418b0b93e677b60b9, type: 3}
-    textureHand: {fileID: 2800000, guid: 84abca2a6b20f5e458e74a811ef28d68, type: 3}
+    textureHead: {fileID: 2800000, guid: c31b3ba2f48b05f46b136bdc085a04de, type: 3}
+    textureBody: {fileID: 2800000, guid: 1facf659c19c52d4bb3d149b3aa2e360, type: 3}
+    textureHand: {fileID: 2800000, guid: 8c7dc60c15c91ed49b9f453177802714, type: 3}
   - PlayerName: Player4
     maxHp: 1000
     maxMp: 115
@@ -976,9 +976,9 @@ MonoBehaviour:
     jumpForce: 13
     reloadSpeed: 0.2
     gun: {fileID: 6470856061524998394, guid: e70a3169a0c6aa047aae521e3e62804b, type: 3}
-    textureHead: {fileID: 2800000, guid: 49de10dd645ac814c8c71488b3775f03, type: 3}
-    textureBody: {fileID: 2800000, guid: 1421bc14dc3aac24a9eb3707d468a628, type: 3}
-    textureHand: {fileID: 2800000, guid: 602a8cb34dc826d418b0b93e677b60b9, type: 3}
+    textureHead: {fileID: 2800000, guid: 8203f2e3e31b9ed4fada644ff2796fd1, type: 3}
+    textureBody: {fileID: 2800000, guid: 904d3209a77b8944e91f830b83e9ab2b, type: 3}
+    textureHand: {fileID: 2800000, guid: 08ee5fd829a7eb84490bb6b80daa2a43, type: 3}
   playerUIs:
   - {fileID: 1769588822}
   - {fileID: 370565635}
