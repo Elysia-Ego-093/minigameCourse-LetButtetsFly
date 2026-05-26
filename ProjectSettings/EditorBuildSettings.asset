@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/text.scene
     guid: c425a0d8358d84741ace3ef8137dd5b8
+  - enabled: 1
+    path: Assets/Scenes/GameWinner.scene
+    guid: 6c82336f25f62b344a0e892cddf80c35
   m_BuildProfiles: []
   m_configObjects: {}
   m_SlimFeaturesWeixinMiniGame:
