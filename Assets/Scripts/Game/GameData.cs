@@ -44,6 +44,10 @@ public class GameData : MonoBehaviour
     [Header("选中的玩家数据")]
     public int PlayerCount;
     public List<PlayerData> players = new List<PlayerData>();
+    [Header("胜利者")]
+    public string winnerName=null;
+    [Header("胜利分数")]
+    public int winnerScore = 3;
 
     private void Start()
     {
