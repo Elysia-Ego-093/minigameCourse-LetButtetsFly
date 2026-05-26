@@ -18,6 +18,7 @@ public abstract class BasePlayerController : MonoBehaviour
 
     [Header("地面监测点")]
     public List<GameObject> GroundCheckers = new List<GameObject>();
+    protected bool isGrounded = false;
 
     [Header("体型设置")]
     public float basicWidth = -0.5f;
@@ -69,6 +70,7 @@ public abstract class BasePlayerController : MonoBehaviour
     protected bool isReloadAmmo;
     public GameObject dropGunPrefab;
     protected float reloadSpeed;
+    private readonly string gunImageFloderPath = "picture/Weapon";
 
     [Header("武器跟随")]
     public Transform weaponPivot;           // 角色的武器挂载点
@@ -198,6 +200,7 @@ public abstract class BasePlayerController : MonoBehaviour
         }
         CheckVoid();
         UpdateCollider();
+        isGrounded = CheckGround();
         HandleSprint();
         HandleMove();
         HandleDown();
@@ -257,7 +260,6 @@ public abstract class BasePlayerController : MonoBehaviour
             lastMoveDirection = 1f;
             transform.localScale = new Vector3(currentWidth, currentHeight, -0.5f);
             animator.SetBool("isRun", true);
-            weaponPivot.localScale = new Vector3(1, 1, 1);
         }
 
         if (GetHorizontalInput() < 0)
@@ -265,14 +267,13 @@ public abstract class BasePlayerController : MonoBehaviour
             lastMoveDirection = -1f;
             transform.localScale = new Vector3(-1 * currentWidth, currentHeight, -0.5f);
             animator.SetBool("isRun", true);
-            weaponPivot.localScale = new Vector3(-1, 1, 1);
         }
         if (GetHorizontalInput() == 0)
         {
             transform.localScale = new Vector3(currentWidth * lastMoveDirection, currentHeight, -0.5f);
             animator.SetBool("isRun", false);
-            weaponPivot.localScale = new Vector3(lastMoveDirection, 1, 1);
         }
+        weaponPivot.transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
     }
 
 
@@ -320,7 +321,6 @@ public abstract class BasePlayerController : MonoBehaviour
         {
             lastMoveDirection = Mathf.Sign(moveInput);
         }
-        //weaponPivot.transform.position = (Vector2)transform.position + new Vector2(transform.localScale.x / 2, -1 * transform.localScale.y / 2);
     }
 
     // 冲刺相关
@@ -341,13 +341,12 @@ public abstract class BasePlayerController : MonoBehaviour
     //下蹲相关
     protected virtual void HandleDown()
     {
-        bool isGround = CheckGround();
-        if (isGround && GetDownInput())
+        if (isGrounded && GetDownInput())
         {
             Debug.Log("玩家蹲下");
             animator.SetBool("isDown", true);
         }
-        if (GetDownFinishInput() || !isGround) 
+        if (GetDownFinishInput() || !isGrounded) 
         {
             Debug.Log("玩家站起");
             animator.SetBool("isDown", false);
@@ -363,13 +362,14 @@ public abstract class BasePlayerController : MonoBehaviour
             return;
         }
 
-        if (rb.velocity.y == 0 || (rb.velocity.y < 0 && CheckGround()))
+        if (rb.velocity.y == 0 || (rb.velocity.y < 0 && isGrounded))
         {
             jumpCountRemain = maxJumpCount;
         }
-        
-        if (GetJumpInput() && jumpCountRemain > 0 && !isKnockback) 
+
+        if (GetJumpInput() && jumpCountRemain > 0 && knockbackTimer <= 0f)  
         {
+            isKnockback = false;
             rb.velocity = new Vector2(moveInput == 0 ? 0 : rb.velocity.x, jumpForce);
             jumpCountRemain--;
             isJumping = true;
@@ -390,7 +390,11 @@ public abstract class BasePlayerController : MonoBehaviour
             foreach (var col in cols)
             {
                 Collider2D item = col.GetComponent<Collider2D>();
-                if (item != null && item != PlayerCollider) return true;
+                if (item != null && item != PlayerCollider)
+                {
+                    if (knockbackTimer <= 0f) isKnockback = false;
+                    return true;
+                }
             }
         }
         return false;
@@ -671,13 +675,10 @@ public abstract class BasePlayerController : MonoBehaviour
     // 击退处理
     protected virtual void UpdateKnockback()
     {
-        if (isKnockback)
+        if (knockbackTimer > 0f) 
         {
             knockbackTimer -= Time.deltaTime;
-            if (knockbackTimer <= 0f)
-            {
-                isKnockback = false;
-            }
+            
         }
     }
 
@@ -757,13 +758,11 @@ public abstract class BasePlayerController : MonoBehaviour
     {
         if (GetDropGunInput() && currentGun.data.gunName != "Pistol")
         {
-            GameObject newDropGun = Instantiate(dropGunPrefab, transform.position, Quaternion.identity);
+            GameObject newDropGun = Instantiate(dropGunPrefab, weaponPivot.transform.position, Quaternion.identity);
+            newDropGun.transform.localScale = transform.localScale;
             SpriteRenderer picture = newDropGun.GetComponent<SpriteRenderer>();
-            SpriteRenderer picture0 = currentWeaponObject.GetComponent<SpriteRenderer>();
-            if (picture != null && picture0 != null)
-            {
-                picture.sprite = picture0.sprite;
-            }
+            Sprite newGunSprite = Resources.Load<Sprite>($"{gunImageFloderPath}/{currentGun.data.gunName}");
+            picture.sprite = newGunSprite;
             DropGun newGun = newDropGun.GetComponent<DropGun>();
             if (newGun != null)
             {
