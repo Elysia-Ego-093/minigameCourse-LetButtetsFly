@@ -1,3 +1,4 @@
+using R3;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -10,7 +11,13 @@ public abstract class BasePlayerController : MonoBehaviour
 
     protected Rigidbody2D rb;
     protected PlayerStatus playerStatus;
+
+    [Header("碰撞监测点")]
+    public List<GameObject> ColliderPoints = new List<GameObject>();
     protected BoxCollider2D PlayerCollider;
+
+    [Header("地面监测点")]
+    public List<GameObject> GroundCheckers = new List<GameObject>();
 
     [Header("体型设置")]
     public float basicWidth = -0.5f;
@@ -80,6 +87,7 @@ public abstract class BasePlayerController : MonoBehaviour
     public float throwTime;
     private float currentThrowTimer = 0;
     public int GrenadeCount;
+    public GameObject grenadePoint;
 
     [Header("虚空设置")]
     public float VoidHeight = -5f;
@@ -189,6 +197,7 @@ public abstract class BasePlayerController : MonoBehaviour
             return;
         }
         CheckVoid();
+        UpdateCollider();
         HandleSprint();
         HandleMove();
         HandleDown();
@@ -223,6 +232,22 @@ public abstract class BasePlayerController : MonoBehaviour
         animator.SetBool("isRun", false);
         animator.SetBool("isDown", false);
         animator.SetBool("isOver", false);
+    }
+
+    protected virtual void UpdateCollider()
+    {
+        if (ColliderPoints.Count == 0) return;
+        float x1 = ColliderPoints[0].transform.position.x, y1 = ColliderPoints[0].transform.position.y, x2 = x1, y2 = y1;
+        foreach(var point in ColliderPoints)
+        {
+            x1 = Mathf.Max(x1, point.transform.position.x);
+            y1 = Mathf.Max(y1, point.transform.position.y);
+            x2 = Mathf.Min(x2, point.transform.position.x);
+            y2 = Mathf.Min(y2, point.transform.position.y);
+        }
+        PlayerCollider.size = new Vector2((x1 - x2) / Mathf.Abs(transform.localScale.x), (y1 - y2) / Mathf.Abs(transform.localScale.y));
+        PlayerCollider.offset = new Vector2(((x1 + x2) / 2f - transform.position.x) / transform.localScale.x,
+                                            ((y1 + y2) / 2f - transform.position.y) / transform.localScale.y);
     }
     
     protected virtual void UpdateHorizontal()
@@ -316,18 +341,15 @@ public abstract class BasePlayerController : MonoBehaviour
     //下蹲相关
     protected virtual void HandleDown()
     {
-        if (rb.velocity.y == 0 && GetDownInput())
+        bool isGround = CheckGround();
+        if (isGround && GetDownInput())
         {
             Debug.Log("玩家蹲下");
-            PlayerCollider.size = new Vector2(3.310463f, 2.009513f);
-            PlayerCollider.offset = new Vector2(0.861187f, 0.9999697f);
             animator.SetBool("isDown", true);
         }
-        if (GetDownFinishInput() || Mathf.Abs(rb.velocity.y) > 1f)
+        if (GetDownFinishInput() || !isGround) 
         {
-            //Debug.Log("玩家站起");
-            PlayerCollider.size = new Vector2(1.588089f, 3.036894f);
-            PlayerCollider.offset =new Vector2(0, 1.51366f);
+            Debug.Log("玩家站起");
             animator.SetBool("isDown", false);
         }
     }
@@ -362,15 +384,19 @@ public abstract class BasePlayerController : MonoBehaviour
 
     public bool CheckGround()
     {
-        Vector2 checkPoint = new Vector2(transform.position.x, transform.position.y - transform.localScale.y / 2);
-        Collider2D[] cols = Physics2D.OverlapCircleAll(checkPoint, 0.05f);
-        foreach (var col in cols)
+        foreach(var checker in GroundCheckers)
         {
-            Collider2D item = col.GetComponent<Collider2D>();
-            if (item != null && item != PlayerCollider) return true;
+            Collider2D[] cols = Physics2D.OverlapCircleAll(checker.transform.position, 0.05f);
+            foreach (var col in cols)
+            {
+                Collider2D item = col.GetComponent<Collider2D>();
+                if (item != null && item != PlayerCollider) return true;
+            }
         }
         return false;
     }
+
+    public Vector2 GetIndicatorPosition() { return new Vector2(transform.position.x, transform.position.y + (PlayerCollider.offset.y + PlayerCollider.size.y / 2f) * transform.localScale.y); }
     // 耐力更新
     protected virtual void UpdateStamina()
     {
@@ -589,8 +615,7 @@ public abstract class BasePlayerController : MonoBehaviour
         {
             GrenadeCount--;
             currentThrowTimer = throwTime;
-            Vector2 spawn = (Vector2)transform.position + new Vector2(transform.localScale.x / 2, transform.localScale.y / 2);
-            GameObject newGrenade = Instantiate(grenadePrefab, spawn, Quaternion.identity);
+            GameObject newGrenade = Instantiate(grenadePrefab, grenadePoint.transform.position, Quaternion.identity);
             Grenade grenadeScript = newGrenade.GetComponent<Grenade>();
             if (grenadeScript != null)
             {
