@@ -9,12 +9,19 @@ public class PlayerIndicator : MonoBehaviour
 
     private float offset = 0f;
     private float speed = 0.2f;
+    private Collider2D playerCollider;
+
+    private void Start()
+    {
+        playerCollider = player.GetComponent<BoxCollider2D>();
+    }
 
     // Update is called once per frame
     void Update()
     {
+        playerCollider = player.GetComponent<BoxCollider2D>();
         offset += speed * Time.deltaTime;
         if (MathF.Abs(offset) > 0.1f) speed *= -1f;
-        transform.position = new Vector2(player.transform.position.x, player.transform.position.y + (player.transform.localScale.y + transform.localScale.y) / 2 + offset);
+        transform.position = player.GetIndicatorPosition() + new Vector2(0, transform.localScale.y / 2 + offset);
     }
 }

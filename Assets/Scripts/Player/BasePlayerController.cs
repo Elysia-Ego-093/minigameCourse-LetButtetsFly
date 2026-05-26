@@ -1,7 +1,8 @@
-using UnityEngine;
+using R3;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine;
 
 public abstract class BasePlayerController : MonoBehaviour
 {
@@ -10,14 +11,20 @@ public abstract class BasePlayerController : MonoBehaviour
 
     protected Rigidbody2D rb;
     protected PlayerStatus playerStatus;
+
+    [Header("碰撞监测点")]
+    public List<GameObject> ColliderPoints = new List<GameObject>();
     protected BoxCollider2D PlayerCollider;
 
+    [Header("地面监测点")]
+    public List<GameObject> GroundCheckers = new List<GameObject>();
+
     [Header("体型设置")]
-    public float basicWidth = 1f;
-    public float basicHeight = 1f;
+    public float basicWidth = -0.5f;
+    public float basicHeight = 0.5f;
     protected float currentWidth;
     protected float currentHeight;
-    public float crouchHeightPercent = 0.5f;
+    public float crouchHeightPercent = 1f;
     // 公开的读取属性
     public PlayerStatus PlayerStatus => playerStatus;
 
@@ -80,6 +87,7 @@ public abstract class BasePlayerController : MonoBehaviour
     public float throwTime;
     private float currentThrowTimer = 0;
     public int GrenadeCount;
+    public GameObject grenadePoint;
 
     [Header("虚空设置")]
     public float VoidHeight = -5f;
@@ -94,6 +102,12 @@ public abstract class BasePlayerController : MonoBehaviour
 
     [Header("暂停状态")]
     public bool isPause = false;
+
+    [Header("动画管理")]
+    protected Animator animator;
+
+    [Header("材质管理")]
+    protected Renderer[] rendererArray;
 
     protected Dictionary<string, float> buffs = new Dictionary<string, float>();
     protected int DeathCount = 0;
@@ -118,6 +132,7 @@ public abstract class BasePlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         PlayerCollider = GetComponent<BoxCollider2D>();
         playerStatus = GetComponent<PlayerStatus>();
+        animator = GetComponent<Animator>();
         if (playerStatus == null)
         {
             Debug.LogError("玩家物体缺少PlayerStatus组件");
@@ -133,6 +148,7 @@ public abstract class BasePlayerController : MonoBehaviour
         basicJumpForce = p0.jumpForce;
         reloadSpeed = p0.reloadSpeed;
         addGun(p0.gun);
+        changeMaterialTexture(p0.textureHead, p0.textureBody, p0.textureHand);
         Initial();
         playerStatus.currentHp = playerStatus.maxHp;
         if (guns.Count > 0)
@@ -181,6 +197,7 @@ public abstract class BasePlayerController : MonoBehaviour
             return;
         }
         CheckVoid();
+        UpdateCollider();
         HandleSprint();
         HandleMove();
         HandleDown();
@@ -212,6 +229,25 @@ public abstract class BasePlayerController : MonoBehaviour
         recoverWaitTimer = staminaRecoverDelay;
         AmmoTimer = 0f;
         isReloadAmmo = false;
+        animator.SetBool("isRun", false);
+        animator.SetBool("isDown", false);
+        animator.SetBool("isOver", false);
+    }
+
+    protected virtual void UpdateCollider()
+    {
+        if (ColliderPoints.Count == 0) return;
+        float x1 = ColliderPoints[0].transform.position.x, y1 = ColliderPoints[0].transform.position.y, x2 = x1, y2 = y1;
+        foreach(var point in ColliderPoints)
+        {
+            x1 = Mathf.Max(x1, point.transform.position.x);
+            y1 = Mathf.Max(y1, point.transform.position.y);
+            x2 = Mathf.Min(x2, point.transform.position.x);
+            y2 = Mathf.Min(y2, point.transform.position.y);
+        }
+        PlayerCollider.size = new Vector2((x1 - x2) / Mathf.Abs(transform.localScale.x), (y1 - y2) / Mathf.Abs(transform.localScale.y));
+        PlayerCollider.offset = new Vector2(((x1 + x2) / 2f - transform.position.x) / transform.localScale.x,
+                                            ((y1 + y2) / 2f - transform.position.y) / transform.localScale.y);
     }
     
     protected virtual void UpdateHorizontal()
@@ -219,17 +255,23 @@ public abstract class BasePlayerController : MonoBehaviour
         if (GetHorizontalInput() > 0)
         {
             lastMoveDirection = 1f;
-            transform.localScale = new Vector3(currentWidth, currentHeight, 1);
+            transform.localScale = new Vector3(currentWidth, currentHeight, -0.5f);
+            animator.SetBool("isRun", true);
+            weaponPivot.localScale = new Vector3(1, 1, 1);
         }
 
         if (GetHorizontalInput() < 0)
         {
             lastMoveDirection = -1f;
-            transform.localScale = new Vector3(-1 * currentWidth, currentHeight, 1);
+            transform.localScale = new Vector3(-1 * currentWidth, currentHeight, -0.5f);
+            animator.SetBool("isRun", true);
+            weaponPivot.localScale = new Vector3(-1, 1, 1);
         }
         if (GetHorizontalInput() == 0)
         {
-            transform.localScale = new Vector3(currentWidth * lastMoveDirection, currentHeight, 1);
+            transform.localScale = new Vector3(currentWidth * lastMoveDirection, currentHeight, -0.5f);
+            animator.SetBool("isRun", false);
+            weaponPivot.localScale = new Vector3(lastMoveDirection, 1, 1);
         }
     }
 
@@ -278,7 +320,7 @@ public abstract class BasePlayerController : MonoBehaviour
         {
             lastMoveDirection = Mathf.Sign(moveInput);
         }
-        weaponPivot.transform.position = (Vector2)transform.position + new Vector2(transform.localScale.x / 2, -1 * transform.localScale.y / 2);
+        //weaponPivot.transform.position = (Vector2)transform.position + new Vector2(transform.localScale.x / 2, -1 * transform.localScale.y / 2);
     }
 
     // 冲刺相关
@@ -299,17 +341,16 @@ public abstract class BasePlayerController : MonoBehaviour
     //下蹲相关
     protected virtual void HandleDown()
     {
-        if (rb.velocity.y == 0 && GetDownInput())
+        bool isGround = CheckGround();
+        if (isGround && GetDownInput())
         {
             Debug.Log("玩家蹲下");
-            PlayerCollider.size = new Vector2(1f, crouchHeightPercent);
-            PlayerCollider.offset = new Vector2(0, -(1f - crouchHeightPercent) / 2f);
+            animator.SetBool("isDown", true);
         }
-        if (GetDownFinishInput() || Mathf.Abs(rb.velocity.y) > 1f)
+        if (GetDownFinishInput() || !isGround) 
         {
-            //Debug.Log("玩家站起");
-            PlayerCollider.size = new Vector2(1f, 1f);
-            PlayerCollider.offset = Vector2.zero;
+            Debug.Log("玩家站起");
+            animator.SetBool("isDown", false);
         }
     }
 
@@ -343,15 +384,19 @@ public abstract class BasePlayerController : MonoBehaviour
 
     public bool CheckGround()
     {
-        Vector2 checkPoint = new Vector2(transform.position.x, transform.position.y - transform.localScale.y / 2);
-        Collider2D[] cols = Physics2D.OverlapCircleAll(checkPoint, 0.05f);
-        foreach (var col in cols)
+        foreach(var checker in GroundCheckers)
         {
-            Collider2D item = col.GetComponent<Collider2D>();
-            if (item != null && item != PlayerCollider) return true;
+            Collider2D[] cols = Physics2D.OverlapCircleAll(checker.transform.position, 0.05f);
+            foreach (var col in cols)
+            {
+                Collider2D item = col.GetComponent<Collider2D>();
+                if (item != null && item != PlayerCollider) return true;
+            }
         }
         return false;
     }
+
+    public Vector2 GetIndicatorPosition() { return new Vector2(transform.position.x, transform.position.y + (PlayerCollider.offset.y + PlayerCollider.size.y / 2f) * transform.localScale.y); }
     // 耐力更新
     protected virtual void UpdateStamina()
     {
@@ -570,8 +615,7 @@ public abstract class BasePlayerController : MonoBehaviour
         {
             GrenadeCount--;
             currentThrowTimer = throwTime;
-            Vector2 spawn = (Vector2)transform.position + new Vector2(transform.localScale.x / 2, transform.localScale.y / 2);
-            GameObject newGrenade = Instantiate(grenadePrefab, spawn, Quaternion.identity);
+            GameObject newGrenade = Instantiate(grenadePrefab, grenadePoint.transform.position, Quaternion.identity);
             Grenade grenadeScript = newGrenade.GetComponent<Grenade>();
             if (grenadeScript != null)
             {
@@ -684,7 +728,7 @@ public abstract class BasePlayerController : MonoBehaviour
         }
         currentWidth = basicWidth * percent;
         currentHeight = basicHeight * percent;
-        transform.localScale = new Vector3(currentWidth * lastMoveDirection, currentHeight, 1f);
+        transform.localScale = new Vector3(currentWidth * lastMoveDirection, currentHeight, -0.5f);
     }
     //加速/减速Buff
     public virtual void changeSpeed(float percent, float buffTime)
@@ -770,6 +814,20 @@ public abstract class BasePlayerController : MonoBehaviour
         rb.gravityScale = 0;
         isRecoiling = false;
         Initial();
+    }
+    //材质贴图更换
+    void changeMaterialTexture(Texture textureHead,Texture textureBody,Texture textureHand)
+    {
+        rendererArray=transform.GetComponentsInChildren<Renderer>(true);
+        Texture[] textures= {textureBody,textureHead,textureHand,textureHand};
+        for (int i = 0; i < rendererArray.Length; i++)
+        {
+            rendererArray[i].material.mainTexture=textures[i];
+            //rendererArray[i].material.SetTexture("_MainTex", textures[i]);
+            //rendererArray[i].material.SetTexture("_Emission", textures[i]);
+            Debug.Log("rendererName:"+rendererArray[i].name);
+            Debug.Log("textureName:" + textures[i].name);
+        }
     }
 
     public float GetLastMoveDirection() => lastMoveDirection;
