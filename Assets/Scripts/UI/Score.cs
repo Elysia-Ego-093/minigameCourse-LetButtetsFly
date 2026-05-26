@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Score : MonoBehaviour
 {
@@ -24,5 +25,21 @@ public class Score : MonoBehaviour
     void Update()
     {
         score.text = $"{P2.GetDeathCount()}:{P1.GetDeathCount()}";
+        IsHereAWinner();
+    }
+    //判断是否出现赢家
+    void IsHereAWinner()
+    {
+        if (P2.GetDeathCount() >= GameData.Instance.winnerScore)
+        {
+            GameData.Instance.winnerName = GameData.Instance.players[P1.id].PlayerName;
+            SceneManager.LoadScene("GameWinner");
+
+        }
+        if(P1.GetDeathCount() >= GameData.Instance.winnerScore)
+        {
+            GameData.Instance.winnerName = GameData.Instance.players[P2.id].PlayerName;
+            SceneManager.LoadScene("GameWinner");
+        }
     }
 }
