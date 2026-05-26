@@ -11,6 +11,9 @@ public class PlayerData
     [Range(0, 20)] public float jumpForce;
     [Range(0, 0.2f)] public float reloadSpeed;
     public GameObject gun;
+    public Texture textureHead;
+    public Texture textureBody;
+    public Texture textureHand;
     public PlayerData(PlayerData player){
         PlayerName = player.PlayerName;
         maxHp = player.maxHp;
@@ -19,6 +22,9 @@ public class PlayerData
         maxMp = player.maxMp;
         reloadSpeed = player.reloadSpeed;
         gun = player.gun;
+        textureHead = player.textureHead;
+        textureBody = player.textureBody;
+        textureHand = player.textureHand;
     }
     public void ClearData()
     {
