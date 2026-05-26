@@ -930,6 +930,10 @@ PrefabInstance:
       propertyPath: PlayerCount
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: -4242976667559872607, guid: a779ee4bf797ea94d9c6f932ccb02fa2, type: 3}
+      propertyPath: winnerScore
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1114814937820424273, guid: a779ee4bf797ea94d9c6f932ccb02fa2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
