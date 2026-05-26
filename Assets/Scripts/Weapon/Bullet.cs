@@ -7,10 +7,12 @@ public class Bullet : MonoBehaviour
     private float ATK;
     private Vector2 force;
     private Rigidbody2D rb;
+    private BoxCollider2D col;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<BoxCollider2D>();
     }
 
     public virtual void SetStatus(float s,float lastMoveDirection,float atk,float force_x,float force_y)
@@ -23,9 +25,11 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
+        col.size = new Vector2(Mathf.Abs(rb.velocity.x * 0.2f), col.size.y);
         // 自动销毁
         if (transform.position.x > 100 || transform.position.x < -100|| transform.position.y < -10)
             Destroy(gameObject);
+
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
