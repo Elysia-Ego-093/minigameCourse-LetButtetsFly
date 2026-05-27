@@ -8,6 +8,7 @@ public abstract class BasePlayerController : MonoBehaviour
 {
     [Header("玩家ID")]
     public int id;
+    
 
     protected Rigidbody2D rb;
     protected PlayerStatus playerStatus;
@@ -543,7 +544,7 @@ public abstract class BasePlayerController : MonoBehaviour
             Bullet bulletScript = newBullet.GetComponent<Bullet>();
             if (bulletScript != null)
             {
-                bulletScript.SetStatus(currentGun.data.bulletSpeed, lastMoveDirection, currentGun.data.bulletATK, currentGun.data.force_x, currentGun.data.force_y);
+                bulletScript.SetStatus(currentGun.data.bulletSpeed, lastMoveDirection, currentGun.data.bulletATK, currentGun.data.force_x, currentGun.data.force_y, GetComponent<Collider2D>());
             }
             if (!isRecoiling) StartCoroutine(WeaponRecoilCoroutine());
         }

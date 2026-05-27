@@ -266,7 +266,9 @@ MonoBehaviour:
   knockbackDuration: 0.2
   maxGunCount: 3
   guns:
-  - {fileID: -6158023087988191712, guid: e70a3169a0c6aa047aae521e3e62804b, type: 3}
+  - {fileID: -6158023087988191712, guid: 575d1001fb67b3f47a09dd3d6f8d3949, type: 3}
+  - {fileID: 6811273229543794077, guid: 6533a5d4959d8634495b8162d369d03f, type: 3}
+  - {fileID: 9175480527144958991, guid: d3637d9b2eafdbd48889e18ba29281ca, type: 3}
   currentGunIndex: 0
   dropGunPrefab: {fileID: 5970046341447418280, guid: f62abbbfbcb35214c84916625913bd61, type: 3}
   weaponPivot: {fileID: 641768938}
@@ -1841,7 +1843,9 @@ MonoBehaviour:
   knockbackDuration: 0.2
   maxGunCount: 3
   guns:
+  - {fileID: 7499706504638554561, guid: f6fdaf6c0a86bf845aa491776c25383d, type: 3}
   - {fileID: -6158023087988191712, guid: e70a3169a0c6aa047aae521e3e62804b, type: 3}
+  - {fileID: 5547796861386307299, guid: 3aa5499865f35a040899ad5f285ec56f, type: 3}
   currentGunIndex: 0
   dropGunPrefab: {fileID: 5970046341447418280, guid: f62abbbfbcb35214c84916625913bd61, type: 3}
   weaponPivot: {fileID: 215586149}
