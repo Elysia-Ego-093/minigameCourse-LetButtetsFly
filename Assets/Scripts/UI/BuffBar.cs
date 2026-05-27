@@ -3,12 +3,15 @@ using UnityEngine;
 
 public class BuffBar : MonoBehaviour
 {
-    [Header("buffÍ¼±êÔ¤ÖÆÌå")]
+    [Header("buffÍ¼ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½")]
     public GameObject buffIconPrefab;
 
-    [Header("Íæ¼Ò")]
+    [Header("ï¿½ï¿½ï¿½")]
     public Player_UI_Manager player_UI;
+
     private PlayerController player;
+
+
 
     private Dictionary<string, BuffIcon> icons = new Dictionary<string, BuffIcon>();
     private Dictionary<string, float> buffs = new Dictionary<string, float>();
@@ -61,7 +64,7 @@ public class BuffBar : MonoBehaviour
         foreach(var buffname in buffNames)
         {
             BuffIcon icon = icons[buffname];
-            icon.transform.position = new Vector2(transform.position.x + 1.0f * index * icon.transform.localScale.x, transform.position.y);
+            icon.transform.position = new Vector2(transform.position.x + 2.0f * index * icon.transform.localScale.x, transform.position.y);
             index++;
         }
     }
