@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: Di4d5CL8VyjoLnb00bt28CqrsMrBdmY//Y+YnFT/QreLDJb9ZTOgalE=
+guid: WX9OvCmuVHwJ+mYk4d8vTjEwGojFuAv92z70fLLHEXQ/+nJMVaxvlRE=
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 300
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,20 +100,6 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Server
-    maxTextureSize: 2048
-    maxPlaceholderSize: 32
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: WeixinMiniGame
     maxTextureSize: 2048
     maxPlaceholderSize: 32
     resizeAlgorithm: 0
