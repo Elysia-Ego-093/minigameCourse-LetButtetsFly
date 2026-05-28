@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 6328424122493784882, guid: d331c17738fd8444db9a1b055936ec9e, type: 3}
   gunName: Rifle
-  fireRate: 1
+  fireRate: 1.5
   bulletSpeed: 50
   bulletATK: 50
-  force_x: 50
+  force_x: 40
   force_y: 10
   needAmmo: 1
   maxAmmo: 20
   BasicAmmoNum: 40
   AmmoTime: 5
   weaponModelPrefab: {fileID: 5102308191031930400, guid: 3ebbf0198ba01194581f0f961b6f246f, type: 3}
-  weaponLocalOffset: {x: 0, y: 0}
+  weaponLocalOffset: {x: -3.25, y: 1.16}
   weaponLocalRotationZ: 0
-  recoilDistance: -0.1
+  recoilDistance: -0.15
   recoilRotation: 5
   recoilPeakDuration: 0.04
   recoilReturnDuration: 0.1

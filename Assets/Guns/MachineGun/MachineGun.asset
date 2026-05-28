@@ -24,10 +24,10 @@ MonoBehaviour:
   BasicAmmoNum: 120
   AmmoTime: 2
   weaponModelPrefab: {fileID: 7936187617071748290, guid: 5da4e8c6ec583f34c86c679aa1ca2050, type: 3}
-  weaponLocalOffset: {x: -1.5, y: 0}
+  weaponLocalOffset: {x: -1.1, y: 0}
   weaponLocalRotationZ: 0
-  recoilDistance: -0.1
-  recoilRotation: 15
+  recoilDistance: -0.15
+  recoilRotation: 1
   recoilPeakDuration: 0.05
   recoilReturnDuration: 0.1
   recoilHoldDuration: 0.02

@@ -45,5 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89537973f07907a4d860b4c9cc825368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buffIconPrefab: {fileID: 6998349029559670122, guid: 2a34ead50f847ca46b67447214c52f24, type: 3}
-  player: {fileID: 0}
+  buffIconPrefab: {fileID: 0}
+  player_UI: {fileID: 0}
+  distance: 3

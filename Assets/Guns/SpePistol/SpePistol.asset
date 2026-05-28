@@ -9,25 +9,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9d398e8b91afe042a18a6026d390ad0, type: 3}
+  m_Script: {fileID: 11500000, guid: bd6fd964f6de79840a13a482a5a8b643, type: 3}
   m_Name: SpePistol
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 6328424122493784882, guid: 374186ed75c2331459900ae328a464d4, type: 3}
-  gunName: Impact
+  gunName: SpecialPistol
   fireRate: 5
-  bulletSpeed: 10
-  bulletATK: 50
+  bulletSpeed: 16
+  bulletATK: 30
   force_x: 10
   force_y: 5
   needAmmo: 1
-  maxAmmo: 100
+  maxAmmo: 648
   BasicAmmoNum: 0
   AmmoTime: 0
   weaponModelPrefab: {fileID: 5592426043151257764, guid: 1f8f31f558fa88d45a553724b6d1452e, type: 3}
-  weaponLocalOffset: {x: 1.95, y: 1.12}
+  weaponLocalOffset: {x: 2.6, y: 0.6}
   weaponLocalRotationZ: 0
-  recoilDistance: -0.12
-  recoilRotation: 1
-  recoilPeakDuration: 0.02
-  recoilReturnDuration: 0.06
-  recoilHoldDuration: 0.03
+  recoilDistance: -0.1
+  recoilRotation: 2
+  recoilPeakDuration: 0.04
+  recoilReturnDuration: 0.1
+  recoilHoldDuration: 0.02
