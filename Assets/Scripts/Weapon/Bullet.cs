@@ -38,7 +38,7 @@ public class Bullet : MonoBehaviour
     {
         col.size = new Vector2(Mathf.Abs(rb.velocity.x * 0.2f), col.size.y);
         // 自动销毁
-        if (transform.position.x > 100 || transform.position.x < -100|| transform.position.y < -10)
+        if (transform.position.x > 1000 || transform.position.x < -1000 || transform.position.y < -10) 
             Destroy(gameObject);
 
     }
@@ -55,7 +55,7 @@ public class Bullet : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             PlayerController Player = collision.GetComponent<PlayerController>();
-            if (Player != null)
+            if (Player != null && !Player.IsSprinting()) 
             {
                 Player.Attacked(ATK, force);
                 Destroy(gameObject);

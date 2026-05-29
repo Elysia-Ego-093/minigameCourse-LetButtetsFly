@@ -8,7 +8,6 @@ public abstract class BasePlayerController : MonoBehaviour
 {
     [Header("玩家ID")]
     public int id;
-    
 
     protected Rigidbody2D rb;
     protected PlayerStatus playerStatus;
@@ -44,15 +43,19 @@ public abstract class BasePlayerController : MonoBehaviour
     protected int jumpCountRemain;
     protected bool isJumping;
 
-    [Header("加速设置")]
-    public float sprintSpeedMultiplier = 2f;
-    public float staminaCostPerSecond = 50f;
+    [Header("冲刺设置")]
+    protected const float staminaCostPerSecond = 100f;
     public float maxStamina = 100f;
     public float currentStamina;
     public float staminaRecoverDelay = 2f;
     public float staminaRecoverSpeed = 20f;
     protected float recoverWaitTimer;
     protected bool isSprinting;
+    protected float SprintTime = 0.15f;
+    protected float SprintTimer = 0f;
+    public float SprintSpeed = 50f;
+    public int maxSprintCount = 2;
+    protected int SprintCountRemain;
 
     [Header("受击设置")]
     protected bool isKnockback = false;
@@ -229,6 +232,7 @@ public abstract class BasePlayerController : MonoBehaviour
         MoveSpeed = basicMoveSpeed;
         jumpForce = basicJumpForce;
         jumpCountRemain = maxJumpCount;
+        SprintCountRemain = maxSprintCount;
         currentStamina = maxStamina;
         recoverWaitTimer = staminaRecoverDelay;
         AmmoTimer = 0f;
@@ -312,10 +316,11 @@ public abstract class BasePlayerController : MonoBehaviour
     protected virtual void HandleMove()
     {
         if (isKnockback) return;
+        if (isSprinting) return;
+        if (isGrounded) useInertia = false;
         moveInput = GetHorizontalInput();
         if (moveInput == 0 && rb.velocity.y != 0 && useInertia) return;
-        float finalSpeed = isSprinting ? MoveSpeed * sprintSpeedMultiplier : MoveSpeed;
-        rb.velocity = new Vector2(moveInput * finalSpeed, rb.velocity.y);
+        rb.velocity = new Vector2(moveInput * MoveSpeed, rb.velocity.y);
         useInertia = false;
         
         if (moveInput != 0)
@@ -327,17 +332,31 @@ public abstract class BasePlayerController : MonoBehaviour
     // 冲刺相关
     protected virtual void HandleSprint()
     {
-        bool wantSprint = GetSprintInput() && Mathf.Abs(GetHorizontalInput()) > 0.1f && currentStamina > 0;
-        if (wantSprint)
+        if (SprintTimer > 0)
+        {
+            SprintTimer -= Time.deltaTime;
+            rb.velocity = new Vector2(SprintSpeed * lastMoveDirection, 0f);
+            return;
+        }
+
+        if (isGrounded)
+        {
+            SprintCountRemain = maxSprintCount;
+        }
+
+        isSprinting = false;
+        if (knockbackTimer <= 0f && GetSprintInput() && SprintCountRemain > 0 && currentStamina > 0f)  
         {
             isSprinting = true;
-            recoverWaitTimer = 0;
+            SprintTimer = SprintTime;
+            SprintCountRemain--;
+            isKnockback = false;
+            recoverWaitTimer = 0f;
+            useInertia = false;
         }
-        else
-        {
-            isSprinting = false;
-        }
+        
     }
+    public bool IsSprinting() { return isSprinting; }
 
     //下蹲相关
     protected virtual void HandleDown()
@@ -687,6 +706,7 @@ public abstract class BasePlayerController : MonoBehaviour
     public virtual void Attacked(float atk, Vector2 atkForce)
     {
         if (playerStatus == null) return;
+        if (isSprinting) return;
         
         playerStatus.TakeDamage(atk); // 调用PlayerStatus的扣血（优先扣护盾）
         if (playerStatus.currentHp <= 0)
