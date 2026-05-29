@@ -363,7 +363,7 @@ public abstract class BasePlayerController : MonoBehaviour
             return;
         }
 
-        if (rb.velocity.y == 0 || (rb.velocity.y < 0 && isGrounded))
+        if (rb.velocity.y < 0 && isGrounded)
         {
             jumpCountRemain = maxJumpCount;
         }
