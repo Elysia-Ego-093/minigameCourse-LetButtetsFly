@@ -558,6 +558,10 @@ public abstract class BasePlayerController : MonoBehaviour
             {
                 spawnPos = (Vector2)transform.position + new Vector2(1f, 0f); // 备用方案
             }
+            if (currentGun.data.shootSound != null)
+            {
+                AudioSource.PlayClipAtPoint(currentGun.data.shootSound, transform.position);
+            }
             spawnPos.x = Mathf.Abs(spawnPos.x - transform.position.x) * lastMoveDirection + transform.position.x;
             GameObject newBullet = Instantiate(currentGun.data.bulletPrefab, spawnPos, Quaternion.identity);
             Bullet bulletScript = newBullet.GetComponent<Bullet>();

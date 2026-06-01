@@ -28,6 +28,8 @@ public class GunData : ScriptableObject
     public int maxAmmo = 100; // 弹夹最大装弹数量
     public int BasicAmmoNum;
     public int AmmoTime; //换弹时间
+    [Header("射击音效")]
+    public AudioClip shootSound;
 
     [Header("枪械模型预制体")]
     public GameObject weaponModelPrefab;

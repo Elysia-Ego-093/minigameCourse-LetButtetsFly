@@ -23,6 +23,7 @@ MonoBehaviour:
   maxAmmo: 7
   BasicAmmoNum: 0
   AmmoTime: 0
+  shootSound: {fileID: 8300000, guid: 7738e19ead8bdbe41b52247bdf53e18e, type: 3}
   weaponModelPrefab: {fileID: 8507621773737741661, guid: 467eda3756cc85e4dbda401e17008fcc, type: 3}
   weaponLocalOffset: {x: 0.2, y: 0.09}
   weaponLocalRotationZ: 0

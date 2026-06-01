@@ -257,16 +257,18 @@ MonoBehaviour:
   basicMoveSpeed: 8
   basicJumpForce: 12
   maxJumpCount: 2
-  sprintSpeedMultiplier: 2
-  staminaCostPerSecond: 50
   maxStamina: 100
   currentStamina: 0
   staminaRecoverDelay: 2
   staminaRecoverSpeed: 20
+  SprintSpeed: 50
+  maxSprintCount: 2
   knockbackDuration: 0.2
   maxGunCount: 3
   guns:
   - {fileID: -6158023087988191712, guid: e70a3169a0c6aa047aae521e3e62804b, type: 3}
+  - {fileID: 5547796861386307299, guid: 3aa5499865f35a040899ad5f285ec56f, type: 3}
+  - {fileID: 6811273229543794077, guid: 6533a5d4959d8634495b8162d369d03f, type: 3}
   currentGunIndex: 0
   dropGunPrefab: {fileID: 5970046341447418280, guid: f62abbbfbcb35214c84916625913bd61, type: 3}
   weaponPivot: {fileID: 641768938}
@@ -1872,16 +1874,18 @@ MonoBehaviour:
   basicMoveSpeed: 8
   basicJumpForce: 12
   maxJumpCount: 2
-  sprintSpeedMultiplier: 2
-  staminaCostPerSecond: 50
   maxStamina: 100
   currentStamina: 0
   staminaRecoverDelay: 2
   staminaRecoverSpeed: 20
+  SprintSpeed: 50
+  maxSprintCount: 2
   knockbackDuration: 0.2
   maxGunCount: 3
   guns:
   - {fileID: -6158023087988191712, guid: e70a3169a0c6aa047aae521e3e62804b, type: 3}
+  - {fileID: 6358461430195394109, guid: 326a1756cd58a2447ad7cc53c5bdf00a, type: 3}
+  - {fileID: 3339002259929915358, guid: 12cca141ac73a2c4c9f2b0de1ca3eb53, type: 3}
   currentGunIndex: 0
   dropGunPrefab: {fileID: 5970046341447418280, guid: f62abbbfbcb35214c84916625913bd61, type: 3}
   weaponPivot: {fileID: 215586149}
@@ -2341,12 +2345,12 @@ MonoBehaviour:
   basicMoveSpeed: 8
   basicJumpForce: 12
   maxJumpCount: 2
-  sprintSpeedMultiplier: 2
-  staminaCostPerSecond: 50
   maxStamina: 100
   currentStamina: 0
   staminaRecoverDelay: 2
   staminaRecoverSpeed: 20
+  SprintSpeed: 50
+  maxSprintCount: 2
   knockbackDuration: 0.2
   maxGunCount: 0
   guns: []
