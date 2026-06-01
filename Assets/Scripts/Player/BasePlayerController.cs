@@ -93,7 +93,9 @@ public abstract class BasePlayerController : MonoBehaviour
     public float throwTime;
     private float currentThrowTimer = 0;
     public int GrenadeCount;
+    public GameObject throwGrenadePoint;
     public GameObject grenadePoint;
+    protected GameObject currentGrenade = null;
 
     [Header("虚空设置")]
     public float VoidHeight = -5f;
@@ -630,21 +632,36 @@ public abstract class BasePlayerController : MonoBehaviour
     //投掷手榴弹
     protected virtual void HandleGrenade()
     {
+        if (currentGrenade != null) 
+        {
+            currentGrenade.transform.position = grenadePoint.transform.position;
+            if (GetThrowGrenadeInput() && currentThrowTimer <= 0f) 
+            {
+                currentThrowTimer = throwTime;
+                currentGrenade.transform.position = throwGrenadePoint.transform.position;
+                Physics2D.IgnoreCollision(currentGrenade.GetComponent<Collider2D>(), PlayerCollider, false);
+                Grenade grenadeScript = currentGrenade.GetComponent<Grenade>();
+                if (grenadeScript != null)
+                {
+                    grenadeScript.setStatus(new Vector2(throwForce_x * lastMoveDirection, throwForce_y) + rb.velocity);
+                }
+                currentGrenade = null;
+            }
+        }
+        else
+        {
+            if (GetThrowGrenadeInput() && GrenadeCount > 0 && currentThrowTimer <= 0f) 
+            {
+                GrenadeCount--;
+                currentThrowTimer = 0.2f;
+                GameObject newGrenade = Instantiate(grenadePrefab, grenadePoint.transform.position, Quaternion.identity);
+                currentGrenade = newGrenade;
+                Physics2D.IgnoreCollision(currentGrenade.GetComponent<Collider2D>(), PlayerCollider, true);
+            }
+        }
         if (currentThrowTimer > 0)
         {
             currentThrowTimer -= Time.deltaTime;
-            return;
-        }
-        if (GetThrowGrenadeInput() && GrenadeCount > 0)
-        {
-            GrenadeCount--;
-            currentThrowTimer = throwTime;
-            GameObject newGrenade = Instantiate(grenadePrefab, grenadePoint.transform.position, Quaternion.identity);
-            Grenade grenadeScript = newGrenade.GetComponent<Grenade>();
-            if (grenadeScript != null)
-            {
-                grenadeScript.setStatus(new Vector2(throwForce_x * lastMoveDirection, throwForce_y) + rb.velocity);
-            }
         }
     }
     protected virtual void HandleReload()

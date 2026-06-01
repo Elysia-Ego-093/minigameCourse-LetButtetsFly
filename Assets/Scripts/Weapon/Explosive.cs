@@ -16,13 +16,6 @@ public abstract class Explosive : MonoBehaviour
 
     protected abstract void CheckDetonation();
 
-    void Update()
-    {
-        if (!hasExploded)
-        {
-            CheckDetonation();
-        }
-    }
     protected virtual void Explode()
     {
         if (hasExploded) return;
@@ -33,7 +26,7 @@ public abstract class Explosive : MonoBehaviour
             PlayerController player = col.GetComponent<PlayerController>();
             float distance = Vector2.Distance(transform.position, col.transform.position);
             Vector2 knockBackDirection = (col.transform.position - transform.position).normalized;
-            float percent = Mathf.Max(1 - distance / explosionRadius, 0);
+            float percent = Mathf.Max(1 - distance / explosionRadius, 0.01f);
             if (player != null)
             {
                 player.Attacked(Damage * percent, knockBackDirection * Force * percent);
