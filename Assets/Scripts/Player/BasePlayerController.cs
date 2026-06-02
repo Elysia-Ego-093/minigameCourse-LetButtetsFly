@@ -43,15 +43,19 @@ public abstract class BasePlayerController : MonoBehaviour
     protected int jumpCountRemain;
     protected bool isJumping;
 
-    [Header("加速设置")]
-    public float sprintSpeedMultiplier = 2f;
-    public float staminaCostPerSecond = 50f;
+    [Header("冲刺设置")]
+    protected const float staminaCostPerSecond = 100f;
     public float maxStamina = 100f;
     public float currentStamina;
     public float staminaRecoverDelay = 2f;
     public float staminaRecoverSpeed = 20f;
     protected float recoverWaitTimer;
     protected bool isSprinting;
+    protected float SprintTime = 0.15f;
+    protected float SprintTimer = 0f;
+    public float SprintSpeed = 50f;
+    public int maxSprintCount = 2;
+    protected int SprintCountRemain;
 
     [Header("受击设置")]
     protected bool isKnockback = false;
@@ -89,7 +93,9 @@ public abstract class BasePlayerController : MonoBehaviour
     public float throwTime;
     private float currentThrowTimer = 0;
     public int GrenadeCount;
+    public GameObject throwGrenadePoint;
     public GameObject grenadePoint;
+    protected GameObject currentGrenade = null;
 
     [Header("虚空设置")]
     public float VoidHeight = -5f;
@@ -228,6 +234,7 @@ public abstract class BasePlayerController : MonoBehaviour
         MoveSpeed = basicMoveSpeed;
         jumpForce = basicJumpForce;
         jumpCountRemain = maxJumpCount;
+        SprintCountRemain = maxSprintCount;
         currentStamina = maxStamina;
         recoverWaitTimer = staminaRecoverDelay;
         AmmoTimer = 0f;
@@ -311,10 +318,11 @@ public abstract class BasePlayerController : MonoBehaviour
     protected virtual void HandleMove()
     {
         if (isKnockback) return;
+        if (isSprinting) return;
+        if (isGrounded) useInertia = false;
         moveInput = GetHorizontalInput();
         if (moveInput == 0 && rb.velocity.y != 0 && useInertia) return;
-        float finalSpeed = isSprinting ? MoveSpeed * sprintSpeedMultiplier : MoveSpeed;
-        rb.velocity = new Vector2(moveInput * finalSpeed, rb.velocity.y);
+        rb.velocity = new Vector2(moveInput * MoveSpeed, rb.velocity.y);
         useInertia = false;
         
         if (moveInput != 0)
@@ -326,17 +334,31 @@ public abstract class BasePlayerController : MonoBehaviour
     // 冲刺相关
     protected virtual void HandleSprint()
     {
-        bool wantSprint = GetSprintInput() && Mathf.Abs(GetHorizontalInput()) > 0.1f && currentStamina > 0;
-        if (wantSprint)
+        if (SprintTimer > 0)
+        {
+            SprintTimer -= Time.deltaTime;
+            rb.velocity = new Vector2(SprintSpeed * lastMoveDirection, 0f);
+            return;
+        }
+
+        if (isGrounded)
+        {
+            SprintCountRemain = maxSprintCount;
+        }
+
+        isSprinting = false;
+        if (knockbackTimer <= 0f && GetSprintInput() && SprintCountRemain > 0 && currentStamina > 0f)  
         {
             isSprinting = true;
-            recoverWaitTimer = 0;
+            SprintTimer = SprintTime;
+            SprintCountRemain--;
+            isKnockback = false;
+            recoverWaitTimer = 0f;
+            useInertia = false;
         }
-        else
-        {
-            isSprinting = false;
-        }
+        
     }
+    public bool IsSprinting() { return isSprinting; }
 
     //下蹲相关
     protected virtual void HandleDown()
@@ -362,7 +384,7 @@ public abstract class BasePlayerController : MonoBehaviour
             return;
         }
 
-        if (rb.velocity.y == 0 || (rb.velocity.y < 0 && isGrounded))
+        if (rb.velocity.y < 0 && isGrounded)
         {
             jumpCountRemain = maxJumpCount;
         }
@@ -543,7 +565,7 @@ public abstract class BasePlayerController : MonoBehaviour
             Bullet bulletScript = newBullet.GetComponent<Bullet>();
             if (bulletScript != null)
             {
-                bulletScript.SetStatus(currentGun.data.bulletSpeed, lastMoveDirection, currentGun.data.bulletATK, currentGun.data.force_x, currentGun.data.force_y);
+                bulletScript.SetStatus(currentGun.data.bulletSpeed, lastMoveDirection, currentGun.data.bulletATK, currentGun.data.force_x, currentGun.data.force_y, GetComponent<Collider2D>());
             }
             if (!isRecoiling) StartCoroutine(WeaponRecoilCoroutine());
         }
@@ -610,21 +632,36 @@ public abstract class BasePlayerController : MonoBehaviour
     //投掷手榴弹
     protected virtual void HandleGrenade()
     {
+        if (currentGrenade != null) 
+        {
+            currentGrenade.transform.position = grenadePoint.transform.position;
+            if (GetThrowGrenadeInput() && currentThrowTimer <= 0f) 
+            {
+                currentThrowTimer = throwTime;
+                currentGrenade.transform.position = throwGrenadePoint.transform.position;
+                Physics2D.IgnoreCollision(currentGrenade.GetComponent<Collider2D>(), PlayerCollider, false);
+                Grenade grenadeScript = currentGrenade.GetComponent<Grenade>();
+                if (grenadeScript != null)
+                {
+                    grenadeScript.setStatus(new Vector2(throwForce_x * lastMoveDirection, throwForce_y) + rb.velocity);
+                }
+                currentGrenade = null;
+            }
+        }
+        else
+        {
+            if (GetThrowGrenadeInput() && GrenadeCount > 0 && currentThrowTimer <= 0f) 
+            {
+                GrenadeCount--;
+                currentThrowTimer = 0.2f;
+                GameObject newGrenade = Instantiate(grenadePrefab, grenadePoint.transform.position, Quaternion.identity);
+                currentGrenade = newGrenade;
+                Physics2D.IgnoreCollision(currentGrenade.GetComponent<Collider2D>(), PlayerCollider, true);
+            }
+        }
         if (currentThrowTimer > 0)
         {
             currentThrowTimer -= Time.deltaTime;
-            return;
-        }
-        if (GetThrowGrenadeInput() && GrenadeCount > 0)
-        {
-            GrenadeCount--;
-            currentThrowTimer = throwTime;
-            GameObject newGrenade = Instantiate(grenadePrefab, grenadePoint.transform.position, Quaternion.identity);
-            Grenade grenadeScript = newGrenade.GetComponent<Grenade>();
-            if (grenadeScript != null)
-            {
-                grenadeScript.setStatus(new Vector2(throwForce_x * lastMoveDirection, throwForce_y) + rb.velocity);
-            }
         }
     }
     protected virtual void HandleReload()
@@ -686,6 +723,7 @@ public abstract class BasePlayerController : MonoBehaviour
     public virtual void Attacked(float atk, Vector2 atkForce)
     {
         if (playerStatus == null) return;
+        if (isSprinting) return;
         
         playerStatus.TakeDamage(atk); // 调用PlayerStatus的扣血（优先扣护盾）
         if (playerStatus.currentHp <= 0)

@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 2755792061495318420}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.81, y: -0.69, z: -0.0359}
-  m_LocalScale: {x: 0.14538808, y: 0.14538808, z: 0.14538808}
+  m_LocalPosition: {x: -2.0993, y: -0.5273, z: -0.0359}
+  m_LocalScale: {x: 0.2513715, y: 0.2513715, z: 0.2513715}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8952169080186718261}
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 2186702681173835058}
   m_Layer: 0
   m_HasEditorInfo: 1
-  m_Name: muzzle
+  m_Name: Muzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114,7 +114,7 @@ Transform:
   m_GameObject: {fileID: 4236189727055558207}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.55, y: -0.63, z: 0}
+  m_LocalPosition: {x: -1.574, y: -0.368, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

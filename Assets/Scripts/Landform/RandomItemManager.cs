@@ -17,23 +17,36 @@ public class RandomItemManager : ItemManager
         if (item == null) return;
         if (currentItems.Count < maxCount)
         {
-            float x = Random.Range(leftLowerCorner.x, RightUpperCorner.x), y = Random.Range(leftLowerCorner.y, RightUpperCorner.y);
-            GameObject newItem = Instantiate(item, new Vector2(x, y), Quaternion.identity);
+            Vector2 position = GetPosition();
+            GameObject newItem = Instantiate(item, position, Quaternion.identity);
             currentItems.Add(newItem);
         }
         else
         {
-            for(int i=0;i<currentItems.Count;i++)
+            for (int i = 0; i < currentItems.Count; i++) 
             {
                 if (currentItems[i] == null)
                 {
-                    float x = Random.Range(leftLowerCorner.x, RightUpperCorner.x), y = Random.Range(leftLowerCorner.y, RightUpperCorner.y);
-                    GameObject newItem = Instantiate(item, new Vector2(x, y), Quaternion.identity);
+                    Vector2 position = GetPosition();
+                    GameObject newItem = Instantiate(item, position, Quaternion.identity);
                     currentItems[i] = newItem;
                     return;
                 }
             }
         }
         
+    }
+
+    private Vector2 GetPosition()
+    {
+        Vector2 position;
+        Collider2D col = null;
+        do
+        {
+            float x = Random.Range(leftLowerCorner.x, RightUpperCorner.x), y = Random.Range(leftLowerCorner.y, RightUpperCorner.y);
+            position = new Vector2(x, y);
+            col = Physics2D.OverlapCircle(position, 2f);
+        } while (col != null);
+        return position;
     }
 }
