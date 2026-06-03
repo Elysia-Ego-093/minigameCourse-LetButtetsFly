@@ -24,11 +24,11 @@ public abstract class Explosive : MonoBehaviour
         foreach(Collider2D col in cols)
         {
             PlayerController player = col.GetComponent<PlayerController>();
-            float distance = Vector2.Distance(transform.position, col.transform.position);
-            Vector2 knockBackDirection = (col.transform.position - transform.position).normalized;
-            float percent = Mathf.Max(1 - distance / explosionRadius, 0.01f);
             if (player != null)
             {
+                float distance = Vector2.Distance(transform.position, player.CenterPosition);
+                Vector2 knockBackDirection = (player.CenterPosition - (Vector2)transform.position).normalized;
+                float percent = Mathf.Max(1 - distance / explosionRadius, 0.01f);
                 player.Attacked(Damage * percent, knockBackDirection * Force * percent);
             }
             else
@@ -36,6 +36,9 @@ public abstract class Explosive : MonoBehaviour
                 Rigidbody2D rb = col.GetComponent<Rigidbody2D>();
                 if (rb != null)
                 {
+                    float distance = Vector2.Distance(transform.position, col.transform.position);
+                    Vector2 knockBackDirection = (col.transform.position - transform.position).normalized;
+                    float percent = Mathf.Max(1 - distance / explosionRadius, 0.01f);
                     rb.velocity = knockBackDirection * Force * percent;
                     if (rb.gravityScale == 0) rb.gravityScale = 1.0f;
                 }
