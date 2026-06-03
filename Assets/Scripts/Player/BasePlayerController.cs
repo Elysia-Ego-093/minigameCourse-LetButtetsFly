@@ -11,6 +11,7 @@ public abstract class BasePlayerController : MonoBehaviour
 
     protected Rigidbody2D rb;
     protected PlayerStatus playerStatus;
+    public Vector2 CenterPosition;
 
     [Header("碰撞监测点")]
     public List<GameObject> ColliderPoints = new List<GameObject>();
@@ -255,6 +256,7 @@ public abstract class BasePlayerController : MonoBehaviour
             x2 = Mathf.Min(x2, point.transform.position.x);
             y2 = Mathf.Min(y2, point.transform.position.y);
         }
+        CenterPosition = new Vector2((x1 + x2) / 2f, (y1 + y2) / 2f);
         PlayerCollider.size = new Vector2((x1 - x2) / Mathf.Abs(transform.localScale.x), (y1 - y2) / Mathf.Abs(transform.localScale.y));
         PlayerCollider.offset = new Vector2(((x1 + x2) / 2f - transform.position.x) / transform.localScale.x,
                                             ((y1 + y2) / 2f - transform.position.y) / transform.localScale.y);
