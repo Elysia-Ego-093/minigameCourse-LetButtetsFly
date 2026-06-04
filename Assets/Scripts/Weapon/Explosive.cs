@@ -4,18 +4,19 @@ using UnityEngine;
 
 public abstract class Explosive : MonoBehaviour
 {
-    [Header("±¬Õ¨°ë¾¶")]
+    [Header("ï¿½ï¿½Õ¨ï¿½ë¾¶")]
     public float explosionRadius;
-    [Header("±¬Õ¨ÉËº¦")]
+    [Header("ï¿½ï¿½Õ¨ï¿½Ëºï¿½")]
     public float Damage;
-    [Header("±¬Õ¨»÷ÍËÁ¦¶È")]
+    [Header("ï¿½ï¿½Õ¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
     public float Force;
 
     public LayerMask targetLayer;
+
     protected bool hasExploded = false;
 
     protected abstract void CheckDetonation();
-
+    
     void Update()
     {
         if (!hasExploded)
@@ -23,6 +24,7 @@ public abstract class Explosive : MonoBehaviour
             CheckDetonation();
         }
     }
+
     protected virtual void Explode()
     {
         if (hasExploded) return;
@@ -31,11 +33,11 @@ public abstract class Explosive : MonoBehaviour
         foreach(Collider2D col in cols)
         {
             PlayerController player = col.GetComponent<PlayerController>();
-            float distance = Vector2.Distance(transform.position, col.transform.position);
-            Vector2 knockBackDirection = (col.transform.position - transform.position).normalized;
-            float percent = Mathf.Max(1 - distance / explosionRadius, 0);
             if (player != null)
             {
+                float distance = Vector2.Distance(transform.position, player.CenterPosition);
+                Vector2 knockBackDirection = (player.CenterPosition - (Vector2)transform.position).normalized;
+                float percent = Mathf.Max(1 - distance / explosionRadius, 0.01f);
                 player.Attacked(Damage * percent, knockBackDirection * Force * percent);
             }
             else
@@ -43,6 +45,9 @@ public abstract class Explosive : MonoBehaviour
                 Rigidbody2D rb = col.GetComponent<Rigidbody2D>();
                 if (rb != null)
                 {
+                    float distance = Vector2.Distance(transform.position, col.transform.position);
+                    Vector2 knockBackDirection = (col.transform.position - transform.position).normalized;
+                    float percent = Mathf.Max(1 - distance / explosionRadius, 0.01f);
                     rb.velocity = knockBackDirection * Force * percent;
                     if (rb.gravityScale == 0) rb.gravityScale = 1.0f;
                 }
