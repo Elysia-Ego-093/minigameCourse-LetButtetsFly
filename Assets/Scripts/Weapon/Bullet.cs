@@ -22,7 +22,7 @@ public class Bullet : MonoBehaviour
         speed = s;
         rb.velocity = new Vector2(lastMoveDirection * speed, 0);
         ATK = atk;
-        force = new Vector2(force_x * lastMoveDirection, force_y);
+        force = new Vector2(force_x, force_y);
 
         // 忽略与发射者的碰撞
         if (owner != null)
@@ -37,8 +37,9 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         col.size = new Vector2(Mathf.Abs(rb.velocity.x * 0.2f), col.size.y);
+        col.offset = new Vector2(-col.size.x / 2 * (Mathf.Abs(rb.velocity.x) / rb.velocity.x), 0f);
         // 自动销毁
-        if (transform.position.x > 1000 || transform.position.x < -1000 || transform.position.y < -10) 
+        if (transform.position.x > 300 || transform.position.x < -300 || transform.position.y < -10) 
             Destroy(gameObject);
 
     }
@@ -57,6 +58,7 @@ public class Bullet : MonoBehaviour
             PlayerController Player = collision.GetComponent<PlayerController>();
             if (Player != null && !Player.IsSprinting()) 
             {
+                force = new Vector2(force.x * (Mathf.Abs(rb.velocity.x) / rb.velocity.x), force.y);
                 Player.Attacked(ATK, force);
                 Destroy(gameObject);
             }
