@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class ButtonManager : MonoBehaviour
 {
     public AudioClip sound;
+    public float volume = 0.5f;
     public void LoadGameScene(string gameSceneName)
     {
         PlaySound();
@@ -32,6 +33,7 @@ public class ButtonManager : MonoBehaviour
             ButtonSound newAudioSource = newSoundObject.AddComponent<ButtonSound>();
             newAudioSource.sound = newSoundObject.AddComponent<AudioSource>();
             newAudioSource.sound.clip = sound;
+            newAudioSource.sound.volume = volume;
             newAudioSource.sound.Play();
             DontDestroyOnLoad(newSoundObject);
         }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class PlayerData
@@ -41,6 +42,9 @@ public class GameData : MonoBehaviour
 {
     public static GameData Instance;
 
+    [Header("BGM")]
+    public AudioSource BGM;
+
     [Header("选中的玩家数据")]
     public int PlayerCount;
     public List<PlayerData> players = new List<PlayerData>();
@@ -60,7 +64,17 @@ public class GameData : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        BGM.GetComponent<AudioSource>();
         for (int i = 0; i < PlayerCount; i++) players.Add(null);
+    }
+    private void Update()
+    {
+        string currentSecneName = SceneManager.GetActiveScene().name;
+        if (!(currentSecneName == "MainTheme" || currentSecneName == "SelectPlayer" || currentSecneName == "SelectMap"))
+        {
+            BGM.Stop();
+        }
+        else if (!BGM.isPlaying) BGM.Play();
     }
     public void ClearPlayerData()
     {
