@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 7418042134848155531}
   m_Layer: 0
   m_HasEditorInfo: 1
-  m_Name: rifle
+  m_Name: Picture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

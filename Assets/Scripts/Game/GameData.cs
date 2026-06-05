@@ -69,4 +69,6 @@ public class GameData : MonoBehaviour
             player.ClearData();
         }
     }
+
+    
 }

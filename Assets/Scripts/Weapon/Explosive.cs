@@ -4,11 +4,11 @@ using UnityEngine;
 
 public abstract class Explosive : MonoBehaviour
 {
-    [Header("��ը�뾶")]
+    [Header("爆炸半径")]
     public float explosionRadius;
-    [Header("��ը�˺�")]
+    [Header("爆炸伤害")]
     public float Damage;
-    [Header("��ը��������")]
+    [Header("爆炸力度")]
     public float Force;
 
     public LayerMask targetLayer;

@@ -179,6 +179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectCollider2D: {fileID: -5422544345086364502}
   triggerCollider: {fileID: 6771585784439208493}
+  PickUpSound: {fileID: 8300000, guid: 40abb89c1947ebf4aac3dcb0f19b3594, type: 3}
   gunsPrefab:
   - key: {fileID: 6470856061524998394, guid: 575d1001fb67b3f47a09dd3d6f8d3949, type: 3}
     value: 100
@@ -187,6 +188,10 @@ MonoBehaviour:
   - key: {fileID: 7373403625526868206, guid: 3aa5499865f35a040899ad5f285ec56f, type: 3}
     value: 100
   - key: {fileID: 3003244598852040743, guid: 6533a5d4959d8634495b8162d369d03f, type: 3}
+    value: 100
+  - key: {fileID: 4856666843701477762, guid: 326a1756cd58a2447ad7cc53c5bdf00a, type: 3}
+    value: 100
+  - key: {fileID: 9024876007960977505, guid: 12cca141ac73a2c4c9f2b0de1ca3eb53, type: 3}
     value: 100
 --- !u!61 &-5422544345086364502
 BoxCollider2D:

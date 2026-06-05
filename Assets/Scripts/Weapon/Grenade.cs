@@ -2,16 +2,18 @@ using UnityEngine;
 
 public class Grenade : Explosive
 {
-    [Header("��ը��ʱ")]
+    [Header("爆炸延时")]
     public float fuseTime;
 
-    [Header("��ը��ʾȦ")]
+    [Header("爆炸警示圈")]
     public GameObject Background;
     public GameObject Cover;
 
     private Rigidbody2D rb;
     private float spawnTime = 0f;
-    public AudioClip fuseSound;   
+    public AudioClip fuseSound;
+
+    [Header("音效")]
     private AudioSource audioSource;
     public AudioClip explosionSound;
 

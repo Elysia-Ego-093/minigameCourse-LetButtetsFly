@@ -225,5 +225,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectCollider2D: {fileID: -5252273418612047830}
   triggerCollider: {fileID: 6771585784439208493}
+  PickUpSound: {fileID: 8300000, guid: 40abb89c1947ebf4aac3dcb0f19b3594, type: 3}
   percent: 0.5
   BuffTime: 5
