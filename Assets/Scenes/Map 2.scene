@@ -1407,6 +1407,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sound: {fileID: 8300000, guid: 097b662c37097e84fbc9ba91e9c40a36, type: 3}
+  clipSound: {fileID: 0}
+  backSound: {fileID: 0}
   PauseMenu: {fileID: 974236715}
   players:
   - {fileID: 890486094}
@@ -3419,6 +3421,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 535036862}
+    - target: {fileID: 1847617163270080142, guid: ef56e27a94ed87c428f22d393ddb3688, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3378d3472d27ff54bb68b5815a5ab05e, type: 3}
+    - target: {fileID: 2451673848500599222, guid: ef56e27a94ed87c428f22d393ddb3688, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3378d3472d27ff54bb68b5815a5ab05e, type: 3}
     - target: {fileID: 2800622963706820292, guid: ef56e27a94ed87c428f22d393ddb3688, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -3467,6 +3477,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PauseMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 7005110843148236931, guid: ef56e27a94ed87c428f22d393ddb3688, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3378d3472d27ff54bb68b5815a5ab05e, type: 3}
     - target: {fileID: 7378806221565371124, guid: ef56e27a94ed87c428f22d393ddb3688, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

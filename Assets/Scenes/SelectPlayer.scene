@@ -261,142 +261,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 47b27684a02ea8a42b82563f165119d8, type: 3}
---- !u!1 &274748048
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 7
-  m_Component:
-  - component: {fileID: 274748049}
-  - component: {fileID: 274748051}
-  - component: {fileID: 274748050}
-  m_Layer: 5
-  m_HasEditorInfo: 1
-  m_Name: Title
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &274748049
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 274748048}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1592814710}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00069427, y: 260}
-  m_SizeDelta: {x: 638.976, y: 92.254}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &274748050
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 274748048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: Let Bullets Fly
-  m_enableAdvanceTextProcess: 0
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4279900877
-  m_fontColor: {r: 0.8037735, g: 0.10160909, b: 0.10160909, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 80
-  m_fontSizeBase: 80
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 3
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 1
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &274748051
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 274748048}
-  m_CullTransparentMesh: 1
 --- !u!224 &350095874 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4208295919530672748, guid: 090dc91bcfcc7ee479e676658d6fccf0, type: 3}
@@ -642,6 +506,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1592814710}
     m_Modifications:
+    - target: {fileID: 2176211983878802828, guid: 090dc91bcfcc7ee479e676658d6fccf0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3378d3472d27ff54bb68b5815a5ab05e, type: 3}
     - target: {fileID: 3126119877013829559, guid: 090dc91bcfcc7ee479e676658d6fccf0, type: 3}
       propertyPath: m_Name
       value: ContinueButton
@@ -791,6 +659,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1592814710}
     m_Modifications:
+    - target: {fileID: 2176211983878802828, guid: 090dc91bcfcc7ee479e676658d6fccf0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3378d3472d27ff54bb68b5815a5ab05e, type: 3}
     - target: {fileID: 3126119877013829559, guid: 090dc91bcfcc7ee479e676658d6fccf0, type: 3}
       propertyPath: m_Name
       value: ReleaseButton
@@ -962,7 +834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71f7a275c33e61a478be950d2339d03f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sound: {fileID: 8300000, guid: 097b662c37097e84fbc9ba91e9c40a36, type: 3}
+  sound: {fileID: 8300000, guid: 8e9c7ad8c77c3b24db0203781f49353a, type: 3}
 --- !u!4 &1044073006
 Transform:
   m_ObjectHideFlags: 0
@@ -1464,7 +1336,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1955253408}
-  - {fileID: 274748049}
   - {fileID: 1168813581}
   - {fileID: 350095874}
   - {fileID: 1214384526}
@@ -2008,6 +1879,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1592814710}
     m_Modifications:
+    - target: {fileID: 2176211983878802828, guid: 090dc91bcfcc7ee479e676658d6fccf0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3378d3472d27ff54bb68b5815a5ab05e, type: 3}
     - target: {fileID: 3126119877013829559, guid: 090dc91bcfcc7ee479e676658d6fccf0, type: 3}
       propertyPath: m_Name
       value: BackButton
