@@ -11,6 +11,9 @@ public class MainCameraFollow : MonoBehaviour
     public float minZoom = 5f;
     public float zoomSpeed = 2f;
 
+    [Header("BGM")]
+    public List<AudioClip> BGMs = new List<AudioClip>();
+
     private AudioSource BGMplayer;
 
     private Camera cam;
@@ -24,7 +27,11 @@ public class MainCameraFollow : MonoBehaviour
 
     private void Update()
     {
-        if (!BGMplayer.isPlaying) BGMplayer.Play();
+        if (!BGMplayer.isPlaying)
+        {
+            BGMplayer.clip = BGMs[Random.Range(0, BGMs.Count - 1)];
+            BGMplayer.Play();
+        }
     }
     private void LateUpdate()
     {
