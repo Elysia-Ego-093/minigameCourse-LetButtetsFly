@@ -57,6 +57,7 @@ public abstract class BasePlayerController : MonoBehaviour
     public float SprintSpeed = 50f;
     public int maxSprintCount = 2;
     protected int SprintCountRemain;
+    public AudioClip SprintSound;
 
     [Header("受击设置")]
     protected bool isKnockback = false;
@@ -104,6 +105,7 @@ public abstract class BasePlayerController : MonoBehaviour
     public float respawnTime = 5f;
     protected bool isInVoid = false;
     protected float respawnTimer = 0f;
+    public AudioClip VoidSound;
 
     [Header("重生范围")]
     public Vector2 leftLowerCorner;
@@ -351,6 +353,7 @@ public abstract class BasePlayerController : MonoBehaviour
         isSprinting = false;
         if (knockbackTimer <= 0f && GetSprintInput() && SprintCountRemain > 0 && currentStamina > 0f)  
         {
+            AudioSource.PlayClipAtPoint(SprintSound, transform.position, 1.0f);
             isSprinting = true;
             SprintTimer = SprintTime;
             SprintCountRemain--;
@@ -804,7 +807,8 @@ public abstract class BasePlayerController : MonoBehaviour
         if (GetDropGunInput() && currentGun.data.gunName != "Pistol")
         {
             GameObject newDropGun = Instantiate(dropGunPrefab, weaponPivot.transform.position, Quaternion.identity);
-            newDropGun.transform.localScale = transform.localScale;
+            Transform tmp = currentWeaponObject.transform.Find("Picture");
+            newDropGun.transform.localScale = tmp.localScale / 1.5f;
             SpriteRenderer picture = newDropGun.GetComponent<SpriteRenderer>();
             Sprite newGunSprite = Resources.Load<Sprite>($"{gunImageFloderPath}/{currentGun.data.gunName}");
             picture.sprite = newGunSprite;
@@ -841,6 +845,7 @@ public abstract class BasePlayerController : MonoBehaviour
             isInVoid = true;
             respawnTimer = respawnTime;
             Attacked(VoidDamage, Vector2.zero);
+            AudioSource.PlayClipAtPoint(VoidSound, transform.position, 1.0f);
             transform.position = new Vector2(10000, 10000);
             rb.velocity = Vector2.zero;
             rb.gravityScale = 0;
@@ -867,8 +872,6 @@ public abstract class BasePlayerController : MonoBehaviour
         for (int i = 0; i < rendererArray.Length; i++)
         {
             rendererArray[i].material.mainTexture=textures[i];
-            //rendererArray[i].material.SetTexture("_MainTex", textures[i]);
-            //rendererArray[i].material.SetTexture("_Emission", textures[i]);
             Debug.Log("rendererName:"+rendererArray[i].name);
             Debug.Log("textureName:" + textures[i].name);
         }

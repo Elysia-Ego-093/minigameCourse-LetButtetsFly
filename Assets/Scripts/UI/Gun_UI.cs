@@ -41,6 +41,7 @@ public class Gun_UI : MonoBehaviour
         if (index >= player.guns.Count)
         {
             ammoText.text = "EMPTY";
+            ammoText.color = Color.red;
             GunPicture.color = new Color(255, 255, 255, 0);
             return;
         }
@@ -58,12 +59,11 @@ public class Gun_UI : MonoBehaviour
         {
             ammoText.text = $"{currentAmmo} / {AmmoNum}";
 
-            // Change text color when ammo is low
             if (currentAmmo == 0)
             {
                 ammoText.color = Color.red;
             }
-            else if (currentAmmo <= maxAmmo * 0.2f) // Yellow when ammo is below 20%
+            else if (currentAmmo <= maxAmmo * 0.2f)
             {
                 ammoText.color = Color.yellow;
             }

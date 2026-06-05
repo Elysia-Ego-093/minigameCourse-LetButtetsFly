@@ -7,15 +7,14 @@ public class PlayerStatus : MonoBehaviour
     public float maxHp;
     public float currentHp;
 
-  //武器-------------------------------------------------------------
-
-
-
-
     //盾----------------------------------------------------------------
 
     public float currentShield;
     public float ShieldAmount;
+
+    [Header("受击音效")]
+    public AudioClip AttackSound;
+    public AudioClip ShieldSound;
 
     void Awake()
     {   
@@ -31,13 +30,7 @@ public class PlayerStatus : MonoBehaviour
     //加盾
     public void ShieldRecovery(float amount) { currentShield += amount; }
 
-    // 获取武器
-    public void GetWeapon(string weaponName)
-    {
-       
-    }
-
-    // 获取技能
+    
     public void GetShield()
     {   
             
@@ -63,5 +56,21 @@ public class PlayerStatus : MonoBehaviour
         }
         
         currentHp = Mathf.Max(currentHp-damage , 0);
+
+        if (currentShield > 0)
+        {
+            if (ShieldSound != null)
+            {
+                AudioSource.PlayClipAtPoint(ShieldSound, transform.position, 1.0f);
+            }
+        }
+        else
+        {
+            if (AttackSound != null)
+            {
+                AudioSource.PlayClipAtPoint(AttackSound, transform.position, 1.0f);
+            }
+        }
+        
     }
 }
