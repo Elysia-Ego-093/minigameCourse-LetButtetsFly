@@ -370,12 +370,10 @@ public abstract class BasePlayerController : MonoBehaviour
     {
         if (isGrounded && GetDownInput())
         {
-            Debug.Log("玩家蹲下");
             animator.SetBool("isDown", true);
         }
         if (GetDownFinishInput() || !isGrounded) 
         {
-            Debug.Log("玩家站起");
             animator.SetBool("isDown", false);
         }
     }

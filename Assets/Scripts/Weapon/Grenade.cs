@@ -45,7 +45,6 @@ public class Grenade : Explosive
             CheckDetonation();
         }
         spawnTime += Time.deltaTime;
-        Debug.Log(spawnTime);
         Background.transform.position = transform.position;
         Background.transform.localScale = new Vector2(explosionRadius * 2f / transform.localScale.x, explosionRadius * 2f / transform.localScale.y);
         Cover.transform.position = transform.position;
