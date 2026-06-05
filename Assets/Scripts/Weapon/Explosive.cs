@@ -10,6 +10,8 @@ public abstract class Explosive : MonoBehaviour
     public float Damage;
     [Header("爆炸力度")]
     public float Force;
+    [Header("爆炸动画预制体")]
+    public GameObject AnimationPrefab;
 
     public LayerMask targetLayer;
 
@@ -53,6 +55,8 @@ public abstract class Explosive : MonoBehaviour
                 }
             }
         }
+        GameObject newAnimation = Instantiate(AnimationPrefab, transform.position, Quaternion.identity);
+        newAnimation.transform.localScale = new Vector2(2f * explosionRadius, 2f * explosionRadius);
         Destroy(gameObject);
     }
 }

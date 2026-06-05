@@ -181,6 +181,7 @@ MonoBehaviour:
   explosionRadius: 3
   Damage: 500
   Force: 100
+  AnimationPrefab: {fileID: 8606883734544976708, guid: 4dcb0d7702a36254286de563bae764c9, type: 3}
   targetLayer:
     serializedVersion: 2
     m_Bits: 1024
