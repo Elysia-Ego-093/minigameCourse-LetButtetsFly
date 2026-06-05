@@ -11,12 +11,20 @@ public class MainCameraFollow : MonoBehaviour
     public float minZoom = 5f;
     public float zoomSpeed = 2f;
 
+    private AudioSource BGMplayer;
+
     private Camera cam;
 
     private void Start()
     {
         cam = GetComponent<Camera>();
+        BGMplayer = GetComponent<AudioSource>();
         if (cam == null) cam = Camera.main;
+    }
+
+    private void Update()
+    {
+        if (!BGMplayer.isPlaying) BGMplayer.Play();
     }
     private void LateUpdate()
     {
