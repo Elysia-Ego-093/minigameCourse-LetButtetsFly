@@ -4,17 +4,26 @@ using UnityEngine;
 
 public abstract class Explosive : MonoBehaviour
 {
-    [Header("±¬Õ¨°ë¾¶")]
+    [Header("çˆ†ç‚¸åŠå¾„")]
     public float explosionRadius;
-    [Header("±¬Õ¨ÉËº¦")]
+    [Header("çˆ†ç‚¸ä¼¤å®³")]
     public float Damage;
-    [Header("±¬Õ¨»÷ÍËÁ¦¶È")]
+    [Header("çˆ†ç‚¸åŠ›åº¦")]
     public float Force;
 
     public LayerMask targetLayer;
+
     protected bool hasExploded = false;
 
     protected abstract void CheckDetonation();
+    
+    void Update()
+    {
+        if (!hasExploded)
+        {
+            CheckDetonation();
+        }
+    }
 
     protected virtual void Explode()
     {

@@ -3,6 +3,8 @@ using UnityEngine;
 public class CoverBox : InteractiveStuff
 {
     public bool isBreakable = false;
+    [Header("“Ù–ß")]
+    public AudioClip sound;
     protected override void Awake()
     {
         isPickable = false;
@@ -18,6 +20,10 @@ public class CoverBox : InteractiveStuff
     public virtual void TakeDamage(float damage)
     {
         if (isDestroyed) return;
+        if (sound != null)
+        {
+            AudioSource.PlayClipAtPoint(sound, transform.position, 1.0f);
+        }
         if (!isBreakable) return;
 
         coverHealth -= damage;

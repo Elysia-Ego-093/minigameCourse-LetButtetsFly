@@ -12,6 +12,10 @@ public class JumpItem : PickableItem
     protected override void Effect(PlayerController player)
     {
         player.changeJump(percent, BuffTime);
+        if (PickUpSound != null)
+        {
+            AudioSource.PlayClipAtPoint(PickUpSound, transform.position, 1.0f);
+        }
         Destroy(gameObject);
     }
 }

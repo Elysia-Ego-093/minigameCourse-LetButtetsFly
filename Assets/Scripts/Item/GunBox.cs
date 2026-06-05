@@ -13,6 +13,10 @@ public class GunBox : PickableItem
     {
         if (player.guns.Count >= player.maxGunCount) return;
         player.addGun(GetGun());
+        if (PickUpSound != null)
+        {
+            AudioSource.PlayClipAtPoint(PickUpSound, transform.position, 1.0f);
+        }
         Destroy(gameObject);
     }
 

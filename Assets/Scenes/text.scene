@@ -244,6 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 1
+  CenterPosition: {x: 0, y: 0}
   ColliderPoints:
   - {fileID: 422243231}
   - {fileID: 150876209}
@@ -266,10 +267,13 @@ MonoBehaviour:
   staminaRecoverSpeed: 20
   SprintSpeed: 50
   maxSprintCount: 2
+  SprintSound: {fileID: 8300000, guid: effbf079df22a1b4183121873f8754bb, type: 3}
   knockbackDuration: 0.2
   maxGunCount: 3
   guns:
   - {fileID: -6158023087988191712, guid: e70a3169a0c6aa047aae521e3e62804b, type: 3}
+  - {fileID: 5547796861386307299, guid: 3aa5499865f35a040899ad5f285ec56f, type: 3}
+  - {fileID: 6811273229543794077, guid: 6533a5d4959d8634495b8162d369d03f, type: 3}
   currentGunIndex: 0
   dropGunPrefab: {fileID: 5970046341447418280, guid: f62abbbfbcb35214c84916625913bd61, type: 3}
   weaponPivot: {fileID: 641768938}
@@ -283,6 +287,7 @@ MonoBehaviour:
   VoidHeight: -5
   VoidDamage: 200
   respawnTime: 5
+  VoidSound: {fileID: 8300000, guid: 618da86886cdd774881017eed5a70eae, type: 3}
   leftLowerCorner: {x: 0, y: 10}
   RightUpperCorner: {x: 70, y: 20}
   isPause: 0
@@ -385,6 +390,8 @@ MonoBehaviour:
   currentHp: 1000
   currentShield: 0
   ShieldAmount: 300
+  AttackSound: {fileID: 8300000, guid: b930852a9b879e948a4f5844d1a8f2d4, type: 3}
+  ShieldSound: {fileID: 8300000, guid: ea6a8401faddbe1449ab05d3e46ff797, type: 3}
 --- !u!95 &15840559
 Animator:
   serializedVersion: 6
@@ -1214,6 +1221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a65a70dd3e20f3d45b34e1cf8bdcd19a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sound: {fileID: 8300000, guid: 097b662c37097e84fbc9ba91e9c40a36, type: 3}
   PauseMenu: {fileID: 974236715}
   players:
   - {fileID: 890486094}
@@ -1226,12 +1234,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 535036861}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 373.68307, y: 151.32918, z: -1.6472849}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 328.23306, y: 142.91917, z: 8.3527155}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 939047079}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &641768937
 GameObject:
@@ -1733,6 +1741,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  CenterPosition: {x: 0, y: 0}
   ColliderPoints:
   - {fileID: 1244181105}
   - {fileID: 1043383240}
@@ -1755,10 +1764,13 @@ MonoBehaviour:
   staminaRecoverSpeed: 20
   SprintSpeed: 50
   maxSprintCount: 2
+  SprintSound: {fileID: 8300000, guid: effbf079df22a1b4183121873f8754bb, type: 3}
   knockbackDuration: 0.2
   maxGunCount: 3
   guns:
   - {fileID: -6158023087988191712, guid: e70a3169a0c6aa047aae521e3e62804b, type: 3}
+  - {fileID: 6358461430195394109, guid: 326a1756cd58a2447ad7cc53c5bdf00a, type: 3}
+  - {fileID: 3339002259929915358, guid: 12cca141ac73a2c4c9f2b0de1ca3eb53, type: 3}
   currentGunIndex: 0
   dropGunPrefab: {fileID: 5970046341447418280, guid: f62abbbfbcb35214c84916625913bd61, type: 3}
   weaponPivot: {fileID: 215586149}
@@ -1772,6 +1784,7 @@ MonoBehaviour:
   VoidHeight: -5
   VoidDamage: 200
   respawnTime: 5
+  VoidSound: {fileID: 8300000, guid: 618da86886cdd774881017eed5a70eae, type: 3}
   leftLowerCorner: {x: 0, y: 10}
   RightUpperCorner: {x: 70, y: 20}
   isPause: 0
@@ -1874,6 +1887,8 @@ MonoBehaviour:
   currentHp: 1000
   currentShield: 0
   ShieldAmount: 300
+  AttackSound: {fileID: 8300000, guid: b930852a9b879e948a4f5844d1a8f2d4, type: 3}
+  ShieldSound: {fileID: 8300000, guid: ea6a8401faddbe1449ab05d3e46ff797, type: 3}
 --- !u!1 &906015702
 GameObject:
   m_ObjectHideFlags: 0
@@ -2118,7 +2133,8 @@ Transform:
   m_LocalPosition: {x: 45.45, y: 8.41, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 535036863}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &939047080
@@ -2211,6 +2227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  CenterPosition: {x: 0, y: 0}
   ColliderPoints: []
   GroundCheckers: []
   basicWidth: 1
@@ -2225,6 +2242,7 @@ MonoBehaviour:
   staminaRecoverSpeed: 20
   SprintSpeed: 50
   maxSprintCount: 2
+  SprintSound: {fileID: 0}
   knockbackDuration: 0.2
   maxGunCount: 0
   guns: []
@@ -2241,6 +2259,7 @@ MonoBehaviour:
   VoidHeight: -5
   VoidDamage: 200
   respawnTime: 5
+  VoidSound: {fileID: 0}
   leftLowerCorner: {x: 0, y: 0}
   RightUpperCorner: {x: 0, y: 0}
   isPause: 0
@@ -2270,6 +2289,8 @@ MonoBehaviour:
   currentHp: 1000
   currentShield: 0
   ShieldAmount: 0
+  AttackSound: {fileID: 0}
+  ShieldSound: {fileID: 0}
 --- !u!50 &969978899
 Rigidbody2D:
   serializedVersion: 4
@@ -2864,7 +2885,6 @@ SceneRoots:
   - {fileID: 906015705}
   - {fileID: 758032930}
   - {fileID: 691265778}
-  - {fileID: 535036863}
   - {fileID: 145586068}
   - {fileID: 641768938}
   - {fileID: 15840552}

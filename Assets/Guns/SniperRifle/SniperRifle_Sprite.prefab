@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 912443072466841788}
   m_Layer: 0
   m_HasEditorInfo: 1
-  m_Name: "\u5927\u72D9"
+  m_Name: Picture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

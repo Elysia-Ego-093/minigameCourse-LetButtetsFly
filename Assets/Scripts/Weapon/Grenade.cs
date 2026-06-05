@@ -2,19 +2,40 @@ using UnityEngine;
 
 public class Grenade : Explosive
 {
-    [Header("��ը��ʱ")]
+    [Header("爆炸延时")]
     public float fuseTime;
 
-    [Header("��ը��ʾȦ")]
+    [Header("爆炸警示圈")]
     public GameObject Background;
     public GameObject Cover;
 
     private Rigidbody2D rb;
     private float spawnTime = 0f;
+    public AudioClip fuseSound;
+
+    [Header("音效")]
+    private AudioSource audioSource;
+    public AudioClip explosionSound;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         if (rb == null) rb = gameObject.AddComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null) audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.clip = fuseSound;
+        audioSource.loop = true;  
+        audioSource.volume = 0.3f;
+        audioSource.Play();
+    }
+    public void PlayFuseSound()
+    {
+        if (audioSource != null && fuseSound != null)
+        {
+            audioSource.clip = fuseSound;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
     }
 
     void Update()
@@ -35,6 +56,11 @@ public class Grenade : Explosive
     {
         if (spawnTime >= fuseTime)
         {
+            StopFuseSound();
+            if (explosionSound != null)
+            {
+                AudioSource.PlayClipAtPoint(explosionSound, transform.position, 1.5f);
+            }
             Explode();
         }
     }
@@ -45,5 +71,10 @@ public class Grenade : Explosive
             rb.velocity = force;
             rb.angularVelocity = Random.Range(-360f, 360f);
         }
+    }
+    public void StopFuseSound()
+    {
+        if (audioSource != null && audioSource.isPlaying)
+            audioSource.Stop();
     }
 }

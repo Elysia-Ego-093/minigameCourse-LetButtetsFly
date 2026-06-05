@@ -179,6 +179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectCollider2D: {fileID: 6771585784439208493}
   triggerCollider: {fileID: -8632235780616835613}
+  PickUpSound: {fileID: 8300000, guid: 40abb89c1947ebf4aac3dcb0f19b3594, type: 3}
   AmmoNum: 2
 --- !u!61 &-8632235780616835613
 BoxCollider2D:

@@ -187,6 +187,8 @@ MonoBehaviour:
   fuseTime: 3
   Background: {fileID: 5703886320183231856}
   Cover: {fileID: 6810117233315518894}
+  fuseSound: {fileID: 8300000, guid: 7a0ce3df4e8753343a4e82259fd6e227, type: 3}
+  explosionSound: {fileID: 8300000, guid: b5522d1424aa126489dec86cea137722, type: 3}
 --- !u!1001 &3468265049755927758
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -5,6 +5,9 @@ public abstract class PickableItem : InteractiveStuff
     [Header("触发器")]
     public Collider2D triggerCollider;
 
+    [Header("拾取音效")]
+    public AudioClip PickUpSound;
+
     private PlayerController currentPlayer;
 
     protected override void Awake()

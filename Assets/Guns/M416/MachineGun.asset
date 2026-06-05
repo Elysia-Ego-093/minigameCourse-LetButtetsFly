@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:yousandi.cn,2023:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd6fd964f6de79840a13a482a5a8b643, type: 3}
+  m_Name: MachineGun
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 6328424122493784882, guid: d331c17738fd8444db9a1b055936ec9e, type: 3}
+  gunName: M416
+  fireRate: 25
+  bulletSpeed: 30
+  bulletATK: 5
+  force_x: 10
+  force_y: 7.5
+  needAmmo: 1
+  maxAmmo: 60
+  BasicAmmoNum: 120
+  AmmoTime: 2
+  shootSound: {fileID: 8300000, guid: 2168b8281800a89478ff1abfef39e075, type: 3}
+  weaponModelPrefab: {fileID: 4977776560268120476, guid: e6b7f99c56412e143b0b61183f1aa9ab, type: 3}
+  weaponLocalOffset: {x: 0.97, y: -0.3}
+  weaponLocalRotationZ: 0
+  recoilDistance: -0.15
+  recoilRotation: 1
+  recoilPeakDuration: 0.05
+  recoilReturnDuration: 0.1
+  recoilHoldDuration: 0.02

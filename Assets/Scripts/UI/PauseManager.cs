@@ -21,7 +21,6 @@ public class PauseManager : ButtonManager
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) TogglePause();
@@ -33,6 +32,7 @@ public class PauseManager : ButtonManager
 
     private void TogglePause()
     {
+        PlaySound();
         if (isPause) ResumeGame();
         else PauseGame();
     }
@@ -46,6 +46,7 @@ public class PauseManager : ButtonManager
 
     public void ResumeGame()
     {
+        PlaySound();
         isPause = false;
         Time.timeScale = 1.0f;
         PauseMenu.SetActive(isPause);
