@@ -14,7 +14,7 @@ public class JumpItem : PickableItem
         player.changeJump(percent, BuffTime);
         if (PickUpSound != null)
         {
-            AudioSource.PlayClipAtPoint(PickUpSound, transform.position, 1.0f);
+            AudioSource.PlayClipAtPoint(PickUpSound, transform.position, GameData.Instance.SoundVolume);
         }
         Destroy(gameObject);
     }

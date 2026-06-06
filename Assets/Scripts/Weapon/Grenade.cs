@@ -24,8 +24,8 @@ public class Grenade : Explosive
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null) audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.clip = fuseSound;
-        audioSource.loop = true;  
-        audioSource.volume = 0.3f;
+        audioSource.loop = true;
+        audioSource.volume = GameData.Instance.SoundVolume * 0.3f;
         audioSource.Play();
     }
     public void PlayFuseSound()
@@ -58,7 +58,7 @@ public class Grenade : Explosive
             StopFuseSound();
             if (explosionSound != null)
             {
-                AudioSource.PlayClipAtPoint(explosionSound, transform.position, 1.5f);
+                AudioSource.PlayClipAtPoint(explosionSound, transform.position, GameData.Instance.SoundVolume);
             }
             Explode();
         }

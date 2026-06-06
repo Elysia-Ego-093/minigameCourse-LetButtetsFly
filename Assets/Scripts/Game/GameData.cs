@@ -42,8 +42,11 @@ public class GameData : MonoBehaviour
 {
     public static GameData Instance;
 
-    [Header("BGM")]
-    public AudioSource BGM;
+    private AudioSource BGM;
+
+    [Header("音量设置")]
+    [Range(0f, 1f)] public float BGMVolume;
+    [Range(0f, 1f)] public float SoundVolume;
 
     [Header("选中的玩家数据")]
     public int PlayerCount;
@@ -64,7 +67,7 @@ public class GameData : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        BGM.GetComponent<AudioSource>();
+        BGM = GetComponent<AudioSource>();
         for (int i = 0; i < PlayerCount; i++) players.Add(null);
     }
     private void Update()
@@ -75,6 +78,7 @@ public class GameData : MonoBehaviour
             BGM.Stop();
         }
         else if (!BGM.isPlaying) BGM.Play();
+        BGM.volume = BGMVolume * 0.5f;
     }
     public void ClearPlayerData()
     {

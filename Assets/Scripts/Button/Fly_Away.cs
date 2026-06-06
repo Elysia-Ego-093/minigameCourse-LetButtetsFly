@@ -32,7 +32,7 @@ public class UIEffect_FlyOut : MonoBehaviour, IPointerClickHandler
         if (IsInvoking()) return;
         StartCoroutine(FlyAndLoad());
         if (flySound != null)        {
-            AudioSource.PlayClipAtPoint(flySound, Camera.main.transform.position,0.3f);
+            AudioSource.PlayClipAtPoint(flySound, Camera.main.transform.position, GameData.Instance.SoundVolume);
         }
     }
 

@@ -193,9 +193,7 @@ public abstract class BasePlayerController : MonoBehaviour
             if (respawnTimer <= 0)
             {
                 isInVoid = false;
-                transform.position = new Vector2(
-                    Random.Range(leftLowerCorner.x,RightUpperCorner.x),
-                    Random.Range(leftLowerCorner.y,RightUpperCorner.y));
+                transform.position = GetPosition();
                 rb.gravityScale = 1.0f;
                 if (PlayerStatus.currentHp <= 0)
                 {
@@ -224,6 +222,24 @@ public abstract class BasePlayerController : MonoBehaviour
         HandleReload();
 
         UpdateHorizontal();
+    }
+
+    private Vector2 GetPosition()
+    {
+        Vector2 position;
+        Collider2D col = null;
+        do
+        {
+            float x = Random.Range(leftLowerCorner.x, RightUpperCorner.x), y = Random.Range(leftLowerCorner.y, RightUpperCorner.y);
+            position = new Vector2(x, y);
+            col = Physics2D.OverlapCircle(position, 2f);
+        } while (!(col == null && CheckBelow(position)));
+        return position;
+    }
+    private bool CheckBelow(Vector2 position)
+    {
+        RaycastHit2D[] belowInfo = Physics2D.RaycastAll(position, Vector2.down);
+        return belowInfo.Length > 0;
     }
 
     private void Initial()
@@ -353,7 +369,7 @@ public abstract class BasePlayerController : MonoBehaviour
         isSprinting = false;
         if (knockbackTimer <= 0f && GetSprintInput() && SprintCountRemain > 0 && currentStamina > 0f)  
         {
-            AudioSource.PlayClipAtPoint(SprintSound, transform.position, 1.0f);
+            AudioSource.PlayClipAtPoint(SprintSound, transform.position, GameData.Instance.SoundVolume);
             isSprinting = true;
             SprintTimer = SprintTime;
             SprintCountRemain--;
@@ -547,7 +563,6 @@ public abstract class BasePlayerController : MonoBehaviour
 
         if (GetShootInput())
         {
-            Debug.Log("shoot");
             lastShootTime = Time.time;
             shootController = (shootController + 1) % 2;
             if (currentGun.data.needAmmo)
@@ -565,7 +580,7 @@ public abstract class BasePlayerController : MonoBehaviour
             }
             if (currentGun.data.shootSound != null)
             {
-                AudioSource.PlayClipAtPoint(currentGun.data.shootSound, transform.position);
+                AudioSource.PlayClipAtPoint(currentGun.data.shootSound, transform.position, GameData.Instance.SoundVolume);
             }
             spawnPos.x = Mathf.Abs(spawnPos.x - transform.position.x) * lastMoveDirection + transform.position.x;
             GameObject newBullet = Instantiate(currentGun.data.bulletPrefab, spawnPos, Quaternion.identity);
@@ -843,7 +858,7 @@ public abstract class BasePlayerController : MonoBehaviour
             isInVoid = true;
             respawnTimer = respawnTime;
             Attacked(VoidDamage, Vector2.zero);
-            AudioSource.PlayClipAtPoint(VoidSound, transform.position, 1.0f);
+            AudioSource.PlayClipAtPoint(VoidSound, transform.position, GameData.Instance.SoundVolume);
             transform.position = new Vector2(10000, 10000);
             rb.velocity = Vector2.zero;
             rb.gravityScale = 0;
