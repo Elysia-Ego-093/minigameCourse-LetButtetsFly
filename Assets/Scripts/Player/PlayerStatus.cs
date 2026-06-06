@@ -61,14 +61,14 @@ public class PlayerStatus : MonoBehaviour
         {
             if (ShieldSound != null)
             {
-                AudioSource.PlayClipAtPoint(ShieldSound, transform.position, 1.0f);
+                AudioSource.PlayClipAtPoint(ShieldSound, transform.position, GameData.Instance.SoundVolume);
             }
         }
         else
         {
             if (AttackSound != null)
             {
-                AudioSource.PlayClipAtPoint(AttackSound, transform.position, 1.0f);
+                AudioSource.PlayClipAtPoint(AttackSound, transform.position, GameData.Instance.SoundVolume);
             }
         }
         

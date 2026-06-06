@@ -18,7 +18,7 @@ public class MainCameraFollow : MonoBehaviour
 
     private Camera cam;
 
-    private void Start()
+    private void Awake()
     {
         cam = GetComponent<Camera>();
         BGMplayer = GetComponent<AudioSource>();
@@ -29,9 +29,10 @@ public class MainCameraFollow : MonoBehaviour
     {
         if (!BGMplayer.isPlaying)
         {
-            BGMplayer.clip = BGMs[Random.Range(0, BGMs.Count - 1)];
+            BGMplayer.clip = BGMs[Random.Range(0, BGMs.Count)];
             BGMplayer.Play();
         }
+        BGMplayer.volume = GameData.Instance.BGMVolume * 0.3f;
     }
     private void LateUpdate()
     {

@@ -12,7 +12,7 @@ public class AmmoBox : PickableItem
         player.addAmmo(AmmoNum);
         if (PickUpSound != null)
         {
-            AudioSource.PlayClipAtPoint(PickUpSound, transform.position, 1.0f);
+            AudioSource.PlayClipAtPoint(PickUpSound, transform.position, GameData.Instance.SoundVolume);
         }
         Destroy(gameObject);
     }

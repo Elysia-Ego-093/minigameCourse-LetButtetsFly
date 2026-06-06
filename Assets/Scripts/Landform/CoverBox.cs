@@ -22,7 +22,7 @@ public class CoverBox : InteractiveStuff
         if (isDestroyed) return;
         if (sound != null)
         {
-            AudioSource.PlayClipAtPoint(sound, transform.position, 1.0f);
+            AudioSource.PlayClipAtPoint(sound, transform.position, GameData.Instance.SoundVolume);
         }
         if (!isBreakable) return;
 
