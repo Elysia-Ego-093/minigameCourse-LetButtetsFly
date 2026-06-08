@@ -70,7 +70,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 8c5bd01880ea77144884ada231202e3c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -204,9 +204,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6471136600341020139, guid: 149ecb05075ed7f4fbbf79aa836f0810, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6471136600341020139, guid: 149ecb05075ed7f4fbbf79aa836f0810, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6471136600341020139, guid: 149ecb05075ed7f4fbbf79aa836f0810, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6471136600341020139, guid: 149ecb05075ed7f4fbbf79aa836f0810, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 8402332253883157189, guid: 149ecb05075ed7f4fbbf79aa836f0810, type: 3}
       propertyPath: m_text
       value: BGM
+      objectReference: {fileID: 0}
+    - target: {fileID: 8402332253883157189, guid: 149ecb05075ed7f4fbbf79aa836f0810, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8402332253883157189, guid: 149ecb05075ed7f4fbbf79aa836f0810, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8402332253883157189, guid: 149ecb05075ed7f4fbbf79aa836f0810, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8402332253883157189, guid: 149ecb05075ed7f4fbbf79aa836f0810, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -470,9 +502,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6471136600341020139, guid: 149ecb05075ed7f4fbbf79aa836f0810, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6471136600341020139, guid: 149ecb05075ed7f4fbbf79aa836f0810, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6471136600341020139, guid: 149ecb05075ed7f4fbbf79aa836f0810, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6471136600341020139, guid: 149ecb05075ed7f4fbbf79aa836f0810, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 8402332253883157189, guid: 149ecb05075ed7f4fbbf79aa836f0810, type: 3}
       propertyPath: m_text
       value: Sound
+      objectReference: {fileID: 0}
+    - target: {fileID: 8402332253883157189, guid: 149ecb05075ed7f4fbbf79aa836f0810, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8402332253883157189, guid: 149ecb05075ed7f4fbbf79aa836f0810, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8402332253883157189, guid: 149ecb05075ed7f4fbbf79aa836f0810, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8402332253883157189, guid: 149ecb05075ed7f4fbbf79aa836f0810, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
