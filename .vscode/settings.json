@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "minigameCourse-LetButtetsFly.sln"
+    "dotnet.defaultSolution": "Git.sln"
 }
