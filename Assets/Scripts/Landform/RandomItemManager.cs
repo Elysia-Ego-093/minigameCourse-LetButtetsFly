@@ -41,12 +41,23 @@ public class RandomItemManager : ItemManager
     {
         Vector2 position;
         Collider2D col = null;
+        int cnt = 0;
         do
         {
             float x = Random.Range(leftLowerCorner.x, RightUpperCorner.x), y = Random.Range(leftLowerCorner.y, RightUpperCorner.y);
             position = new Vector2(x, y);
             col = Physics2D.OverlapCircle(position, 2f);
-        } while (col != null);
+            if (cnt++ > 100)
+            {
+                Debug.LogError("无法获取合适的生成点位!");
+                return Vector2.zero;
+            }
+        } while (!(col == null && CheckBelow(position)));
         return position;
+    }
+    private bool CheckBelow(Vector2 position)
+    {
+        RaycastHit2D[] belowInfo = Physics2D.RaycastAll(position, Vector2.down);
+        return belowInfo.Length > 0;
     }
 }

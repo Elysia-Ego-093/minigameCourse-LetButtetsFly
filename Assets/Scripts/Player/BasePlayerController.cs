@@ -228,11 +228,17 @@ public abstract class BasePlayerController : MonoBehaviour
     {
         Vector2 position;
         Collider2D col = null;
+        int cnt = 0;
         do
         {
             float x = Random.Range(leftLowerCorner.x, RightUpperCorner.x), y = Random.Range(leftLowerCorner.y, RightUpperCorner.y);
             position = new Vector2(x, y);
             col = Physics2D.OverlapCircle(position, 2f);
+            if (cnt++ > 100)
+            {
+                Debug.LogError("无法获取合适的生成点位!");
+                return Vector2.zero;
+            }
         } while (!(col == null && CheckBelow(position)));
         return position;
     }

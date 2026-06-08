@@ -16,20 +16,19 @@ public class SettingMenu : MonoBehaviour
 
     void Update()
     {
-        //if (!flag) return;
         GameData.Instance.BGMVolume = BGMSlider.value;
-        BGMValue.text = $"{GameData.Instance.BGMVolume}";
+        BGMValue.text = $"{(int)(GameData.Instance.BGMVolume * 100f)}";
         GameData.Instance.SoundVolume = SoundSlider.value;
-        SoundValue.text = $"{GameData.Instance.SoundVolume}";
+        SoundValue.text = $"{(int)(GameData.Instance.SoundVolume * 100f)}";
     }
 
     public void setStatus()
     {
         BGMSlider.maxValue = 1f;
         BGMSlider.value = GameData.Instance.BGMVolume;
-        BGMValue.text = $"{GameData.Instance.BGMVolume}";
+        BGMValue.text = $"{(int)(GameData.Instance.BGMVolume * 100f)}";
         SoundSlider.maxValue = 1f;
         SoundSlider.value = GameData.Instance.SoundVolume;
-        SoundValue.text = $"{GameData.Instance.SoundVolume}";
+        SoundValue.text = $"{(int)(GameData.Instance.SoundVolume * 100f)}";
     }
 }
