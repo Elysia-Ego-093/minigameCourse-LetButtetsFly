@@ -17,7 +17,7 @@ MonoBehaviour:
   fireRate: 1.5
   bulletSpeed: 50
   bulletATK: 50
-  force_x: 40
+  force_x: 35
   force_y: 10
   needAmmo: 1
   maxAmmo: 20

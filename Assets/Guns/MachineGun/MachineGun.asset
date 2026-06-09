@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 6328424122493784882, guid: d331c17738fd8444db9a1b055936ec9e, type: 3}
   gunName: MachineGun
-  fireRate: 25
-  bulletSpeed: 30
-  bulletATK: 5
-  force_x: 10
-  force_y: 7.5
+  fireRate: 20
+  bulletSpeed: 45
+  bulletATK: 6
+  force_x: 18
+  force_y: 7
   needAmmo: 1
   maxAmmo: 60
   BasicAmmoNum: 120

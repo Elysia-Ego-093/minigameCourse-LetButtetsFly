@@ -180,7 +180,7 @@ MonoBehaviour:
   objectCollider2D: {fileID: 7853318224793341481}
   triggerCollider: {fileID: 6771585784439208493}
   PickUpSound: {fileID: 8300000, guid: 40abb89c1947ebf4aac3dcb0f19b3594, type: 3}
-  num: 3
+  num: 5
 --- !u!61 &7853318224793341481
 BoxCollider2D:
   m_ObjectHideFlags: 0

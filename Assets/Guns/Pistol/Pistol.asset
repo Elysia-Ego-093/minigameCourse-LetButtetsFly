@@ -15,9 +15,9 @@ MonoBehaviour:
   bulletPrefab: {fileID: 6328424122493784882, guid: d331c17738fd8444db9a1b055936ec9e, type: 3}
   gunName: Pistol
   fireRate: 5
-  bulletSpeed: 20
-  bulletATK: 1
-  force_x: 5
+  bulletSpeed: 25
+  bulletATK: 4.5
+  force_x: 6
   force_y: 5
   needAmmo: 0
   maxAmmo: 20

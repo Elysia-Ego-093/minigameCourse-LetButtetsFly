@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 6328424122493784882, guid: 374186ed75c2331459900ae328a464d4, type: 3}
   gunName: SpecialPistol
-  fireRate: 5
-  bulletSpeed: 16
-  bulletATK: 30
-  force_x: 10
+  fireRate: 6
+  bulletSpeed: 40
+  bulletATK: 23.3
+  force_x: 3
   force_y: 5
   needAmmo: 1
   maxAmmo: 648

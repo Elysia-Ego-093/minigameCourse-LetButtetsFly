@@ -1077,41 +1077,41 @@ MonoBehaviour:
   players:
   - PlayerName: Player1
     maxHp: 1000
-    maxMp: 120
+    maxMp: 40
     moveSpeed: 8
     jumpForce: 12.3
-    reloadSpeed: 0.05
+    reloadSpeed: 0.075
     gun: {fileID: 6470856061524998394, guid: 575d1001fb67b3f47a09dd3d6f8d3949, type: 3}
     textureHead: {fileID: 2800000, guid: aadf02c87dfbb794abedc3330d8a8d18, type: 3}
     textureBody: {fileID: 2800000, guid: 1421bc14dc3aac24a9eb3707d468a628, type: 3}
     textureHand: {fileID: 2800000, guid: 84abca2a6b20f5e458e74a811ef28d68, type: 3}
   - PlayerName: Player2
-    maxHp: 950
-    maxMp: 100
+    maxHp: 900
+    maxMp: 50
     moveSpeed: 8.3
-    jumpForce: 12.6
-    reloadSpeed: 0.103
-    gun: {fileID: 4856666843701477762, guid: 326a1756cd58a2447ad7cc53c5bdf00a, type: 3}
+    jumpForce: 12.8
+    reloadSpeed: 0.2
+    gun: {fileID: 9024876007960977505, guid: 12cca141ac73a2c4c9f2b0de1ca3eb53, type: 3}
     textureHead: {fileID: 2800000, guid: e624062abd014b943aa4747833fa2daa, type: 3}
     textureBody: {fileID: 2800000, guid: 602a8cb34dc826d418b0b93e677b60b9, type: 3}
     textureHand: {fileID: 2800000, guid: 23c2978c998dffc44bf2d618ed2febaf, type: 3}
   - PlayerName: Player3
-    maxHp: 1050
-    maxMp: 100
-    moveSpeed: 7.8
-    jumpForce: 11.8
-    reloadSpeed: 0.067
+    maxHp: 1200
+    maxMp: 31
+    moveSpeed: 7
+    jumpForce: 12.3
+    reloadSpeed: 0.025
     gun: {fileID: 7883793002771883351, guid: 4915166c4b077ee44a398eca573bcf4f, type: 3}
     textureHead: {fileID: 2800000, guid: c31b3ba2f48b05f46b136bdc085a04de, type: 3}
     textureBody: {fileID: 2800000, guid: 1facf659c19c52d4bb3d149b3aa2e360, type: 3}
     textureHand: {fileID: 2800000, guid: 8c7dc60c15c91ed49b9f453177802714, type: 3}
   - PlayerName: Player4
-    maxHp: 10
-    maxMp: 115
-    moveSpeed: 8
-    jumpForce: 13
-    reloadSpeed: 0.2
-    gun: {fileID: 7373403625526868206, guid: 3aa5499865f35a040899ad5f285ec56f, type: 3}
+    maxHp: 1050
+    maxMp: 39
+    moveSpeed: 7.8
+    jumpForce: 12.5
+    reloadSpeed: 0.1
+    gun: {fileID: 4856666843701477762, guid: 326a1756cd58a2447ad7cc53c5bdf00a, type: 3}
     textureHead: {fileID: 2800000, guid: 8203f2e3e31b9ed4fada644ff2796fd1, type: 3}
     textureBody: {fileID: 2800000, guid: 904d3209a77b8944e91f830b83e9ab2b, type: 3}
     textureHand: {fileID: 2800000, guid: 08ee5fd829a7eb84490bb6b80daa2a43, type: 3}

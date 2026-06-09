@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 6328424122493784882, guid: d331c17738fd8444db9a1b055936ec9e, type: 3}
   gunName: M416
-  fireRate: 25
-  bulletSpeed: 30
-  bulletATK: 5
-  force_x: 10
+  fireRate: 24
+  bulletSpeed: 45
+  bulletATK: 4.5
+  force_x: 20
   force_y: 7.5
   needAmmo: 1
   maxAmmo: 60

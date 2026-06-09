@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 6328424122493784882, guid: 06d585ff5ea1e034e9e9093958a35f41, type: 3}
   gunName: Sniper_Rifle
-  fireRate: 0.8
+  fireRate: 0.5
   bulletSpeed: 100
   bulletATK: 100
-  force_x: 50
+  force_x: 60
   force_y: 10
   needAmmo: 1
   maxAmmo: 10

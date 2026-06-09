@@ -48,11 +48,11 @@ public abstract class BasePlayerController : MonoBehaviour
     protected const float staminaCostPerSecond = 100f;
     public float maxStamina = 100f;
     public float currentStamina;
-    public float staminaRecoverDelay = 2f;
-    public float staminaRecoverSpeed = 20f;
+    public float staminaRecoverDelay = 3.5f;
+    public float staminaRecoverSpeed = 2.5f;
     protected float recoverWaitTimer;
     protected bool isSprinting;
-    protected float SprintTime = 0.15f;
+    protected float SprintTime = 0.1f;
     protected float SprintTimer = 0f;
     public float SprintSpeed = 50f;
     public int maxSprintCount = 2;
