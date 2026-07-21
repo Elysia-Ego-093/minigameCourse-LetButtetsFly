@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6fd964f6de79840a13a482a5a8b643, type: 3}
   m_Name: Knives
   m_EditorClassIdentifier: 
+  gun_id: -1
   bulletPrefab: {fileID: 6328424122493784882, guid: c76a5af23851c2e4080e498ff845a57c, type: 3}
   gunName: Knife
   fireRate: 2

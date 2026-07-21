@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6fd964f6de79840a13a482a5a8b643, type: 3}
   m_Name: SpePistol
   m_EditorClassIdentifier: 
+  gun_id: 6
   bulletPrefab: {fileID: 6328424122493784882, guid: 374186ed75c2331459900ae328a464d4, type: 3}
   gunName: SpecialPistol
   fireRate: 6

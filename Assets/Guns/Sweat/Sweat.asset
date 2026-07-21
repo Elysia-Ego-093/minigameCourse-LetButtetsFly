@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6fd964f6de79840a13a482a5a8b643, type: 3}
   m_Name: Sweat
   m_EditorClassIdentifier: 
+  gun_id: -2
   bulletPrefab: {fileID: 6328424122493784882, guid: eb5fdeda9d9b6094b864895ee147b050, type: 3}
   gunName: Sweat
   fireRate: 11.1

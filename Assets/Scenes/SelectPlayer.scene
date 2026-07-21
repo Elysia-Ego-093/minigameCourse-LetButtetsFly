@@ -431,17 +431,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4208295919530672748, guid: 090dc91bcfcc7ee479e676658d6fccf0, type: 3}
   m_PrefabInstance: {fileID: 2126369334}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &350095875 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4532545827103240711, guid: 090dc91bcfcc7ee479e676658d6fccf0, type: 3}
-  m_PrefabInstance: {fileID: 2126369334}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &370565634
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1075,7 +1064,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   players:
-  - PlayerName: Player1
+  - character_id: 0
+    PlayerName: Player1
     maxHp: 1000
     maxMp: 40
     moveSpeed: 8
@@ -1085,7 +1075,8 @@ MonoBehaviour:
     textureHead: {fileID: 2800000, guid: aadf02c87dfbb794abedc3330d8a8d18, type: 3}
     textureBody: {fileID: 2800000, guid: 1421bc14dc3aac24a9eb3707d468a628, type: 3}
     textureHand: {fileID: 2800000, guid: 84abca2a6b20f5e458e74a811ef28d68, type: 3}
-  - PlayerName: Player2
+  - character_id: 1
+    PlayerName: Player2
     maxHp: 900
     maxMp: 50
     moveSpeed: 8.3
@@ -1095,7 +1086,8 @@ MonoBehaviour:
     textureHead: {fileID: 2800000, guid: e624062abd014b943aa4747833fa2daa, type: 3}
     textureBody: {fileID: 2800000, guid: 602a8cb34dc826d418b0b93e677b60b9, type: 3}
     textureHand: {fileID: 2800000, guid: 23c2978c998dffc44bf2d618ed2febaf, type: 3}
-  - PlayerName: Player3
+  - character_id: 2
+    PlayerName: Player3
     maxHp: 1200
     maxMp: 31
     moveSpeed: 7
@@ -1105,7 +1097,8 @@ MonoBehaviour:
     textureHead: {fileID: 2800000, guid: c31b3ba2f48b05f46b136bdc085a04de, type: 3}
     textureBody: {fileID: 2800000, guid: 1facf659c19c52d4bb3d149b3aa2e360, type: 3}
     textureHand: {fileID: 2800000, guid: 8c7dc60c15c91ed49b9f453177802714, type: 3}
-  - PlayerName: Player4
+  - character_id: 3
+    PlayerName: Player4
     maxHp: 1050
     maxMp: 39
     moveSpeed: 7.8
@@ -1123,17 +1116,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4208295919530672748, guid: 090dc91bcfcc7ee479e676658d6fccf0, type: 3}
   m_PrefabInstance: {fileID: 848341372}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1168813582 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4532545827103240711, guid: 090dc91bcfcc7ee479e676658d6fccf0, type: 3}
-  m_PrefabInstance: {fileID: 848341372}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &1214384526 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4208295919530672748, guid: 090dc91bcfcc7ee479e676658d6fccf0, type: 3}
@@ -1430,7 +1412,6 @@ GameObject:
   - component: {fileID: 1592814709}
   - component: {fileID: 1592814708}
   - component: {fileID: 1592814707}
-  - component: {fileID: 1592814711}
   m_Layer: 5
   m_HasEditorInfo: 1
   m_Name: MainMenuCanvas
@@ -1533,21 +1514,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1592814711
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1592814706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1be55efd755e4364a8aa892bb2997b84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startButton: {fileID: 1168813582}
-  quitButton: {fileID: 350095875}
-  testButton: {fileID: 0}
 --- !u!1001 &1621357391
 PrefabInstance:
   m_ObjectHideFlags: 0

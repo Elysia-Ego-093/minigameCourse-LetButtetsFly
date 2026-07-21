@@ -17,8 +17,15 @@ public class ButtonManager : MonoBehaviour
     }
     public void QuitGame()
     {
-        PlaySound();
+    #if UNITY_WEBGL && !UNITY_EDITOR
+
+        Application.ExternalCall("QuitGame");
+
+    #else
+
         Application.Quit();
+
+    #endif
     }
     public void ClearPlayerData()
     {

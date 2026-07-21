@@ -12,17 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6fd964f6de79840a13a482a5a8b643, type: 3}
   m_Name: SMG
   m_EditorClassIdentifier: 
+  gun_id: 4
   bulletPrefab: {fileID: 6328424122493784882, guid: d331c17738fd8444db9a1b055936ec9e, type: 3}
   gunName: SMG
-  fireRate: 40
-  bulletSpeed: 46
-  bulletATK: 3.5
-  force_x: 24
-  force_y: 7.5
+  fireRate: 30
+  bulletSpeed: 50
+  bulletATK: 4
+  force_x: 18
+  force_y: 7.3
   needAmmo: 1
-  maxAmmo: 120
-  BasicAmmoNum: 240
-  AmmoTime: 2
+  maxAmmo: 80
+  BasicAmmoNum: 160
+  AmmoTime: 1.7
   shootSound: {fileID: 8300000, guid: cb1421caa9a185544bc3de99112e016d, type: 3}
   weaponModelPrefab: {fileID: 4636902050933700452, guid: 4c0a9572b9b072d42905e2c45b63c3de, type: 3}
   weaponLocalOffset: {x: 0, y: 0}

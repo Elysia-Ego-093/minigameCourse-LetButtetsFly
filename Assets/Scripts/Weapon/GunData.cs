@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GunData : ScriptableObject
 {
+    [Header("枪械类型id")]
+    public int gun_id;
+
     [Header("子弹预制体")]
     public GameObject bulletPrefab;
 
@@ -27,7 +30,7 @@ public class GunData : ScriptableObject
     public bool needAmmo = true; // 是否需要子弹
     public int maxAmmo = 100; // 弹夹最大装弹数量
     public int BasicAmmoNum;
-    public int AmmoTime; //换弹时间
+    public float AmmoTime; //换弹时间
     [Header("射击音效")]
     public AudioClip shootSound;
 

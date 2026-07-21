@@ -11,6 +11,18 @@ public class PlayerSelector : MonoBehaviour
     [Header("UIœ‘ æ¡–±Ì")]
     public List<PlayerData_UI> playerUIs = new List<PlayerData_UI>();
 
+    private void Start()
+    {
+        for(int i = 0; i < players.Count; i++)
+        {
+            if (players[i].character_id < GameData.Instance.sqlCharacterDatas.Count 
+                && GameData.Instance.sqlCharacterDatas[players[i].character_id] != null)
+            {
+                UpdateCharacterData(players[i], GameData.Instance.sqlCharacterDatas[players[i].character_id]);
+            }
+        }
+    }
+
     private void Update()
     {
         for(int i = 0; i < GameData.Instance.players.Count; i++)
@@ -56,4 +68,14 @@ public class PlayerSelector : MonoBehaviour
         }
         SceneManager.LoadScene("SelectMap");
     }
+
+    private void UpdateCharacterData(PlayerData pd, SQLCharacterData cd)
+    {
+        pd.maxHp = cd.maxHp;
+        pd.maxMp = cd.maxMp;
+        pd.jumpForce = cd.jumpForce;
+        pd.moveSpeed = cd.moveSpeed;
+        pd.reloadSpeed = cd.reloadSpeed;
+    }
+
 }

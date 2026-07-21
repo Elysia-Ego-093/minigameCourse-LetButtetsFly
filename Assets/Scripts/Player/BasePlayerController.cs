@@ -8,6 +8,7 @@ public abstract class BasePlayerController : MonoBehaviour
 {
     [Header("玩家ID")]
     public int id;
+    public int character_id;
 
     protected Rigidbody2D rb;
     protected PlayerStatus playerStatus;
@@ -153,6 +154,7 @@ public abstract class BasePlayerController : MonoBehaviour
             return;
         }
         PlayerData p0 = GameData.Instance.players[id];
+        character_id = p0.character_id;
         playerStatus.maxHp = p0.maxHp;
         maxStamina = p0.maxMp;
         basicMoveSpeed = p0.moveSpeed;

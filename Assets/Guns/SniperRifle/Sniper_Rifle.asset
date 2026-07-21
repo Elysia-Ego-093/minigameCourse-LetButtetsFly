@@ -10,19 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd6fd964f6de79840a13a482a5a8b643, type: 3}
-  m_Name: Sniper_Rifle
+  m_Name: Pistol
   m_EditorClassIdentifier: 
+  gun_id: 5
   bulletPrefab: {fileID: 6328424122493784882, guid: 06d585ff5ea1e034e9e9093958a35f41, type: 3}
   gunName: Sniper_Rifle
-  fireRate: 0.5
+  fireRate: 1
   bulletSpeed: 100
-  bulletATK: 100
-  force_x: 60
-  force_y: 10
+  bulletATK: 50
+  force_x: 100
+  force_y: 20
   needAmmo: 1
   maxAmmo: 10
   BasicAmmoNum: 20
-  AmmoTime: 5
+  AmmoTime: 10
   shootSound: {fileID: 8300000, guid: 8ce4454238e09e74c9b3028815ad94e2, type: 3}
   weaponModelPrefab: {fileID: 2456430056882676502, guid: 53fac0e5a914ecd47bca8f89374ba7f1, type: 3}
   weaponLocalOffset: {x: -1.9, y: 0}
