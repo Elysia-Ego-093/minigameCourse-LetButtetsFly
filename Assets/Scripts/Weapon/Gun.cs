@@ -11,14 +11,34 @@ public class Gun : MonoBehaviour
     public int nowAmmo = -1; // -1表示没有初始化
     public int AmmoNum; //当前子弹剩余数量
 
+    private float UpdateDataTimer = 1f;
+
     private void Start()
     {
         if(GameData.Instance.sqlGunDatas.Count > data.gun_id)
         {
             UpdateData(GameData.Instance.sqlGunDatas[data.gun_id]);
         }
+        UpdateDataTimer = 1f;
         nowAmmo = data.maxAmmo;
         AmmoNum = data.BasicAmmoNum;
+    }
+
+    private void Update()
+    {
+        if (UpdateDataTimer >= 0f)
+        {
+            UpdateDataTimer-= Time.deltaTime;
+        }
+        else
+        {
+            UpdateDataTimer = 1f;
+            if (GameData.Instance.sqlGunDatas.Count > data.gun_id)
+            {
+                UpdateData(GameData.Instance.sqlGunDatas[data.gun_id]);
+            }
+        }
+        
     }
     public void reloadAmmo()
     {

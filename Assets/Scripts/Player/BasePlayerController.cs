@@ -37,11 +37,12 @@ public abstract class BasePlayerController : MonoBehaviour
     protected float moveInput;
     protected bool useInertia = false;
     protected float lastMoveDirection = 1f;
+    private float UpdateDataTimer = 1f;
 
     [Header("跳跃设置")]
     public float basicJumpForce = 12f;
     protected float jumpForce;
-    public int maxJumpCount = 2;
+    public const int maxJumpCount = 2;
     protected int jumpCountRemain;
     protected bool isJumping;
 
@@ -56,7 +57,7 @@ public abstract class BasePlayerController : MonoBehaviour
     protected float SprintTime = 0.1f;
     protected float SprintTimer = 0f;
     public float SprintSpeed = 50f;
-    public int maxSprintCount = 2;
+    public const int maxSprintCount = 2;
     protected int SprintCountRemain;
     public AudioClip SprintSound;
 
@@ -153,6 +154,7 @@ public abstract class BasePlayerController : MonoBehaviour
         {
             return;
         }
+        UpdateDataTimer = 1f;
         PlayerData p0 = GameData.Instance.players[id];
         character_id = p0.character_id;
         playerStatus.maxHp = p0.maxHp;
@@ -189,6 +191,18 @@ public abstract class BasePlayerController : MonoBehaviour
     protected virtual void Update()
     {
         if (isPause) return;
+        if (UpdateDataTimer >= 0f)
+        {
+            UpdateDataTimer -= Time.deltaTime;
+        }
+        else
+        {
+            UpdateDataTimer = 1f;
+            if (character_id < GameData.Instance.sqlCharacterDatas.Count)
+            {
+                UpdateData(GameData.Instance.sqlCharacterDatas[character_id]);
+            }
+        }
         if (isInVoid)
         {
             respawnTimer -= Time.deltaTime;
@@ -224,6 +238,15 @@ public abstract class BasePlayerController : MonoBehaviour
         HandleReload();
 
         UpdateHorizontal();
+    }
+
+    private void UpdateData(SQLCharacterData cd)
+    {
+        playerStatus.maxHp = cd.maxHp;
+        maxStamina = cd.maxMp;
+        basicMoveSpeed = cd.moveSpeed;
+        basicJumpForce = cd.jumpForce;
+        reloadSpeed = cd.reloadSpeed;
     }
 
     private Vector2 GetPosition()
