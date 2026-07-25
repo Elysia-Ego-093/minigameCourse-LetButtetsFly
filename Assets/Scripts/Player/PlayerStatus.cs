@@ -10,7 +10,6 @@ public class PlayerStatus : MonoBehaviour
     //盾----------------------------------------------------------------
 
     public float currentShield;
-    public float ShieldAmount;
 
     [Header("受击音效")]
     public AudioClip AttackSound;
@@ -20,7 +19,6 @@ public class PlayerStatus : MonoBehaviour
     {   
 
         maxHp = 1000f;
-        ShieldAmount = maxHp*0.3f;
         currentHp = maxHp;
         currentShield = 0;
     }
@@ -30,15 +28,13 @@ public class PlayerStatus : MonoBehaviour
     //加盾
     public void ShieldRecovery(float amount) { currentShield += amount; }
 
-    
-    public void GetShield()
-    {   
-            
-            currentShield = ShieldAmount;
-        
+    public void StatusResponse(float currentHP, float currentShield)
+    {
+        currentHp = currentHP;
+        this.currentShield = currentShield;
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage_id, float damage)
     {
         if (currentShield > 0)
         {
@@ -54,8 +50,8 @@ public class PlayerStatus : MonoBehaviour
                 currentShield = 0;
             }
         }
-        
-        currentHp = Mathf.Max(currentHp-damage , 0);
+
+        currentHp = Mathf.Max(currentHp - damage, 0);
 
         if (currentShield > 0)
         {

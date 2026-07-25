@@ -19,6 +19,7 @@ public class Gun_UI : MonoBehaviour
     public Image GunPicture;
     public Image Background;
     private readonly string ImageFloderPath = "picture/Weapon";
+    private string lastGunName;
 
     void Start()
     {
@@ -45,15 +46,16 @@ public class Gun_UI : MonoBehaviour
             GunPicture.color = new Color(255, 255, 255, 0);
             return;
         }
-        GunPicture.color = new Color(255, 255, 255, 1);
-        Sprite newSprite = Resources.Load<Sprite>($"{ImageFloderPath}/{player.guns[index].data.gunName}");
-        GunPicture.sprite = newSprite;
+        GunPicture.color = new Color(255, 255, 255, 1); string gunName = player.guns[index].data.gunName;
+        if (gunName != lastGunName)
+        {
+            GunPicture.sprite = Resources.Load<Sprite>($"{ImageFloderPath}/{gunName}");
+            lastGunName = gunName;
+        }
         int currentAmmo = player.guns[index].nowAmmo;
         int AmmoNum = player.guns[index].AmmoNum;
         int maxAmmo = player.guns[index].data.maxAmmo;
         bool needAmmo = player.guns[index].data.needAmmo;
-        System.Console.WriteLine(AmmoNum + "\n");
-        System.Console.WriteLine(needAmmo + "\n");
 
         if (needAmmo)
         {
@@ -74,7 +76,6 @@ public class Gun_UI : MonoBehaviour
         }
         else
         {
-            // Unlimited ammo mode
             ammoText.text = "Ammo: Infinity";
             ammoText.color = Color.cyan;
         }

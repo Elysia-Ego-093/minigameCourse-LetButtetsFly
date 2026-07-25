@@ -49,7 +49,7 @@ public class BuffBar : MonoBehaviour
                 newIcon.buffName = buff.Key;
                 newIcon.maxTime = buff.Value;
                 newIcon.SetImage(buff.Key);
-                newIcon.transform.parent = transform;
+                newIcon.transform.SetParent(transform, false);
                 icons[buff.Key] = newIcon;
                 buffNames.Add(buff.Key);
             }

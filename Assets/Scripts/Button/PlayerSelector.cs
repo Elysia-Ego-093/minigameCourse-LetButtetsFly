@@ -15,10 +15,10 @@ public class PlayerSelector : MonoBehaviour
     {
         for(int i = 0; i < players.Count; i++)
         {
-            if (players[i].character_id < GameData.Instance.sqlCharacterDatas.Count 
-                && GameData.Instance.sqlCharacterDatas[players[i].character_id] != null)
+            if (players[i].character_id < GameData.Instance.CharacterDatas_from_web.Count 
+                && GameData.Instance.CharacterDatas_from_web[players[i].character_id] != null)
             {
-                UpdateCharacterData(players[i], GameData.Instance.sqlCharacterDatas[players[i].character_id]);
+                UpdateCharacterData(players[i], GameData.Instance.CharacterDatas_from_web[players[i].character_id]);
             }
         }
     }
@@ -69,7 +69,7 @@ public class PlayerSelector : MonoBehaviour
         SceneManager.LoadScene("SelectMap");
     }
 
-    private void UpdateCharacterData(PlayerData pd, SQLCharacterData cd)
+    private void UpdateCharacterData(PlayerData pd, CharacterData_from_web cd)
     {
         pd.maxHp = cd.maxHp;
         pd.maxMp = cd.maxMp;

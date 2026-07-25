@@ -15,9 +15,9 @@ public class Gun : MonoBehaviour
 
     private void Start()
     {
-        if(GameData.Instance.sqlGunDatas.Count > data.gun_id)
+        if(GameData.Instance.GunDatas_from_web.Count > data.gun_id)
         {
-            UpdateData(GameData.Instance.sqlGunDatas[data.gun_id]);
+            UpdateData(GameData.Instance.GunDatas_from_web[data.gun_id]);
         }
         UpdateDataTimer = 1f;
         nowAmmo = data.maxAmmo;
@@ -33,9 +33,9 @@ public class Gun : MonoBehaviour
         else
         {
             UpdateDataTimer = 1f;
-            if (GameData.Instance.sqlGunDatas.Count > data.gun_id)
+            if (GameData.Instance.GunDatas_from_web.Count > data.gun_id)
             {
-                UpdateData(GameData.Instance.sqlGunDatas[data.gun_id]);
+                UpdateData(GameData.Instance.GunDatas_from_web[data.gun_id]);
             }
         }
         
@@ -45,10 +45,9 @@ public class Gun : MonoBehaviour
         int temp = nowAmmo;
         nowAmmo = Mathf.Min(data.maxAmmo, AmmoNum + nowAmmo);
         AmmoNum = Mathf.Max(AmmoNum - data.maxAmmo + temp, 0);
-        Debug.Log(AmmoNum);
     }
 
-    public void UpdateData(SQLGunData gd)
+    public void UpdateData(GunData_from_web gd)
     {
         data.AmmoTime = gd.AmmoTime;
         data.BasicAmmoNum = gd.BasicAmmoNum;

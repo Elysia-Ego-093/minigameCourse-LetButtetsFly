@@ -23,8 +23,8 @@ public abstract class BasePlayerController : MonoBehaviour
     protected bool isGrounded = false;
 
     [Header("体型设置")]
-    public float basicWidth = -0.5f;
-    public float basicHeight = 0.5f;
+    const float basicWidth = -0.5f;
+    const float basicHeight = 0.5f;
     protected float currentWidth;
     protected float currentHeight;
     public float crouchHeightPercent = 1f;
@@ -186,6 +186,8 @@ public abstract class BasePlayerController : MonoBehaviour
             UpdateWeaponModel(currentGun);
         }
 
+        Game_api.Instance.RequestInitialStatus(id, character_id);
+
     }
 
     protected virtual void Update()
@@ -198,9 +200,9 @@ public abstract class BasePlayerController : MonoBehaviour
         else
         {
             UpdateDataTimer = 1f;
-            if (character_id < GameData.Instance.sqlCharacterDatas.Count)
+            if (character_id < GameData.Instance.CharacterDatas_from_web.Count)
             {
-                UpdateData(GameData.Instance.sqlCharacterDatas[character_id]);
+                UpdateData(GameData.Instance.CharacterDatas_from_web[character_id]);
             }
         }
         if (isInVoid)
@@ -216,7 +218,7 @@ public abstract class BasePlayerController : MonoBehaviour
                     while (currentGunIndex != 0) SwitchGun();
                     while (guns.Count > 1) guns.RemoveAt(1);
                     addGun(GameData.Instance.players[id].gun);
-                    playerStatus.currentHp = playerStatus.maxHp;
+                    Game_api.Instance.RequestInitialStatus(id, character_id);
                 }
             }
             return;
@@ -240,7 +242,7 @@ public abstract class BasePlayerController : MonoBehaviour
         UpdateHorizontal();
     }
 
-    private void UpdateData(SQLCharacterData cd)
+    private void UpdateData(CharacterData_from_web cd)
     {
         playerStatus.maxHp = cd.maxHp;
         maxStamina = cd.maxMp;
@@ -275,7 +277,6 @@ public abstract class BasePlayerController : MonoBehaviour
 
     private void Initial()
     {
-        playerStatus.currentShield = 0;
         buffs["big"] = 0;
         buffs["small"] = 0;
         buffs["fast"] = 0;
@@ -497,27 +498,49 @@ public abstract class BasePlayerController : MonoBehaviour
     {
         if (buffs["big"] > 0 || buffs["small"] > 0)
         {
-            if(buffs["big"] > 0) buffs["big"] -= Time.deltaTime;
-            else buffs["small"] -= Time.deltaTime;
+            if (buffs["big"] > 0)
+            {
+                buffs["big"] -= Time.deltaTime;
+                currentWidth = basicWidth * GameData.Instance.big_buff.percent;
+                currentHeight = basicHeight * GameData.Instance.big_buff.percent;
+            }
+            else
+            {
+                buffs["small"] -= Time.deltaTime;
+                currentWidth = basicWidth * GameData.Instance.small_buff.percent;
+                currentHeight = basicHeight * GameData.Instance.small_buff.percent;
+            }
         }
         else
         {
             currentWidth = basicWidth;
             currentHeight = basicHeight;
-            transform.localScale = new Vector3(basicWidth * lastMoveDirection, basicHeight, 1f);
         }
+        transform.localScale = new Vector3(currentWidth * lastMoveDirection, currentHeight, 1f);
 
         if (buffs["fast"] > 0 || buffs["slow"] > 0)
         {
-            if (buffs["fast"] > 0) buffs["fast"] -= Time.deltaTime;
-            else buffs["slow"] -= Time.deltaTime;
+            if (buffs["fast"] > 0)
+            {
+                buffs["fast"] -= Time.deltaTime;
+                MoveSpeed = basicMoveSpeed * GameData.Instance.fast_buff.percent;
+            }
+            else
+            {
+                buffs["slow"] -= Time.deltaTime;
+                MoveSpeed = basicMoveSpeed * GameData.Instance.slow_buff.percent;
+            }
         }
         else
         {
             MoveSpeed = basicMoveSpeed;
         }
 
-        if (buffs["jump"] > 0) buffs["jump"] -= Time.deltaTime;
+        if (buffs["jump"] > 0)
+        {
+            buffs["jump"] -= Time.deltaTime;
+            jumpForce = basicJumpForce * GameData.Instance.jump_buff.percent;
+        }
         else
         {
             jumpForce = basicJumpForce;
@@ -618,7 +641,7 @@ public abstract class BasePlayerController : MonoBehaviour
             Bullet bulletScript = newBullet.GetComponent<Bullet>();
             if (bulletScript != null)
             {
-                bulletScript.SetStatus(currentGun.data.bulletSpeed, lastMoveDirection, currentGun.data.bulletATK, currentGun.data.force_x, currentGun.data.force_y, GetComponent<Collider2D>());
+                bulletScript.SetStatus(currentGun.data.gun_id, currentGun.data.bulletSpeed, lastMoveDirection, currentGun.data.bulletATK, currentGun.data.force_x, currentGun.data.force_y, GetComponent<Collider2D>());
             }
             if (!isRecoiling) StartCoroutine(WeaponRecoilCoroutine());
         }
@@ -774,17 +797,13 @@ public abstract class BasePlayerController : MonoBehaviour
     }
 
     //受击
-    public virtual void Attacked(float atk, Vector2 atkForce)
+    public virtual void Attacked(int damage_id, float atk, Vector2 atkForce)
     {
         if (playerStatus == null) return;
         if (isSprinting) return;
-        
-        playerStatus.TakeDamage(atk); // 调用PlayerStatus的扣血（优先扣护盾）
-        if (playerStatus.currentHp <= 0)
-        {
-            Die();
-            return;
-        }
+
+        Game_api.Instance.RequestStatus(new StatusInformation(id, damage_id, PlayerStatus.currentHp, PlayerStatus.currentShield));
+
         if (playerStatus.currentShield <= 0)
         {
             isKnockback = true;
@@ -795,22 +814,32 @@ public abstract class BasePlayerController : MonoBehaviour
         }
     }
 
-    //加血
-    public virtual void addBlood(float amount)
+    public void StatusResponse(float currentHP, float currentShield)
     {
-        if (playerStatus == null) return;
-        playerStatus.HealthRecovery(amount);
+        Debug.Log(id);
+        playerStatus.currentHp = currentHP;
+        playerStatus.currentShield = currentShield;
+        if (playerStatus.currentHp <= 0)
+        {
+            Die();
+            return;
+        }
+    }
+
+    //加血
+    public virtual void addBlood(int item_id, float amount)
+    {
+        Game_api.Instance.RequestStatus(new StatusInformation(id, item_id, playerStatus.currentHp, PlayerStatus.currentShield));
     }
     //加盾
-    public virtual void addShield(float amount)
+    public virtual void addShield(int item_id, float amount)
     {
-        if (playerStatus == null) return;
-        playerStatus.ShieldRecovery(amount);
+        Game_api.Instance.RequestStatus(new StatusInformation(id, item_id, playerStatus.currentHp, PlayerStatus.currentShield));
     }
     //变大/变小Buff
-    public virtual void changeSize(float percent,float buffTime)
+    public virtual void changeSize(bool isDebuff)
     {
-        if (percent > 1){
+        /*if (percent > 1){
             buffs["big"] = buffTime;
             buffs["small"] = 0;
         }
@@ -821,12 +850,22 @@ public abstract class BasePlayerController : MonoBehaviour
         }
         currentWidth = basicWidth * percent;
         currentHeight = basicHeight * percent;
-        transform.localScale = new Vector3(currentWidth * lastMoveDirection, currentHeight, -0.5f);
+        transform.localScale = new Vector3(currentWidth * lastMoveDirection, currentHeight, -0.5f);*/
+        if (isDebuff)
+        {
+            buffs["big"] = GameData.Instance.big_buff.time;
+            buffs["small"] = 0f;
+        }
+        else
+        {
+            buffs["big"] = 0f;
+            buffs["small"] = GameData.Instance.small_buff.time;
+        }
     }
     //加速/减速Buff
-    public virtual void changeSpeed(float percent, float buffTime)
+    public virtual void changeSpeed(bool isDebuff)
     {
-        if (percent > 1)
+        /*if (percent > 1)
         {
             buffs["fast"] = buffTime;
             buffs["slow"] = 0;
@@ -836,13 +875,24 @@ public abstract class BasePlayerController : MonoBehaviour
             buffs["fast"] = 0;
             buffs["slow"] = buffTime;
         }
-        MoveSpeed = basicMoveSpeed * percent;
+        MoveSpeed = basicMoveSpeed * percent;*/
+        if (!isDebuff)
+        {
+            buffs["fast"] = GameData.Instance.fast_buff.time;
+            buffs["slow"] = 0f;
+        }
+        else
+        {
+            buffs["fast"] = 0f;
+            buffs["slow"] = GameData.Instance.slow_buff.time;
+        }
     }
     //跳跃Buff
-    public virtual void changeJump(float percent, float buffTime)
+    public virtual void changeJump()
     {
-        buffs["jump"] = buffTime;
-        jumpForce = basicJumpForce * percent;
+        /*buffs["jump"] = buffTime;
+        jumpForce = basicJumpForce * percent;*/
+        buffs["jump"]=GameData.Instance.jump_buff.time;
     }
 
     //丢弃枪械处理
@@ -866,6 +916,7 @@ public abstract class BasePlayerController : MonoBehaviour
         }
     }
 
+
     public void addGun(GameObject gun)
     {
         GameObject newGunPrefab = Instantiate(gun);
@@ -888,7 +939,7 @@ public abstract class BasePlayerController : MonoBehaviour
         {
             isInVoid = true;
             respawnTimer = respawnTime;
-            Attacked(VoidDamage, Vector2.zero);
+            Attacked(-1, VoidDamage, Vector2.zero);
             AudioSource.PlayClipAtPoint(VoidSound, transform.position, GameData.Instance.SoundVolume);
             transform.position = new Vector2(10000, 10000);
             rb.velocity = Vector2.zero;

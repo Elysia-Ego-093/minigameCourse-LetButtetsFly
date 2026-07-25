@@ -4,14 +4,11 @@ using UnityEngine;
 
 public class SizeItem : PickableItem
 {
-    [Header("大小倍率")]
-    public float percent;
-    [Header("Buff时间")]
-    public float BuffTime;
+    public bool isDebuff;
 
     protected override void Effect(PlayerController player)
     {
-        player.changeSize(percent, BuffTime);
+        player.changeSize(isDebuff);
         if (PickUpSound != null)
         {
             AudioSource.PlayClipAtPoint(PickUpSound, transform.position, GameData.Instance.SoundVolume);

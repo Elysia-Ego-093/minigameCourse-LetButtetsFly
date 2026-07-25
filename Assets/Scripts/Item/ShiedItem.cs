@@ -9,7 +9,7 @@ public class ShieldItem : PickableItem
 
     protected override void Effect(PlayerController player)
     {
-        player.addShield(addShield);
+        player.addShield(102, addShield);
         if (PickUpSound != null)
         {
             AudioSource.PlayClipAtPoint(PickUpSound, transform.position, GameData.Instance.SoundVolume);

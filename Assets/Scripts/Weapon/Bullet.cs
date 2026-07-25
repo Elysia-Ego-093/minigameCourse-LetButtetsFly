@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    private int gun_id;
     private float speed;
     private float ATK;
     private Vector2 force;
@@ -17,8 +18,9 @@ public class Bullet : MonoBehaviour
         col = GetComponent<BoxCollider2D>();
     }
 
-    public virtual void SetStatus(float s, float lastMoveDirection, float atk, float force_x, float force_y, Collider2D owner = null)
+    public virtual void SetStatus(int gun_id, float s, float lastMoveDirection, float atk, float force_x, float force_y, Collider2D owner = null)
     {
+        this.gun_id = gun_id;
         speed = s;
         rb.velocity = new Vector2(lastMoveDirection * speed, 0);
         ATK = atk;
@@ -59,7 +61,7 @@ public class Bullet : MonoBehaviour
             if (Player != null && !Player.IsSprinting()) 
             {
                 force = new Vector2(force.x * (Mathf.Abs(rb.velocity.x) / rb.velocity.x), force.y);
-                Player.Attacked(ATK, force);
+                Player.Attacked(gun_id, ATK, force);
                 Destroy(gameObject);
             }
         }

@@ -40,7 +40,7 @@ public abstract class Explosive : MonoBehaviour
                 float distance = Vector2.Distance(transform.position, player.CenterPosition);
                 Vector2 knockBackDirection = (player.CenterPosition - (Vector2)transform.position).normalized;
                 float percent = Mathf.Max(1 - distance / explosionRadius, 0.01f);
-                player.Attacked(Damage * percent, knockBackDirection * Force * percent);
+                player.Attacked(7, Damage, knockBackDirection * Force * percent);
             }
             else
             {
