@@ -7,6 +7,7 @@ public class MainCameraFollow : MonoBehaviour
 {
     [Header("��������")]
     public List<PlayerController> players = new List<PlayerController>();
+    public BOSS boss;
     public float smoothSpeed = 5f;
     public float minZoom = 5f;
     public float zoomSpeed = 2f;
@@ -49,22 +50,35 @@ public class MainCameraFollow : MonoBehaviour
                 validCount++;
             }
         }
+        if (boss != null)
+        {
+            center += (Vector2)boss.transform.position;
+            validCount++;
+        }
         if (validCount == 0) return;
         center /= validCount;
 
         // 2. 计算所有有效玩家到中点的最大距离
-        float maxDist = 0f;
+        float maxDist_x = 0f, maxDist_y = 0f;
         foreach (var p in players)
         {
             if (p != null && !p.IsInVoid())
             {
-                float dist = Vector2.Distance(center, p.transform.position);
-                if (dist > maxDist) maxDist = dist;
+                float dist_x = Mathf.Abs(p.transform.position.x - center.x);
+                float dist_y = Mathf.Abs(p.transform.position.y - center.y);
+                if (dist_x > maxDist_x) maxDist_x = dist_x;
+                if (dist_y > maxDist_y) maxDist_y = dist_y;
             }
         }
+        if(boss != null)
+        {
+            float dist_x = Mathf.Abs(boss.transform.position.x - center.x);
+            float dist_y = Mathf.Abs(boss.transform.position.y - center.y);
+            if (dist_x > maxDist_x) maxDist_x = dist_x;
+            if (dist_y > maxDist_y) maxDist_y = dist_y;
+        }
 
-        float margin = 0.10f;       
-        float requiredSize = maxDist * (1 + margin);
+        float requiredSize = Mathf.Max(maxDist_x * 1.5f, maxDist_y * 2.5f) / 2f;
 
         float targetZoom = Mathf.Max(minZoom, requiredSize);
         Vector3 desiredPos = new Vector3(center.x, center.y, -10f);

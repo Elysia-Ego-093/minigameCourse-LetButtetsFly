@@ -1,3 +1,4 @@
+using R3;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -125,10 +126,15 @@ public class GameData : MonoBehaviour
     [Header("选中的玩家数据")]
     public int PlayerCount;
     public List<PlayerData> players = new List<PlayerData>();
+
+    public bool isBOSS = false;
+    public int BOSS_scoer = 0;
+    public bool isNew = false;
+    public bool TimeFinish = false;
     [Header("胜利者")]
     public string winnerName=null;
     [Header("胜利分数")]
-    public int winnerScore = 3;
+    public int winnerScore = 2;
 
     private void Start()
     {
@@ -142,6 +148,8 @@ public class GameData : MonoBehaviour
             Destroy(gameObject);
         }
 
+        isNew = true;
+
 
         BGM = GetComponent<AudioSource>();
         for (int i = 0; i < PlayerCount; i++) players.Add(null);
@@ -150,12 +158,12 @@ public class GameData : MonoBehaviour
         addGunData();
         initialBuff();
 
-        Game_api.Instance.RequestGameData();
-        UpdateDatasTimer = 5f;
+        //Game_api.Instance.RequestGameData();
+        //UpdateDatasTimer = 5f;
     }
     private void Update()
     {
-        RequestGameData();
+        //RequestGameData();
 
         string currentSecneName = SceneManager.GetActiveScene().name;
         if (!(currentSecneName == "MainTheme" 

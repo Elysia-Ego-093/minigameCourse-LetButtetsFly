@@ -24,7 +24,7 @@ public class PlayerStatus : MonoBehaviour
     }
 
     // 加血
-    public void HealthRecovery(float amount) { currentHp = Mathf.Min(currentHp+amount,maxHp); }
+    public void HealthRecovery(float amount) { currentHp = Mathf.Min(currentHp + amount, maxHp); }
     //加盾
     public void ShieldRecovery(float amount) { currentShield += amount; }
 
@@ -34,24 +34,20 @@ public class PlayerStatus : MonoBehaviour
         this.currentShield = currentShield;
     }
 
-    public void TakeDamage(int damage_id, float damage)
+    public void TakeDamage(float atk)
     {
-        if (currentShield > 0)
+        float tot = currentShield + currentHp;
+        tot -= atk;
+        if (tot > currentHp)
         {
-            if(damage <= currentShield)
-            {
-                currentShield -= damage;
-                damage = 0;
-            }
-
-            else
-            {
-                damage -= currentShield;
-                currentShield = 0;
-            }
+            currentShield -= atk;
         }
-
-        currentHp = Mathf.Max(currentHp - damage, 0);
+        else
+        {
+            currentHp -= (atk - currentShield);
+            if (currentHp < 0) currentHp = 0;
+            currentShield = 0;
+        }
 
         if (currentShield > 0)
         {

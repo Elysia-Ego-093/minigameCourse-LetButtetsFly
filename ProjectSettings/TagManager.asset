@@ -7,6 +7,9 @@ TagManager:
   - Bullet
   - Obstacle
   - Grenade
+  - BOSS
+  - Platform
+  - BOSS_bullet
   layers:
   - Default
   - TransparentFX
@@ -21,7 +24,7 @@ TagManager:
   - Player
   - Grenade
   - PickableItem
-  - 
+  - BOSS
   - 
   - 
   - 
@@ -58,6 +61,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 2978139553
+    locked: 0
+  - name: BOSS
+    uniqueID: 4159597065
     locked: 0
   - name: Weapon
     uniqueID: 1823650681

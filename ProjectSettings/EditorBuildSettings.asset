@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/SelectMap.scene
     guid: 2e11bba13c81ae14581405ee4b5a6ff6
   - enabled: 1
-    path: Assets/Scenes/text.scene
+    path: Assets/Scenes/BOSS.scene
     guid: c425a0d8358d84741ace3ef8137dd5b8
   - enabled: 1
     path: Assets/Scenes/GameWinner.scene
@@ -32,6 +32,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Map 4.scene
     guid: 5b875ecb34ac9b94690ffdcb82ec8380
+  - enabled: 1
+    path: Assets/Scenes/BOSS_Lose.scene
+    guid: ff2dfcb7638c83842bd78943f0fa6d41
+  - enabled: 1
+    path: Assets/Scenes/BOSS_Win.scene
+    guid: 19b476fb204117345a2e3a949fc07267
   m_BuildProfiles: []
   m_configObjects: {}
   m_SlimFeaturesWeixinMiniGame:

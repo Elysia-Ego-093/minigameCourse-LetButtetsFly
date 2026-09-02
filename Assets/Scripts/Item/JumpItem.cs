@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class JumpItem : PickableItem
 {
+    public float buffTime;
+    public float percent;
     protected override void Effect(PlayerController player)
     {
-        player.changeJump();
+        player.changeJump(percent, buffTime);
         if (PickUpSound != null)
         {
             AudioSource.PlayClipAtPoint(PickUpSound, transform.position, GameData.Instance.SoundVolume);

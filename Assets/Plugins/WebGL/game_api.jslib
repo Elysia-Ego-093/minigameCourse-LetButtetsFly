@@ -22,7 +22,6 @@ mergeInto(LibraryManager.library, {
         else
         {
             console.log("GetPlayerUid不存在");
-            return 0;
         }
     },
 
@@ -48,6 +47,30 @@ mergeInto(LibraryManager.library, {
         else
         {
             console.log("InitialStatus不存在");
+        }
+    },
+
+    GameStart: function()
+    {
+        if (window.GameStart)
+        {
+            return window.GameStart();
+        }
+        else
+        {
+            console.log("GameStart不存在");
+        }
+    },
+
+    GameOver: function()
+    {
+        if (window.GameOver)
+        {
+            return window.GameOver();
+        }
+        else
+        {
+            console.log("GameOver不存在");
         }
     }
 

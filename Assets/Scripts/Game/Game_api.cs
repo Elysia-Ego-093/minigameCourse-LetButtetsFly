@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 using System;
 
-[Serializable]
+[System.Serializable]
 public class GameData_Datas
 {
     public List<GunData_from_web> guns;
@@ -17,6 +17,7 @@ public class GameData_Datas
     public BuffData_form_web jump_buff;
 }
 
+[System.Serializable]
 public class StatusInformation
 {
     public int id;
@@ -31,6 +32,13 @@ public class StatusInformation
         this.currentShield = currentShield;
     }
     StatusInformation() { }
+}
+
+[System.Serializable]
+public class GameOverResult
+{
+    public int score;
+    public bool isNew;
 }
 
 public class Game_api : MonoBehaviour
@@ -55,6 +63,12 @@ public class Game_api : MonoBehaviour
 
     [DllImport("__Internal")]
     public static extern void InitialStatus(int id, int character_id);
+
+    [DllImport("__Internal")]
+    public static extern void GameStart();
+
+    [DllImport("__Internal")]
+    public static extern void GameOver();
 #endif
 
     private void Start()
@@ -70,7 +84,7 @@ public class Game_api : MonoBehaviour
             Destroy(gameObject);
         }
 
-        GameData.Instance.uid = RequestPlayerUid();
+        //GameData.Instance.uid = 10001;
 
     }
 
@@ -94,10 +108,10 @@ public class Game_api : MonoBehaviour
         Debug.Log("Unity编辑器模式，模拟数据");
         string testJson = @"
 {
-    ""id"":0,
+    ""id"":1,
     ""reason_id"":2,
-    ""currentHP"":500,
-    ""currentShield"":1000
+    ""currentHP"":1000,
+    ""currentShield"":0
 }";
         ReceiveStatus(testJson);
 #endif
@@ -122,7 +136,6 @@ public class Game_api : MonoBehaviour
 #else
         Debug.Log("Unity编辑器模式，模拟数据");
         string testJson = CreateTestJson();
-        //ReceiveGameData(testJson);
 #endif
 
     }
@@ -171,10 +184,10 @@ public class Game_api : MonoBehaviour
         Debug.Log("Unity编辑器模式，模拟数据");
         string testJson = @"
 {
-    ""id"":1,
+    ""id"":0,
     ""reason_id"":2,
-    ""currentHP"":100,
-    ""currentShield"":20
+    ""currentHP"":1000,
+    ""currentShield"":0
 }";
         ReceiveStatus(testJson);
 #endif
@@ -200,13 +213,56 @@ public class Game_api : MonoBehaviour
         GameObject HP_entity = null;
         if (status.id == 0) HP_entity = GameObject.Find("Player1");
         if (status.id == 1) HP_entity = GameObject.Find("Player2");
+        if (status.id == 2) HP_entity = GameObject.Find("BOSS");
 
-        if (HP_entity != null && (status.id == 0 || status.id == 1))
+        if (HP_entity != null)
         {
-            BasePlayerController player = HP_entity.GetComponent<BasePlayerController>();
-            if (player != null) player.StatusResponse(status.currentHP, status.currentShield);
+            if(status.id == 0 || status.id == 1)
+            {
+                HP_entity.GetComponent<BasePlayerController>().StatusResponse(status.currentHP, status.currentShield);
+            }
+            if (status.id == 2)
+            {
+                HP_entity.GetComponent<BOSS>().StatusResponse(status.currentHP);
+            }
         }
 
+    }
+
+    public void RequestGameStart()
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        GameStart();
+#endif
+    }
+    public void RequestGameOver()
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        GameOver();
+#endif
+    }
+    public void GameOverResponse(string json)
+    {
+        if (json == null)
+        {
+            Debug.LogError("接收网页的血量状态更新信息JSON失败");
+            return;
+        }
+        Debug.Log("收到网页数据:");
+        Debug.Log(json);
+        GameOverResult result = JsonUtility.FromJson<GameOverResult>(json);
+        if (result == null)
+        {
+            Debug.LogError("JSON解析失败");
+            return;
+        }
+        GameData.Instance.BOSS_scoer = result.score;
+        GameData.Instance.isNew = result.isNew;
+    }
+
+    public void BOSS_TimeFinishResponse()
+    {
+        GameObject.Find("BOSS").GetComponent<BOSS>().TimeFinishAttack();
     }
 
 

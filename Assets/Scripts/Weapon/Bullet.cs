@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private int gun_id;
-    private float speed;
-    private float ATK;
-    private Vector2 force;
-    private Rigidbody2D rb;
-    private BoxCollider2D col;
-    private Collider2D ownerCollider;
-    private float waitTime = 0.02f; // 等待时间，单位为秒
+    protected int gun_id;
+    protected float speed;
+    protected float ATK;
+    protected Vector2 force;
+    protected Rigidbody2D rb;
+    protected  BoxCollider2D col;
+    protected Collider2D ownerCollider;
+    protected float waitTime = 0.02f; // 等待时间，单位为秒
 
     void Awake()
     {
@@ -31,17 +31,39 @@ public class Bullet : MonoBehaviour
         {
             ownerCollider = owner;
             Physics2D.IgnoreCollision(GetComponent<Collider2D>(), ownerCollider, true);
-            StartCoroutine(EnableCollisionAfterDelay());
+        }
+    }
+
+    public virtual void BOSS_SetStatus(int bullet_id, float s, float atk, float angle, Collider2D owner)
+    {
+        gun_id = bullet_id;
+        force = new Vector2(20f, 7.5f);
+        speed = s;
+        ATK = atk;
+        rb.velocity = new Vector2(Mathf.Cos(angle) * speed, Mathf.Sin(angle) * speed);
+        transform.Rotate(0, 0, 180f * (angle / Mathf.PI));
+
+        if (owner != null)
+        {
+            ownerCollider = owner;
+            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), ownerCollider, true);
         }
     }
         
 
     void Update()
     {
-        col.size = new Vector2(Mathf.Abs(rb.velocity.x * 0.2f), col.size.y);
-        col.offset = new Vector2(-col.size.x / 2 * (Mathf.Abs(rb.velocity.x) / rb.velocity.x), 0f);
+        if (col != null)
+        {
+            col.size = new Vector2(Mathf.Abs(rb.velocity.x * 0.05f) / transform.localScale.x, col.size.y);
+            if (rb.velocity.x != 0) col.offset = new Vector2(col.size.x / 2f * (Mathf.Abs(rb.velocity.x) / rb.velocity.x), 0f);
+        }
+        
         // 自动销毁
-        if (transform.position.x > 300 || transform.position.x < -300 || transform.position.y < -10) 
+        if (transform.position.x > 300 
+            || transform.position.x < -300 
+            || transform.position.y < -10 
+            || transform.position.y > 100) 
             Destroy(gameObject);
 
     }
@@ -76,6 +98,16 @@ public class Bullet : MonoBehaviour
                 cover.TakeDamage(ATK);
             }
             Destroy(gameObject); // 击中掩体后销毁子弹
+        }
+
+        else if (collision.CompareTag("BOSS"))
+        {
+            BOSS boss = collision.GetComponent<BOSS>();
+            if(boss != null)
+            {
+                boss.attcked(gun_id, ATK);
+            }
+            Destroy(gameObject);
         }
     }
 }

@@ -8,6 +8,14 @@ public class ButtonManager : MonoBehaviour
     public void LoadGameScene(string gameSceneName)
     {
         PlaySound();
+        if (gameSceneName == "BOSS")
+        {
+            GameData.Instance.isBOSS = true;
+        }
+        else
+        {
+            GameData.Instance.isBOSS = false;
+        }
         SceneManager.LoadScene(gameSceneName);
     }
     public void LoadGameSceneByIndex(int index)

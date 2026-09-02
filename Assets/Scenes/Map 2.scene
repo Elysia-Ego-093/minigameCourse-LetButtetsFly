@@ -256,8 +256,6 @@ MonoBehaviour:
   - {fileID: 210085738}
   - {fileID: 1983704878}
   - {fileID: 1041055759}
-  basicWidth: -0.5
-  basicHeight: 0.5
   crouchHeightPercent: 0.5
   basicMoveSpeed: 8
   basicJumpForce: 12
@@ -386,7 +384,6 @@ MonoBehaviour:
   maxHp: 1000
   currentHp: 1000
   currentShield: 0
-  ShieldAmount: 300
   AttackSound: {fileID: 8300000, guid: b930852a9b879e948a4f5844d1a8f2d4, type: 3}
   ShieldSound: {fileID: 8300000, guid: ea6a8401faddbe1449ab05d3e46ff797, type: 3}
 --- !u!95 &15840559
@@ -814,7 +811,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1574170411
-  m_SortingLayer: 7
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6ac46ed45669d8d4eb31ffe86f2ad966, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1219,7 +1216,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1574170411
-  m_SortingLayer: 7
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 8ee6ae1b5d2cbbc4fa372a96c6a754c0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2135,8 +2132,6 @@ MonoBehaviour:
   - {fileID: 1994369779}
   - {fileID: 751279367}
   - {fileID: 2122811312}
-  basicWidth: -0.5
-  basicHeight: 0.5
   crouchHeightPercent: 0.5
   basicMoveSpeed: 8
   basicJumpForce: 12
@@ -2265,7 +2260,6 @@ MonoBehaviour:
   maxHp: 1000
   currentHp: 1000
   currentShield: 0
-  ShieldAmount: 300
   AttackSound: {fileID: 8300000, guid: b930852a9b879e948a4f5844d1a8f2d4, type: 3}
   ShieldSound: {fileID: 8300000, guid: ea6a8401faddbe1449ab05d3e46ff797, type: 3}
 --- !u!1001 &894235254
@@ -2634,7 +2628,7 @@ MonoBehaviour:
   zoomSpeed: 2
   BGMs:
   - {fileID: 8300000, guid: 076e0d0337572174988f74518250d64b, type: 3}
-  - {fileID: 8300000, guid: 2b382a56052310b42910575a65b3723a, type: 3}
+  - {fileID: 8300000, guid: b508755489f54c64ea9f51d067be3e64, type: 3}
 --- !u!82 &939047081
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2807,8 +2801,6 @@ MonoBehaviour:
   CenterPosition: {x: 0, y: 0}
   ColliderPoints: []
   GroundCheckers: []
-  basicWidth: 1
-  basicHeight: 1
   crouchHeightPercent: 0.5
   basicMoveSpeed: 8
   basicJumpForce: 12
@@ -2863,7 +2855,6 @@ MonoBehaviour:
   maxHp: 1000
   currentHp: 1000
   currentShield: 0
-  ShieldAmount: 0
   AttackSound: {fileID: 0}
   ShieldSound: {fileID: 0}
 --- !u!50 &969978899

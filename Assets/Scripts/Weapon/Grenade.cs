@@ -15,10 +15,10 @@ public class Grenade : Explosive
 
     [Header("音效")]
     private AudioSource audioSource;
-    public AudioClip explosionSound;
 
     void Awake()
     {
+        Damage_id = 7;
         rb = GetComponent<Rigidbody2D>();
         if (rb == null) rb = gameObject.AddComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
@@ -50,16 +50,19 @@ public class Grenade : Explosive
         Cover.transform.position = transform.position;
         float r0 = explosionRadius * (spawnTime / fuseTime);
         Cover.transform.localScale = new Vector2(r0 * 2f / transform.localScale.x, r0 * 2f / transform.localScale.y);
+
+        Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, 1f);
+        foreach(var col in cols)
+        {
+            BOSS boss = col.GetComponent<BOSS>();
+            if (boss != null) spawnTime = fuseTime;
+        }
     }
     protected override void CheckDetonation()
     {
         if (spawnTime >= fuseTime)
         {
             StopFuseSound();
-            if (explosionSound != null)
-            {
-                AudioSource.PlayClipAtPoint(explosionSound, transform.position, GameData.Instance.SoundVolume);
-            }
             Explode();
         }
     }
