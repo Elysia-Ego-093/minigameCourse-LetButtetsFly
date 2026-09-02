@@ -16,10 +16,7 @@ public class PlayerStatus : MonoBehaviour
     public AudioClip ShieldSound;
 
     void Awake()
-    {   
-
-        maxHp = 1000f;
-        currentHp = maxHp;
+    {
         currentShield = 0;
     }
 

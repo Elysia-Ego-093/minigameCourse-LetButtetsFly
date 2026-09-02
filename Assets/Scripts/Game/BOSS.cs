@@ -46,8 +46,8 @@ public class BOSS : MonoBehaviour
         col = GetComponent<CircleCollider2D>();
         audioSource = GetComponent<AudioSource>();
         HP = maxHP;
-        Game_api.Instance.RequestInitialStatus(2, -1);
-        Game_api.Instance.RequestGameStart();
+        //Game_api.Instance.RequestInitialStatus(2, -1);
+        //Game_api.Instance.RequestGameStart();
         AttackTimer = 100f;
         GameData.Instance.TimeFinish = false;
         StartCoroutine(Begin_Attack());

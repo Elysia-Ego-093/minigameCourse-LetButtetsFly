@@ -160,6 +160,7 @@ public abstract class BasePlayerController : MonoBehaviour
         character_id = p0.character_id;
         playerStatus.maxHp = p0.maxHp;
         maxStamina = p0.maxMp;
+        currentStamina = p0.maxMp;
         basicMoveSpeed = p0.moveSpeed;
         basicJumpForce = p0.jumpForce;
         reloadSpeed = p0.reloadSpeed;
@@ -167,6 +168,7 @@ public abstract class BasePlayerController : MonoBehaviour
         changeMaterialTexture(p0.textureHead, p0.textureBody, p0.textureHand);
         Initial();
         playerStatus.currentHp = playerStatus.maxHp;
+        Debug.Log(playerStatus.currentHp);
         if (guns.Count > 0)
         {
             currentGunIndex = 0;
@@ -194,6 +196,7 @@ public abstract class BasePlayerController : MonoBehaviour
     protected virtual void Update()
     {
         if (isPause) return;
+        /*
         if (UpdateDataTimer >= 0f)
         {
             UpdateDataTimer -= Time.deltaTime;
@@ -206,6 +209,8 @@ public abstract class BasePlayerController : MonoBehaviour
                 UpdateData(GameData.Instance.CharacterDatas_from_web[character_id]);
             }
         }
+        */
+
         if (isInVoid)
         {
             respawnTimer -= Time.deltaTime;

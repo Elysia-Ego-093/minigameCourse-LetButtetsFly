@@ -29,6 +29,7 @@ public class BOSS_score : MonoBehaviour
         else
         {
             GameData.Instance.TimeFinish = true;
+            boss.TimeFinishAttack();
         }
 
         GameData.Instance.BOSS_scoer = (int)boss.maxHP - (int)boss.getHP();
