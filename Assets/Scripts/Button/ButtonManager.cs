@@ -1,0 +1,55 @@
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class ButtonManager : MonoBehaviour
+{
+    public AudioClip sound;
+    public void LoadGameScene(string gameSceneName)
+    {
+        PlaySound();
+        if (gameSceneName == "BOSS")
+        {
+            GameData.Instance.isBOSS = true;
+        }
+        else
+        {
+            GameData.Instance.isBOSS = false;
+        }
+        SceneManager.LoadScene(gameSceneName);
+    }
+    public void LoadGameSceneByIndex(int index)
+    {
+        PlaySound();
+        SceneManager.LoadScene(index);
+    }
+    public void QuitGame()
+    {
+    #if UNITY_WEBGL && !UNITY_EDITOR
+
+        Application.ExternalCall("QuitGame");
+
+    #else
+
+        Application.Quit();
+
+    #endif
+    }
+    public void ClearPlayerData()
+    {
+        GameData.Instance.ClearPlayerData();
+    }
+    public void PlaySound()
+    {
+        if (sound != null)
+        {
+            GameObject newSoundObject = new GameObject();
+            ButtonSound newAudioSource = newSoundObject.AddComponent<ButtonSound>();
+            newAudioSource.sound = newSoundObject.AddComponent<AudioSource>();
+            newAudioSource.sound.clip = sound;
+            newAudioSource.sound.volume = GameData.Instance.SoundVolume;
+            newAudioSource.sound.Play();
+            DontDestroyOnLoad(newSoundObject);
+        }
+    }
+}

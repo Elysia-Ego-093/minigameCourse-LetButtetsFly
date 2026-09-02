@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: WylKsCL+VyrnSaGqbkPefluIh5Hw/XbjHXX5oOEzfFGP85CQoiQjKvE=
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - AttackSound: {fileID: 8300000, guid: b930852a9b879e948a4f5844d1a8f2d4, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,71 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class PauseManager : ButtonManager
+{
+    [Header("ÔÝÍ£²Ëµ¥")]
+    public GameObject PauseMenu;
+
+    [Header("Íæ¼Ò")]
+    public List<PlayerController> players;
+
+    private bool isPause = false;
+    void Start()
+    {
+        if (PauseMenu != null)
+        {
+            PauseMenu.SetActive(false);
+        }
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) TogglePause();
+        foreach (var player in players)
+        {
+            player.isPause = isPause;
+        }
+    }
+
+    private void TogglePause()
+    {
+        PlaySound();
+        if (isPause) ResumeGame();
+        else PauseGame();
+    }
+
+    public void PauseGame()
+    {
+        isPause = true;
+        Time.timeScale = 0f;
+        PauseMenu.SetActive(isPause);
+    }
+
+    public void ResumeGame()
+    {
+        PlaySound();
+        isPause = false;
+        Time.timeScale = 1.0f;
+        PauseMenu.SetActive(isPause);
+    }
+
+    public void RestartGame()
+    {
+        ResumeGame();
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
+    }
+
+    public new void LoadGameScene(string gameSceneName)
+    {
+        ResumeGame();
+        SceneManager.LoadScene(gameSceneName);
+    }
+    public new void LoadGameSceneByIndex(int index)
+    {
+        ResumeGame();
+        SceneManager.LoadScene(index);
+    }
+}

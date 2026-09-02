@@ -1,0 +1,113 @@
+using Unity.Collections;
+using UnityEngine;
+
+public class Bullet : MonoBehaviour
+{
+    protected int gun_id;
+    protected float speed;
+    protected float ATK;
+    protected Vector2 force;
+    protected Rigidbody2D rb;
+    protected  BoxCollider2D col;
+    protected Collider2D ownerCollider;
+    protected float waitTime = 0.02f; // 等待时间，单位为秒
+
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<BoxCollider2D>();
+    }
+
+    public virtual void SetStatus(int gun_id, float s, float lastMoveDirection, float atk, float force_x, float force_y, Collider2D owner = null)
+    {
+        this.gun_id = gun_id;
+        speed = s;
+        rb.velocity = new Vector2(lastMoveDirection * speed, 0);
+        ATK = atk;
+        force = new Vector2(force_x, force_y);
+
+        // 忽略与发射者的碰撞
+        if (owner != null)
+        {
+            ownerCollider = owner;
+            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), ownerCollider, true);
+        }
+    }
+
+    public virtual void BOSS_SetStatus(int bullet_id, float s, float atk, float angle, Collider2D owner)
+    {
+        gun_id = bullet_id;
+        force = new Vector2(20f, 7.5f);
+        speed = s;
+        ATK = atk;
+        rb.velocity = new Vector2(Mathf.Cos(angle) * speed, Mathf.Sin(angle) * speed);
+        transform.Rotate(0, 0, 180f * (angle / Mathf.PI));
+
+        if (owner != null)
+        {
+            ownerCollider = owner;
+            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), ownerCollider, true);
+        }
+    }
+        
+
+    void Update()
+    {
+        if (col != null)
+        {
+            col.size = new Vector2(Mathf.Abs(rb.velocity.x * 0.05f) / transform.localScale.x, col.size.y);
+            if (rb.velocity.x != 0) col.offset = new Vector2(col.size.x / 2f * (Mathf.Abs(rb.velocity.x) / rb.velocity.x), 0f);
+        }
+        
+        // 自动销毁
+        if (transform.position.x > 300 
+            || transform.position.x < -300 
+            || transform.position.y < -10 
+            || transform.position.y > 100) 
+            Destroy(gameObject);
+
+    }
+    private System.Collections.IEnumerator EnableCollisionAfterDelay()
+    {
+        yield return new WaitForSeconds(waitTime);
+        if (ownerCollider != null && GetComponent<Collider2D>() != null)
+        {
+            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), ownerCollider, false);
+        }
+    }
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            PlayerController Player = collision.GetComponent<PlayerController>();
+            if (Player != null && !Player.IsSprinting()) 
+            {
+                force = new Vector2(force.x * (Mathf.Abs(rb.velocity.x) / rb.velocity.x), force.y);
+                Player.Attacked(gun_id, ATK, force);
+                Destroy(gameObject);
+            }
+        }
+
+        else if (collision.CompareTag("Obstacle"))
+        {
+            // 找到掩体的InteractiveStuff组件（CoverBox是其子类）
+            CoverBox cover = collision.GetComponent<CoverBox>();
+            if (cover != null)
+            {
+                // 调用掩体扣血方法，子弹攻击力作为伤害值
+                cover.TakeDamage(ATK);
+            }
+            Destroy(gameObject); // 击中掩体后销毁子弹
+        }
+
+        else if (collision.CompareTag("BOSS"))
+        {
+            BOSS boss = collision.GetComponent<BOSS>();
+            if(boss != null)
+            {
+                boss.attcked(gun_id, ATK);
+            }
+            Destroy(gameObject);
+        }
+    }
+}
